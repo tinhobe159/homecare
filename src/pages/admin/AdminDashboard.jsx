@@ -196,7 +196,7 @@ const AdminDashboard = () => {
                 <div key={appointment.appointment_id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
                     <p className="font-medium text-gray-900">
-                      Appointment #{appointment.appointment_id.slice(0, 8)}...
+                      Appointment #{appointment.appointment_id}
                     </p>
                     <p className="text-sm text-gray-600">
                       {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at{' '}

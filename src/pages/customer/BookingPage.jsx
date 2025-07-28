@@ -95,7 +95,7 @@ const BookingPage = () => {
     }
   };
 
-  const selectedPackage = packages.find(pkg => pkg.package_id.toString() === formData.selectedPackage);
+  const selectedPackage = packages.find(pkg => pkg.package_id === parseInt(formData.selectedPackage));
 
   if (loading) {
     return (
@@ -127,7 +127,7 @@ const BookingPage = () => {
                   <div
                     key={pkg.package_id}
                     className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                      formData.selectedPackage === pkg.package_id.toString()
+                      parseInt(formData.selectedPackage) === pkg.package_id
                         ? 'border-blue-500 bg-blue-50'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
