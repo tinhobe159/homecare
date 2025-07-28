@@ -212,7 +212,7 @@ const AdminAppointments = () => {
                           Appointment #{appointment.id}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          {new Date(appointment.preferred_date).toLocaleDateString()} at {appointment.preferred_time}
+                          {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                         </p>
                       </div>
                     </div>
@@ -309,16 +309,16 @@ const AdminAppointments = () => {
                       </h4>
                       <div className="space-y-1 text-sm">
                         <p className="text-gray-600">
-                          <span className="font-medium">Date:</span> {new Date(appointment.preferred_date).toLocaleDateString()}
+                          <span className="font-medium">Date:</span> {new Date(appointment.appointment_datetime_start).toLocaleDateString()}
                         </p>
                         <p className="text-gray-600">
-                          <span className="font-medium">Time:</span> {appointment.preferred_time}
+                          <span className="font-medium">Time:</span> {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - {new Date(appointment.appointment_datetime_end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                         </p>
                         <p className="text-gray-600">
-                          <span className="font-medium">Duration:</span> {appointment.duration || pkg?.duration_hours || 0} hours
+                          <span className="font-medium">Duration:</span> {appointment.duration_minutes || pkg?.duration_hours || 0} minutes
                         </p>
                         <p className="text-gray-600">
-                          <span className="font-medium">Created:</span> {new Date(appointment.created_at).toLocaleDateString()}
+                          <span className="font-medium">Created:</span> {new Date(appointment.appointment_datetime_start).toLocaleDateString()}
                         </p>
                       </div>
                     </div>

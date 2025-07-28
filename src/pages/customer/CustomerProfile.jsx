@@ -27,7 +27,8 @@ const CustomerProfile = () => {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: currentUser?.name || '',
+    first_name: currentUser?.first_name || '',
+    last_name: currentUser?.last_name || '',
     email: currentUser?.email || '',
     phone: currentUser?.phone || '',
     address: currentUser?.address || ''
@@ -48,7 +49,7 @@ const CustomerProfile = () => {
       
       // Filter appointments for current user
       const userAppointments = appointmentsResponse.data.filter(
-        apt => apt.customer_email === currentUser.email || apt.customer_id === currentUser.customer_id
+        apt => apt.customer_email === currentUser.email || apt.customer_id === currentUser.id
       );
       
       setAppointments(userAppointments);
@@ -84,7 +85,8 @@ const CustomerProfile = () => {
 
   const handleCancel = () => {
     setFormData({
-      name: currentUser?.name || '',
+      first_name: currentUser?.first_name || '',
+      last_name: currentUser?.last_name || '',
       email: currentUser?.email || '',
       phone: currentUser?.phone || '',
       address: currentUser?.address || ''
@@ -116,6 +118,22 @@ const CustomerProfile = () => {
     }
   };
 
+  // Get customer full name
+  const getCustomerName = () => {
+    if (currentUser?.first_name && currentUser?.last_name) {
+      return `${currentUser.first_name} ${currentUser.last_name}`;
+    }
+    return currentUser?.name || 'Unknown Customer';
+  };
+
+  // Get customer initial for avatar
+  const getCustomerInitial = () => {
+    if (currentUser?.first_name) {
+      return currentUser.first_name.charAt(0).toUpperCase();
+    }
+    return getCustomerName().charAt(0).toUpperCase();
+  };
+
   if (!currentUser) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -144,11 +162,11 @@ const CustomerProfile = () => {
             <div className="flex items-center">
               <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center">
                 <span className="text-2xl font-bold text-blue-600">
-                  {currentUser.name?.charAt(0).toUpperCase()}
+                  {getCustomerInitial()}
                 </span>
               </div>
               <div className="ml-4">
-                <h1 className="text-2xl font-bold text-gray-900">{currentUser.name}</h1>
+                <h1 className="text-2xl font-bold text-gray-900">{getCustomerName()}</h1>
                 <p className="text-gray-600">Customer Profile</p>
               </div>
             </div>
@@ -170,19 +188,37 @@ const CustomerProfile = () => {
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                   {editing ? (
                     <input
                       type="text"
-                      name="name"
-                      value={formData.name}
+                      name="first_name"
+                      value={formData.first_name}
                       onChange={handleInputChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   ) : (
                     <div className="flex items-center text-gray-900">
                       <User className="h-4 w-4 mr-2 text-gray-400" />
-                      {currentUser.name}
+                      {currentUser.first_name || 'Not provided'}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                  {editing ? (
+                    <input
+                      type="text"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  ) : (
+                    <div className="flex items-center text-gray-900">
+                      <User className="h-4 w-4 mr-2 text-gray-400" />
+                      {currentUser.last_name || 'Not provided'}
                     </div>
                   )}
                 </div>

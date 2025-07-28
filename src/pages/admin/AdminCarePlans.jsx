@@ -12,6 +12,7 @@ const AdminCarePlans = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingCarePlan, setEditingCarePlan] = useState(null);
+  const [viewingCarePlan, setViewingCarePlan] = useState(null);
   const [formData, setFormData] = useState({
     customer_id: '',
     caregiver_id: '',
@@ -110,6 +111,10 @@ const AdminCarePlans = () => {
         toast.error('Failed to delete care plan');
       }
     }
+  };
+
+  const handleViewDetails = (carePlan) => {
+    setViewingCarePlan(carePlan);
   };
 
   const getCustomerName = (customerId) => {
@@ -221,6 +226,16 @@ const AdminCarePlans = () => {
                   <p className="text-sm text-gray-600">{plan.overall_goal}</p>
                   <div className="space-y-1 text-sm">
                     <div className="flex items-center text-gray-600">
+                      <Users className="h-4 w-4 mr-2" />
+                      <span>Customer: {getCustomerName(plan.customer_id)}</span>
+                    </div>
+                    {plan.caregiver_id && (
+                      <div className="flex items-center text-gray-600">
+                        <Users className="h-4 w-4 mr-2" />
+                        <span>Caregiver: {getCaregiverName(plan.caregiver_id)}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center text-gray-600">
                       <Calendar className="h-4 w-4 mr-2" />
                       <span>Start Date: {new Date(plan.start_date).toLocaleDateString()}</span>
                     </div>
@@ -240,6 +255,12 @@ const AdminCarePlans = () => {
                     className="text-red-600 hover:text-red-900 p-1"
                   >
                     <Trash2 className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => handleViewDetails(plan)}
+                    className="text-purple-600 hover:text-purple-900 p-1"
+                  >
+                    <Users className="h-4 w-4" />
                   </button>
                 </div>
               </div>
@@ -351,6 +372,128 @@ const AdminCarePlans = () => {
           </div>
         )}
       </div>
+
+      {/* View Details Modal */}
+      {viewingCarePlan && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div className="mt-3">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Care Plan Details - #{viewingCarePlan.id}
+              </h3>
+              
+              <div className="space-y-6">
+                {/* Care Plan Info */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Care Plan Information</h4>
+                  <div className="bg-gray-50 p-4 rounded-md">
+                    <p className="text-sm text-gray-600 mb-2">
+                      <span className="font-medium">Overall Goal:</span> {viewingCarePlan.overall_goal}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-2">
+                      <span className="font-medium">Status:</span> {viewingCarePlan.status}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Start Date:</span> {new Date(viewingCarePlan.start_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Customer Info */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Customer Information</h4>
+                  <div className="bg-gray-50 p-4 rounded-md">
+                    {(() => {
+                      const customer = customers.find(c => c.id === viewingCarePlan.customer_id);
+                      return customer ? (
+                        <div className="space-y-1 text-sm">
+                          <p className="text-gray-600">
+                            <span className="font-medium">Name:</span> {customer.first_name} {customer.last_name}
+                          </p>
+                          <p className="text-gray-600">
+                            <span className="font-medium">Email:</span> {customer.email}
+                          </p>
+                          <p className="text-gray-600">
+                            <span className="font-medium">Phone:</span> {customer.phone_number}
+                          </p>
+                          <p className="text-gray-600">
+                            <span className="font-medium">Date of Birth:</span> {new Date(customer.date_of_birth).toLocaleDateString()}
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="text-gray-600">Customer information not available</p>
+                      );
+                    })()}
+                  </div>
+                </div>
+
+                {/* Caregiver Info */}
+                {viewingCarePlan.caregiver_id && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-2">Caregiver Information</h4>
+                    <div className="bg-gray-50 p-4 rounded-md">
+                      {(() => {
+                        const caregiver = caregivers.find(c => c.id === viewingCarePlan.caregiver_id);
+                        return caregiver ? (
+                          <div className="space-y-1 text-sm">
+                            <p className="text-gray-600">
+                              <span className="font-medium">Name:</span> {caregiver.first_name} {caregiver.last_name}
+                            </p>
+                            <p className="text-gray-600">
+                              <span className="font-medium">Email:</span> {caregiver.email}
+                            </p>
+                            <p className="text-gray-600">
+                              <span className="font-medium">Phone:</span> {caregiver.phone_number}
+                            </p>
+                            <p className="text-gray-600">
+                              <span className="font-medium">Experience:</span> {caregiver.years_of_experience} years
+                            </p>
+                            <p className="text-gray-600">
+                              <span className="font-medium">Specializations:</span> {caregiver.specializations?.join(', ') || 'None specified'}
+                            </p>
+                            <p className="text-gray-600">
+                              <span className="font-medium">Background Check:</span> {caregiver.backgroundCheckStatus}
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-gray-600">Caregiver information not available</p>
+                        );
+                      })()}
+                    </div>
+                  </div>
+                )}
+
+                {/* Schedule Info */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Schedule Information</h4>
+                  <div className="bg-gray-50 p-4 rounded-md">
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Care Plan Started:</span> {new Date(viewingCarePlan.start_date).toLocaleDateString()}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Current Status:</span> {viewingCarePlan.status}
+                    </p>
+                    {viewingCarePlan.caregiver_id && (
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium">Assigned Caregiver:</span> {getCaregiverName(viewingCarePlan.caregiver_id)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-4">
+                <button
+                  onClick={() => setViewingCarePlan(null)}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

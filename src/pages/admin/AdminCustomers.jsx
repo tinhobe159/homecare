@@ -24,10 +24,13 @@ const AdminCustomers = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
-    phone: '',
-    address: '',
+    phone_number: '',
+    date_of_birth: '',
+    emergency_contact_name: '',
+    emergency_contact_phone: '',
     status: 'active'
   });
 
@@ -69,7 +72,16 @@ const AdminCustomers = () => {
       
       setShowModal(false);
       setEditingCustomer(null);
-      setFormData({ name: '', email: '', phone: '', address: '', status: 'active' });
+      setFormData({ 
+        first_name: '', 
+        last_name: '', 
+        email: '', 
+        phone_number: '', 
+        date_of_birth: '',
+        emergency_contact_name: '',
+        emergency_contact_phone: '',
+        status: 'active' 
+      });
       fetchCustomers();
     } catch (error) {
       console.error('Error saving customer:', error);
@@ -80,11 +92,14 @@ const AdminCustomers = () => {
   const handleEdit = (customer) => {
     setEditingCustomer(customer);
     setFormData({
-      name: customer.name,
-      email: customer.email,
-      phone: customer.phone,
-      address: customer.address,
-      status: customer.status
+      first_name: customer.first_name || '',
+      last_name: customer.last_name || '',
+      email: customer.email || '',
+      phone_number: customer.phone_number || '',
+      date_of_birth: customer.date_of_birth || '',
+      emergency_contact_name: customer.emergency_contact_name || '',
+      emergency_contact_phone: customer.emergency_contact_phone || '',
+      status: customer.status || 'active'
     });
     setShowModal(true);
   };
@@ -102,10 +117,27 @@ const AdminCustomers = () => {
     }
   };
 
+  // Get customer full name
+  const getCustomerName = (customer) => {
+    if (customer.first_name && customer.last_name) {
+      return `${customer.first_name} ${customer.last_name}`;
+    }
+    return customer.first_name || customer.last_name || 'Unknown Customer';
+  };
+
+  // Get customer initial for avatar
+  const getCustomerInitial = (customer) => {
+    if (customer.first_name) {
+      return customer.first_name.charAt(0).toUpperCase();
+    }
+    return getCustomerName(customer).charAt(0).toUpperCase();
+  };
+
   const filteredCustomers = customers.filter(customer => {
-    const matchesSearch = (customer.name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+    const fullName = getCustomerName(customer).toLowerCase();
+    const matchesSearch = fullName.includes((searchTerm || '').toLowerCase()) ||
                          (customer.email || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         (customer.phone || '').includes(searchTerm || '');
+                         (customer.phone_number || '').includes(searchTerm || '');
     const matchesFilter = filterStatus === 'all' || customer.status === filterStatus;
     return matchesSearch && matchesFilter;
   });
@@ -134,7 +166,16 @@ const AdminCustomers = () => {
             <button
               onClick={() => {
                 setEditingCustomer(null);
-                setFormData({ name: '', email: '', phone: '', address: '', status: 'active' });
+                setFormData({ 
+                  first_name: '', 
+                  last_name: '', 
+                  email: '', 
+                  phone_number: '', 
+                  date_of_birth: '',
+                  emergency_contact_name: '',
+                  emergency_contact_phone: '',
+                  status: 'active' 
+                });
                 setShowModal(true);
               }}
               className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
@@ -191,10 +232,10 @@ const AdminCustomers = () => {
                     Contact
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    Emergency Contact
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Created
+                    Status
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
@@ -209,13 +250,18 @@ const AdminCustomers = () => {
                         <div className="flex-shrink-0 h-10 w-10">
                           <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
                             <span className="text-sm font-medium text-blue-600">
-                              {(customer.name || '').charAt(0).toUpperCase()}
+                              {getCustomerInitial(customer)}
                             </span>
                           </div>
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{customer.name}</div>
+                          <div className="text-sm font-medium text-gray-900">{getCustomerName(customer)}</div>
                           <div className="text-sm text-gray-500">ID: {customer.id}</div>
+                          {customer.date_of_birth && (
+                            <div className="text-xs text-gray-400">
+                              DOB: {new Date(customer.date_of_birth).toLocaleDateString()}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </td>
@@ -223,7 +269,14 @@ const AdminCustomers = () => {
                       <div className="text-sm text-gray-900">{customer.email}</div>
                       <div className="text-sm text-gray-500 flex items-center">
                         <Phone className="h-3 w-3 mr-1" />
-                        {customer.phone}
+                        {customer.phone_number}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{customer.emergency_contact_name}</div>
+                      <div className="text-sm text-gray-500 flex items-center">
+                        <Phone className="h-3 w-3 mr-1" />
+                        {customer.emergency_contact_phone}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -232,11 +285,8 @@ const AdminCustomers = () => {
                         customer.status === 'inactive' ? 'bg-red-100 text-red-800' :
                         'bg-yellow-100 text-yellow-800'
                       }`}>
-                        {customer.status}
+                        {customer.status || 'active'}
                       </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(customer.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex justify-end space-x-2">
@@ -270,16 +320,29 @@ const AdminCustomers = () => {
                   {editingCustomer ? 'Edit Customer' : 'Add New Customer'}
                 </h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">First Name</label>
+                      <input
+                        type="text"
+                        name="first_name"
+                        value={formData.first_name}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                      <input
+                        type="text"
+                        name="last_name"
+                        value={formData.last_name}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Email</label>
@@ -293,23 +356,43 @@ const AdminCustomers = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Phone</label>
+                    <label className="block text-sm font-medium text-gray-700">Phone Number</label>
                     <input
                       type="tel"
-                      name="phone"
-                      value={formData.phone}
+                      name="phone_number"
+                      value={formData.phone_number}
                       onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Address</label>
-                    <textarea
-                      name="address"
-                      value={formData.address}
+                    <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+                    <input
+                      type="date"
+                      name="date_of_birth"
+                      value={formData.date_of_birth}
                       onChange={handleInputChange}
-                      rows="3"
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Emergency Contact Name</label>
+                    <input
+                      type="text"
+                      name="emergency_contact_name"
+                      value={formData.emergency_contact_name}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Emergency Contact Phone</label>
+                    <input
+                      type="tel"
+                      name="emergency_contact_phone"
+                      value={formData.emergency_contact_phone}
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
