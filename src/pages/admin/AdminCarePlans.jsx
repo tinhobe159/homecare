@@ -225,10 +225,6 @@ const AdminCarePlans = () => {
                 <div className="space-y-2 mb-4">
                   <p className="text-sm text-gray-600">{plan.overall_goal}</p>
                   <div className="space-y-1 text-sm">
-                    <div className="flex items-center text-gray-600">
-                      <Users className="h-4 w-4 mr-2" />
-                      <span>Customer: {getCustomerName(plan.customer_id)}</span>
-                    </div>
                     {plan.caregiver_id && (
                       <div className="flex items-center text-gray-600">
                         <Users className="h-4 w-4 mr-2" />
