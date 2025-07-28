@@ -54,6 +54,9 @@ const CaregiverAvailability = () => {
   }
 
   const formatTime = (timeString) => {
+    if (!timeString || typeof timeString !== 'string') {
+      return 'N/A';
+    }
     const [hours, minutes] = timeString.split(':');
     const hour = parseInt(hours);
     const ampm = hour >= 12 ? 'PM' : 'AM';
@@ -62,6 +65,9 @@ const CaregiverAvailability = () => {
   };
 
   const calculateDuration = (startTime, endTime) => {
+    if (!startTime || !endTime) {
+      return 0;
+    }
     const start = new Date(`2000-01-01T${startTime}`);
     const end = new Date(`2000-01-01T${endTime}`);
     let duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
@@ -147,7 +153,7 @@ const CaregiverAvailability = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {availability.map((slot) => {
-                    const duration = calculateDuration(slot.startTime, slot.endTime);
+                    const duration = calculateDuration(slot.start_time, slot.end_time);
                     
                     return (
                       <tr key={slot.id} className="hover:bg-gray-50">
@@ -163,7 +169,7 @@ const CaregiverAvailability = () => {
                           <div className="flex items-center">
                             <Clock className="h-4 w-4 text-gray-400 mr-2" />
                             <span className="text-sm text-gray-900">
-                              {formatTime(slot.startTime)}
+                              {formatTime(slot.start_time)}
                             </span>
                           </div>
                         </td>
@@ -171,7 +177,7 @@ const CaregiverAvailability = () => {
                           <div className="flex items-center">
                             <Clock className="h-4 w-4 text-gray-400 mr-2" />
                             <span className="text-sm text-gray-900">
-                              {formatTime(slot.endTime)}
+                              {formatTime(slot.end_time)}
                             </span>
                           </div>
                         </td>
@@ -180,11 +186,11 @@ const CaregiverAvailability = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            slot.isAvailable 
+                            slot.is_available 
                               ? 'bg-green-100 text-green-800' 
                               : 'bg-red-100 text-red-800'
                           }`}>
-                            {slot.isAvailable ? 'Available' : 'Unavailable'}
+                            {slot.is_available ? 'Available' : 'Unavailable'}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
