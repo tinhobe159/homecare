@@ -99,21 +99,23 @@ const CustomerProfile = () => {
   };
 
   const getStatusColor = (status) => {
-    switch (status) {
+    switch (status?.toLowerCase()) {
       case 'confirmed': return 'bg-green-100 text-green-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
       case 'cancelled': return 'bg-red-100 text-red-800';
       case 'completed': return 'bg-blue-100 text-blue-800';
+      case 'rescheduled': return 'bg-purple-100 text-purple-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusIcon = (status) => {
-    switch (status) {
+    switch (status?.toLowerCase()) {
       case 'confirmed': return <CheckCircle className="h-4 w-4" />;
       case 'pending': return <Clock className="h-4 w-4" />;
       case 'cancelled': return <XCircle className="h-4 w-4" />;
       case 'completed': return <CheckCircle className="h-4 w-4" />;
+      case 'rescheduled': return <Clock className="h-4 w-4" />;
       default: return <AlertCircle className="h-4 w-4" />;
     }
   };
@@ -332,7 +334,7 @@ const CustomerProfile = () => {
                                 {pkg?.name || 'Unknown Package'}
                               </h3>
                               <p className="text-sm text-gray-500">
-                                {new Date(appointment.preferred_date).toLocaleDateString()} at {appointment.preferred_time}
+                                {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                               </p>
                             </div>
                           </div>
