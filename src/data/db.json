@@ -1,19 +1,19 @@
 {
   "users": [
     {
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "user_id": 1,
       "email": "admin@homecare.com",
       "user_type": "Admin",
       "is_active": true
     },
     {
-      "user_id": "550e8400-e29b-41d4-a716-446655440001",
+      "user_id": 2,
       "email": "customer1@homecare.com",
       "user_type": "Customer",
       "is_active": true
     },
     {
-      "user_id": "550e8400-e29b-41d4-a716-446655440002",
+      "user_id": 3,
       "email": "caregiver1@homecare.com",
       "user_type": "Caregiver",
       "is_active": true
@@ -21,7 +21,7 @@
   ],
   "customers": [
     {
-      "customer_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
+      "customer_id": 1,
       "first_name": "John",
       "last_name": "Doe",
       "email": "john.doe@example.com",
@@ -37,7 +37,7 @@
       }
     },
     {
-      "customer_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
+      "customer_id": 2,
       "first_name": "Mary",
       "last_name": "Smith",
       "email": "mary.smith@example.com",
@@ -53,7 +53,7 @@
       }
     },
     {
-      "customer_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
+      "customer_id": 3,
       "first_name": "Robert",
       "last_name": "Johnson",
       "email": "robert.johnson@example.com",
@@ -69,7 +69,7 @@
       }
     },
     {
-      "customer_id": "9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a",
+      "customer_id": 4,
       "first_name": "Susan",
       "last_name": "Brown",
       "email": "susan.brown@example.com",
@@ -85,7 +85,7 @@
       }
     },
     {
-      "customer_id": "0e1f2a3b-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
+      "customer_id": 5,
       "first_name": "James",
       "last_name": "Wilson",
       "email": "james.wilson@example.com",
@@ -103,7 +103,7 @@
   ],
   "caregivers": [
     {
-      "id": "1",
+      "id": 1,
       "firstName": "Sarah",
       "lastName": "Johnson",
       "profilePicture": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
@@ -116,7 +116,7 @@
       "totalReviews": 127
     },
     {
-      "id": "2",
+      "id": 2,
       "firstName": "Michael",
       "lastName": "Chen",
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
@@ -129,7 +129,7 @@
       "totalReviews": 89
     },
     {
-      "id": "3",
+      "id": 3,
       "firstName": "Emily",
       "lastName": "Rodriguez",
       "profilePicture": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
@@ -142,7 +142,7 @@
       "totalReviews": 203
     },
     {
-      "id": "4",
+      "id": 4,
       "firstName": "David",
       "lastName": "Thompson",
       "profilePicture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
@@ -155,7 +155,7 @@
       "totalReviews": 156
     },
     {
-      "id": "5",
+      "id": 5,
       "firstName": "Lisa",
       "lastName": "Williams",
       "profilePicture": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
@@ -168,7 +168,7 @@
       "totalReviews": 94
     },
     {
-      "id": "6",
+      "id": 6,
       "firstName": "James",
       "lastName": "Brown",
       "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
@@ -183,7 +183,7 @@
   ],
   "administrators": [
     {
-      "admin_id": "5d6e7f8a-9b0c-1d2e-3f4a-5b6c7d8e9f0a",
+      "admin_id": 1,
       "first_name": "Emma",
       "last_name": "White",
       "email": "admin@homecare.com"
@@ -191,79 +191,69 @@
   ],
   "packages": [
     {
-      "package_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
+      "package_id": 1,
       "code": "PC001",
       "name": "Basic Personal Care",
       "total_cost": 38.0,
       "description": "Daily personal care services including bathing and dressing assistance for independent living support.",
       "duration_hours": 2,
       "is_active": true,
-      "serviceIds": [
-        "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e",
-        "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f"
-      ]
+      "serviceIds": [1, 2]
     },
     {
-      "package_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
+      "package_id": 2,
       "code": "PC002",
       "name": "Mobility Support",
       "total_cost": 45.0,
       "description": "Comprehensive assistance with mobility and daily activities, including meal preparation and safe transfers.",
       "duration_hours": 2.5,
       "is_active": true,
-      "serviceIds": [
-        "1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a",
-        "2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b"
-      ]
+      "serviceIds": [3, 4]
     },
     {
-      "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
+      "package_id": 3,
       "code": "PC003",
       "name": "Comprehensive Care",
       "total_cost": 60.0,
       "description": "Full range of personal and medical support services for individuals requiring extensive daily assistance.",
       "duration_hours": 3,
       "is_active": true,
-      "serviceIds": [
-        "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e",
-        "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f",
-        "3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c"
-      ]
+      "serviceIds": [1, 2, 5]
     }
   ],
   "packageServices": [
     {
-      "package_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
-      "service_id": "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e"
+      "package_id": 1,
+      "service_id": 1
     },
     {
-      "package_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
-      "service_id": "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f"
+      "package_id": 1,
+      "service_id": 2
     },
     {
-      "package_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
-      "service_id": "1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a"
+      "package_id": 2,
+      "service_id": 3
     },
     {
-      "package_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
-      "service_id": "2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b"
+      "package_id": 2,
+      "service_id": 4
     },
     {
-      "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
-      "service_id": "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e"
+      "package_id": 3,
+      "service_id": 1
     },
     {
-      "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
-      "service_id": "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f"
+      "package_id": 3,
+      "service_id": 2
     },
     {
-      "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
-      "service_id": "3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c"
+      "package_id": 3,
+      "service_id": 5
     }
   ],
   "services": [
     {
-      "service_id": "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e",
+      "service_id": 1,
       "code": "SVC001",
       "name": "Bathing Assistance",
       "hourly_rate": 20.0,
@@ -272,7 +262,7 @@
       "is_active": true
     },
     {
-      "service_id": "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f",
+      "service_id": 2,
       "code": "SVC002",
       "name": "Dressing Assistance",
       "hourly_rate": 18.0,
@@ -281,7 +271,7 @@
       "is_active": true
     },
     {
-      "service_id": "1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a",
+      "service_id": 3,
       "code": "SVC003",
       "name": "Mobility Assistance",
       "hourly_rate": 25.0,
@@ -290,7 +280,7 @@
       "is_active": true
     },
     {
-      "service_id": "2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b",
+      "service_id": 4,
       "code": "SVC004",
       "name": "Meal Preparation",
       "hourly_rate": 20.0,
@@ -299,7 +289,7 @@
       "is_active": true
     },
     {
-      "service_id": "3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c",
+      "service_id": 5,
       "code": "SVC005",
       "name": "Medication Reminders",
       "hourly_rate": 15.0,
@@ -308,7 +298,7 @@
       "is_active": true
     },
     {
-      "service_id": "4a5b6c7d-8e9f-0a1b-2c3d-4e5f6a7b8c9d",
+      "service_id": 6,
       "code": "SVC006",
       "name": "Light Housekeeping",
       "hourly_rate": 22.0,
@@ -319,10 +309,10 @@
   ],
   "appointments": [
     {
-      "appointment_id": "5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e",
-      "customer_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
-      "package_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
+      "appointment_id": 1,
+      "customer_id": 1,
+      "caregiver_id": 1,
+      "package_id": 1,
       "appointment_datetime_start": "2025-08-01T09:00:00Z",
       "appointment_datetime_end": "2025-08-01T10:45:00Z",
       "duration_minutes": 105,
@@ -331,10 +321,10 @@
       "total_cost": 38.0
     },
     {
-      "appointment_id": "6c7d8e9f-0a1b-2c3d-4e5f-6a7b8c9d0e1f",
-      "customer_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
-      "caregiver_id": "2a3b4c5d-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
-      "package_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
+      "appointment_id": 2,
+      "customer_id": 2,
+      "caregiver_id": 2,
+      "package_id": 2,
       "appointment_datetime_start": "2025-08-02T10:00:00Z",
       "appointment_datetime_end": "2025-08-02T12:00:00Z",
       "duration_minutes": 120,
@@ -343,10 +333,10 @@
       "total_cost": 45.0
     },
     {
-      "appointment_id": "7d8e9f0a-1b2c-3d4e-5f6a-7b8c9d0e1f2a",
-      "customer_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
-      "caregiver_id": "3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e",
-      "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
+      "appointment_id": 3,
+      "customer_id": 3,
+      "caregiver_id": 3,
+      "package_id": 3,
       "appointment_datetime_start": "2025-08-03T08:00:00Z",
       "appointment_datetime_end": "2025-08-03T10:30:00Z",
       "duration_minutes": 150,
@@ -355,10 +345,10 @@
       "total_cost": 60.0
     },
     {
-      "appointment_id": "8e9f0a1b-2c3d-4e5f-6a7b-8c9d0e1f2a3b",
-      "customer_id": "9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a",
-      "caregiver_id": "4c5d6e7f-8a9b-0c1d-2e3f-4a5b6c7d8e9f",
-      "package_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
+      "appointment_id": 4,
+      "customer_id": 4,
+      "caregiver_id": 4,
+      "package_id": 1,
       "appointment_datetime_start": "2025-08-04T11:00:00Z",
       "appointment_datetime_end": "2025-08-04T12:45:00Z",
       "duration_minutes": 105,
@@ -367,10 +357,10 @@
       "total_cost": 38.0
     },
     {
-      "appointment_id": "9f0a1b2c-3d4e-5f6a-7b8c-9d0e1f2a3b4c",
-      "customer_id": "0e1f2a3b-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
-      "package_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
+      "appointment_id": 5,
+      "customer_id": 5,
+      "caregiver_id": 1,
+      "package_id": 2,
       "appointment_datetime_start": "2025-08-05T09:00:00Z",
       "appointment_datetime_end": "2025-08-05T11:00:00Z",
       "duration_minutes": 120,
@@ -379,10 +369,10 @@
       "total_cost": 45.0
     },
     {
-      "appointment_id": "0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
-      "customer_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
-      "caregiver_id": "2a3b4c5d-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
-      "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
+      "appointment_id": 6,
+      "customer_id": 1,
+      "caregiver_id": 2,
+      "package_id": 3,
       "appointment_datetime_start": "2025-08-06T10:00:00Z",
       "appointment_datetime_end": "2025-08-06T12:30:00Z",
       "duration_minutes": 150,
@@ -391,10 +381,10 @@
       "total_cost": 60.0
     },
     {
-      "appointment_id": "1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e",
-      "customer_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
-      "caregiver_id": "3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e",
-      "package_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
+      "appointment_id": 7,
+      "customer_id": 2,
+      "caregiver_id": 3,
+      "package_id": 1,
       "appointment_datetime_start": "2025-08-07T08:00:00Z",
       "appointment_datetime_end": "2025-08-07T09:45:00Z",
       "duration_minutes": 105,
@@ -403,10 +393,10 @@
       "total_cost": 38.0
     },
     {
-      "appointment_id": "2c3d4e5f-6a7b-8c9d-0e1f-2a3b4c5d6e7f",
-      "customer_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
-      "caregiver_id": "4c5d6e7f-8a9b-0c1d-2e3f-4a5b6c7d8e9f",
-      "package_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
+      "appointment_id": 8,
+      "customer_id": 3,
+      "caregiver_id": 4,
+      "package_id": 2,
       "appointment_datetime_start": "2025-08-08T11:00:00Z",
       "appointment_datetime_end": "2025-08-08T13:00:00Z",
       "duration_minutes": 120,
@@ -415,10 +405,10 @@
       "total_cost": 45.0
     },
     {
-      "appointment_id": "3d4e5f6a-7b8c-9d0e-1f2a-3b4c5d6e7f8a",
-      "customer_id": "9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a",
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
-      "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
+      "appointment_id": 9,
+      "customer_id": 4,
+      "caregiver_id": 1,
+      "package_id": 3,
       "appointment_datetime_start": "2025-08-09T09:00:00Z",
       "appointment_datetime_end": "2025-08-09T11:30:00Z",
       "duration_minutes": 150,
@@ -427,10 +417,10 @@
       "total_cost": 60.0
     },
     {
-      "appointment_id": "4e5f6a7b-8c9d-0e1f-2a3b-4c5d6e7f8a9b",
-      "customer_id": "0e1f2a3b-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
-      "caregiver_id": "2a3b4c5d-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
-      "package_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
+      "appointment_id": 10,
+      "customer_id": 5,
+      "caregiver_id": 2,
+      "package_id": 1,
       "appointment_datetime_start": "2025-08-10T10:00:00Z",
       "appointment_datetime_end": "2025-08-10T11:45:00Z",
       "duration_minutes": 105,
@@ -441,10 +431,10 @@
   ],
   "recurringSchedules": [
     {
-      "schedule_id": "5f6a7b8c-9d0e-1f2a-3b4c-5d6e7f8a9b0c",
-      "customer_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
-      "package_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
+      "schedule_id": 1,
+      "customer_id": 1,
+      "package_id": 1,
+      "caregiver_id": 1,
       "start_date": "2025-08-01",
       "end_date": "2025-12-31",
       "recurrence_pattern": "weekly",
@@ -453,10 +443,10 @@
       "is_active": true
     },
     {
-      "schedule_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
-      "customer_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
-      "package_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
-      "caregiver_id": "2a3b4c5d-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
+      "schedule_id": 2,
+      "customer_id": 2,
+      "package_id": 2,
+      "caregiver_id": 2,
       "start_date": "2025-08-02",
       "end_date": null,
       "recurrence_pattern": "daily",
@@ -465,10 +455,10 @@
       "is_active": true
     },
     {
-      "schedule_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
-      "customer_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
-      "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
-      "caregiver_id": "3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e",
+      "schedule_id": 3,
+      "customer_id": 3,
+      "package_id": 3,
+      "caregiver_id": 3,
       "start_date": "2025-08-03",
       "end_date": "2025-10-31",
       "recurrence_pattern": "weekly",
@@ -479,40 +469,40 @@
   ],
   "caregiverAvailability": [
     {
-      "availability_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
+      "availability_id": 1,
+      "caregiver_id": 1,
       "date": "2025-08-01",
       "start_time": "08:00:00",
       "end_time": "12:00:00",
       "is_available": true
     },
     {
-      "availability_id": "9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a",
-      "caregiver_id": "2a3b4c5d-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
+      "availability_id": 2,
+      "caregiver_id": 2,
       "date": "2025-08-02",
       "start_time": "09:00:00",
       "end_time": "13:00:00",
       "is_available": true
     },
     {
-      "availability_id": "0e1f2a3b-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
-      "caregiver_id": "3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e",
+      "availability_id": 3,
+      "caregiver_id": 3,
       "date": "2025-08-03",
       "start_time": "07:00:00",
       "end_time": "11:00:00",
       "is_available": true
     },
     {
-      "availability_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
-      "caregiver_id": "4c5d6e7f-8a9b-0c1d-2e3f-4a5b6c7d8e9f",
+      "availability_id": 4,
+      "caregiver_id": 4,
       "date": "2025-08-04",
       "start_time": "10:00:00",
       "end_time": "14:00:00",
       "is_available": true
     },
     {
-      "availability_id": "2a3b4c5d-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
+      "availability_id": 5,
+      "caregiver_id": 1,
       "date": "2025-08-05",
       "start_time": "08:00:00",
       "end_time": "12:00:00",
@@ -568,48 +558,48 @@
   ],
   "caregiverSkills": [
     {
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
-      "skill_id": "550e8400-e29b-41d4-a716-446655440100"
+      "caregiver_id": 1,
+      "skill_id": 1
     },
     {
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
-      "skill_id": "550e8400-e29b-41d4-a716-446655440101"
+      "caregiver_id": 1,
+      "skill_id": 2
     },
     {
-      "caregiver_id": "2a3b4c5d-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
-      "skill_id": "550e8400-e29b-41d4-a716-446655440100"
+      "caregiver_id": 2,
+      "skill_id": 1
     },
     {
-      "caregiver_id": "3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e",
-      "skill_id": "550e8400-e29b-41d4-a716-446655440102"
+      "caregiver_id": 3,
+      "skill_id": 3
     },
     {
-      "caregiver_id": "4c5d6e7f-8a9b-0c1d-2e3f-4a5b6c7d8e9f",
-      "skill_id": "550e8400-e29b-41d4-a716-446655440101"
+      "caregiver_id": 4,
+      "skill_id": 2
     },
     {
-      "caregiver_id": "4c5d6e7f-8a9b-0c1d-2e3f-4a5b6c7d8e9f",
-      "skill_id": "550e8400-e29b-41d4-a716-446655440103"
+      "caregiver_id": 4,
+      "skill_id": 4
     }
   ],
   "carePlans": [
     {
-      "care_plan_id": "3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e",
-      "customer_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
+      "care_plan_id": 1,
+      "customer_id": 1,
       "overall_goal": "Maintain stable blood pressure and improve mobility",
       "start_date": "2025-07-01",
       "status": "Active"
     },
     {
-      "care_plan_id": "4c5d6e7f-8a9b-0c1d-2e3f-4a5b6c7d8e9f",
-      "customer_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
+      "care_plan_id": 2,
+      "customer_id": 2,
       "overall_goal": "Manage diabetes through diet and medication compliance",
       "start_date": "2025-06-15",
       "status": "Active"
     },
     {
-      "care_plan_id": "5d6e7f8a-9b0c-1d2e-3f4a-5b6c7d8e9f0a",
-      "customer_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
+      "care_plan_id": 3,
+      "customer_id": 3,
       "overall_goal": "Improve joint mobility and pain management",
       "start_date": "2025-08-01",
       "status": "Planned"
@@ -617,45 +607,45 @@
   ],
   "payments": [
     {
-      "payment_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
-      "appointment_id": "5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e",
-      "customer_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
+      "payment_id": 1,
+      "appointment_id": 1,
+      "customer_id": 1,
       "amount": 38.0,
       "payment_date": "2025-07-31T00:00:00Z",
       "payment_method": "Credit Card",
       "status": "Completed"
     },
     {
-      "payment_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
-      "appointment_id": "6c7d8e9f-0a1b-2c3d-4e5f-6a7b8c9d0e1f",
-      "customer_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
+      "payment_id": 2,
+      "appointment_id": 2,
+      "customer_id": 2,
       "amount": 45.0,
       "payment_date": null,
       "payment_method": "Pending",
       "status": "Pending"
     },
     {
-      "payment_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
-      "appointment_id": "7d8e9f0a-1b2c-3d4e-5f6a-7b8c9d0e1f2a",
-      "customer_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
+      "payment_id": 3,
+      "appointment_id": 3,
+      "customer_id": 3,
       "amount": 60.0,
       "payment_date": "2025-08-02T00:00:00Z",
       "payment_method": "Credit Card",
       "status": "Completed"
     },
     {
-      "payment_id": "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e",
-      "appointment_id": "8e9f0a1b-2c3d-4e5f-6a7b-8c9d0e1f2a3b",
-      "customer_id": "9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a",
+      "payment_id": 4,
+      "appointment_id": 4,
+      "customer_id": 4,
       "amount": 38.0,
       "payment_date": "2025-08-03T00:00:00Z",
       "payment_method": "Credit Card",
       "status": "Completed"
     },
     {
-      "payment_id": "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f",
-      "appointment_id": "9f0a1b2c-3d4e-5f6a-7b8c-9d0e1f2a3b4c",
-      "customer_id": "0e1f2a3b-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
+      "payment_id": 5,
+      "appointment_id": 5,
+      "customer_id": 5,
       "amount": 45.0,
       "payment_date": null,
       "payment_method": "Pending",
@@ -664,7 +654,7 @@
   ],
   "addresses": [
     {
-      "address_id": "1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a",
+      "address_id": 1,
       "street_address": "123 Main St",
       "city": "Springfield",
       "state_province": "IL",
@@ -672,7 +662,7 @@
       "country": "USA"
     },
     {
-      "address_id": "2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b",
+      "address_id": 2,
       "street_address": "456 Elm St",
       "city": "Springfield",
       "state_province": "IL",
@@ -680,7 +670,7 @@
       "country": "USA"
     },
     {
-      "address_id": "3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c",
+      "address_id": 3,
       "street_address": "789 Oak St",
       "city": "Springfield",
       "state_province": "IL",
@@ -690,9 +680,9 @@
   ],
   "evvRecords": [
     {
-      "evv_id": "4a5b6c7d-8e9f-0a1b-2c3d-4e5f6a7b8c9d",
-      "appointment_id": "5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e",
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
+      "evv_id": 1,
+      "appointment_id": 1,
+      "caregiver_id": 1,
       "check_in_time": "2025-08-01T09:00:00Z",
       "check_out_time": "2025-08-01T10:45:00Z",
       "status": "Completed",
@@ -700,9 +690,9 @@
       "patient_signature_url": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200&h=100&fit=crop"
     },
     {
-      "evv_id": "5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e",
-      "appointment_id": "6c7d8e9f-0a1b-2c3d-4e5f-6a7b8c9d0e1f",
-      "caregiver_id": "2a3b4c5d-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
+      "evv_id": 2,
+      "appointment_id": 2,
+      "caregiver_id": 2,
       "check_in_time": null,
       "check_out_time": null,
       "status": "Pending",
@@ -710,9 +700,9 @@
       "patient_signature_url": null
     },
     {
-      "evv_id": "6c7d8e9f-0a1b-2c3d-4e5f-6a7b8c9d0e1f",
-      "appointment_id": "7d8e9f0a-1b2c-3d4e-5f6a-7b8c9d0e1f2a",
-      "caregiver_id": "3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e",
+      "evv_id": 3,
+      "appointment_id": 3,
+      "caregiver_id": 3,
       "check_in_time": "2025-08-03T08:00:00Z",
       "check_out_time": "2025-08-03T10:30:00Z",
       "status": "Completed",
@@ -720,9 +710,9 @@
       "patient_signature_url": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=100&fit=crop"
     },
     {
-      "evv_id": "7d8e9f0a-1b2c-3d4e-5f6a-7b8c9d0e1f2a",
-      "appointment_id": "8e9f0a1b-2c3d-4e5f-6a7b-8c9d0e1f2a3b",
-      "caregiver_id": "4c5d6e7f-8a9b-0c1d-2e3f-4a5b6c7d8e9f",
+      "evv_id": 4,
+      "appointment_id": 4,
+      "caregiver_id": 4,
       "check_in_time": "2025-08-04T11:00:00Z",
       "check_out_time": "2025-08-04T12:45:00Z",
       "status": "Completed",
@@ -730,9 +720,9 @@
       "patient_signature_url": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=100&fit=crop"
     },
     {
-      "evv_id": "8e9f0a1b-2c3d-4e5f-6a7b-8c9d0e1f2a3b",
-      "appointment_id": "9f0a1b2c-3d4e-5f6a-7b8c-9d0e1f2a3b4c",
-      "caregiver_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
+      "evv_id": 5,
+      "appointment_id": 5,
+      "caregiver_id": 1,
       "check_in_time": null,
       "check_out_time": null,
       "status": "Cancelled",
@@ -742,92 +732,92 @@
   ],
   "auditLogs": [
     {
-      "log_id": "9f0a1b2c-3d4e-5f6a-7b8c-9d0e1f2a3b4c",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 1,
+      "user_id": 1,
       "action": "create",
       "entity": "package",
-      "entity_id": "6e7f8a9b-0c1d-2e3f-4a5b-6c7d8e9f0a1b",
+      "entity_id": 1,
       "timestamp": "2025-07-25T12:00:00Z",
       "details": "{\"name\": \"Basic Personal Care\", \"code\": \"PC001\"}"
     },
     {
-      "log_id": "0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 2,
+      "user_id": 1,
       "action": "create",
       "entity": "service",
-      "entity_id": "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e",
+      "entity_id": 1,
       "timestamp": "2025-07-25T12:15:00Z",
       "details": "{\"name\": \"Bathing Assistance\", \"code\": \"SVC001\"}"
     },
     {
-      "log_id": "1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e",
-      "user_id": "550e8400-e29b-41d4-a716-446655440001",
+      "log_id": 3,
+      "user_id": 2,
       "action": "create",
       "entity": "appointment",
-      "entity_id": "5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e",
+      "entity_id": 1,
       "timestamp": "2025-07-25T12:30:00Z",
       "details": "{\"package_id\": \"Basic Personal Care\", \"date\": \"2025-08-01\"}"
     },
     {
-      "log_id": "2c3d4e5f-6a7b-8c9d-0e1f-2a3b4c5d6e7f",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 4,
+      "user_id": 1,
       "action": "update",
       "entity": "appointment",
-      "entity_id": "9f0a1b2c-3d4e-5f6a-7b8c-9d0e1f2a3b4c",
+      "entity_id": 5,
       "timestamp": "2025-07-25T13:00:00Z",
       "details": "{\"status\": \"cancelled\", \"reason\": \"Customer hospital visit\"}"
     },
     {
-      "log_id": "3d4e5f6a-7b8c-9d0e-1f2a-3b4c5d6e7f8a",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 5,
+      "user_id": 1,
       "action": "create",
       "entity": "caregiver",
-      "entity_id": "1f2a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c",
+      "entity_id": 1,
       "timestamp": "2025-07-25T13:00:00Z",
       "details": "{\"name\": \"Alice Taylor\"}"
     },
     {
-      "log_id": "4e5f6a7b-8c9d-0e1f-2a3b-4c5d6e7f8a9b",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 6,
+      "user_id": 1,
       "action": "update",
       "entity": "customer",
-      "entity_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
+      "entity_id": 1,
       "timestamp": "2025-07-25T13:30:00Z",
       "details": "{\"phone_number\": \"555-0101\"}"
     },
     {
-      "log_id": "5f6a7b8c-9d0e-1f2a-3b4c-5d6e7f8a9b0c",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 7,
+      "user_id": 1,
       "action": "create",
       "entity": "recurringSchedule",
-      "entity_id": "5f6a7b8c-9d0e-1f2a-3b4c-5d6e7f8a9b0c",
+      "entity_id": 1,
       "timestamp": "2025-07-25T14:00:00Z",
       "details": "{\"package_id\": \"Basic Personal Care\", \"start_date\": \"2025-08-01\"}"
     },
     {
-      "log_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 8,
+      "user_id": 1,
       "action": "create",
       "entity": "carePlan",
-      "entity_id": "3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e",
+      "entity_id": 1,
       "timestamp": "2025-07-25T14:15:00Z",
       "details": "{\"overall_goal\": \"Maintain stable blood pressure\"}"
     },
     {
-      "log_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 9,
+      "user_id": 1,
       "action": "delete",
       "entity": "service",
-      "entity_id": "4a5b6c7d-8e9f-0a1b-2c3d-4e5f6a7b8c9d",
+      "entity_id": 6,
       "timestamp": "2025-07-25T14:30:00Z",
       "details": "{\"name\": \"Light Housekeeping\", \"reason\": \"Inactive\"}"
     },
     {
-      "log_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
-      "user_id": "550e8400-e29b-41d4-a716-446655440000",
+      "log_id": 10,
+      "user_id": 1,
       "action": "update",
       "entity": "appointment",
-      "entity_id": "0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
+      "entity_id": 6,
       "timestamp": "2025-07-25T15:00:00Z",
       "details": "{\"status\": \"Rescheduled\", \"newTime\": \"Afternoon\"}"
     }
