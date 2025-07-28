@@ -18,12 +18,18 @@ const PackageDetails = () => {
 
   const fetchPackageDetails = async () => {
     try {
+      console.log('Fetching package details for ID:', id);
+      
       const [packageRes, servicesRes] = await Promise.all([
         packagesAPI.getById(id),
         servicesAPI.getAll()
       ]);
 
+      console.log('Package response:', packageRes);
+      console.log('Services response:', servicesRes);
+
       if (!packageRes.data) {
+        console.error('Package not found for ID:', id);
         toast.error('Package not found');
         navigate('/packages');
         return;
@@ -33,13 +39,18 @@ const PackageDetails = () => {
 
       // Get services for this package using serviceIds array
       const serviceIds = packageRes.data.serviceIds || [];
+      console.log('Service IDs for package:', serviceIds);
+      
       const packageServices = servicesRes.data.filter(service => 
         serviceIds && Array.isArray(serviceIds) && 
         serviceIds.includes(service.service_id) && service.is_active
       );
+      
+      console.log('Filtered services:', packageServices);
       setServices(packageServices);
     } catch (error) {
       console.error('Error fetching package details:', error);
+      console.error('Error details:', error.response?.data, error.response?.status);
       toast.error('Failed to load package details');
       navigate('/packages');
     } finally {
@@ -132,7 +143,7 @@ const PackageDetails = () => {
                     </div>
                     <div className="flex items-center space-x-1 text-gray-600">
                       <DollarSign className="h-4 w-4" />
-                      <span>${service.cost}</span>
+                      <span>${service.hourly_rate}</span>
                     </div>
                   </div>
                 </div>
