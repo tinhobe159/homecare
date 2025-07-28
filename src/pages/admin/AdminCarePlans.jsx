@@ -125,7 +125,7 @@ const AdminCarePlans = () => {
   };
 
   const getCustomerName = (customerId) => {
-    const customer = customers.find(c => c.customer_id === customerId);
+    const customer = customers.find(c => c.id === customerId);
     return customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown Customer';
   };
 
@@ -309,7 +309,7 @@ const AdminCarePlans = () => {
                     >
                       <option value="">Select Customer</option>
                       {customers.map(customer => (
-                        <option key={customer.customer_id} value={customer.customer_id}>
+                        <option key={customer.id} value={customer.id}>
                           {customer.first_name} {customer.last_name}
                         </option>
                       ))}

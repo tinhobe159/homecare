@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard } from 'lucide-react';
-import { packagesAPI, appointmentsAPI } from '../../services/api';
+import { packagesAPI, appointmentsAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { useAuth } from '../../contexts/AuthContext';
 
 const BookingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { currentUser, isAdmin } = useAuth();
   const [packages, setPackages] = useState([]);
+  const [caregivers, setCaregivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   
@@ -24,20 +27,38 @@ const BookingPage = () => {
     duration: '',
     specialInstructions: '',
     emergencyContact: '',
-    emergencyPhone: ''
+    emergencyPhone: '',
+    selectedCaregiver: ''
   });
 
   useEffect(() => {
-    fetchPackages();
+    fetchData();
   }, []);
 
-  const fetchPackages = async () => {
+  // Auto-fill customer information when user is logged in
+  useEffect(() => {
+    if (currentUser && !isAdmin) {
+      setFormData(prev => ({
+        ...prev,
+        customerName: currentUser.name || `${currentUser.first_name} ${currentUser.last_name}` || '',
+        customerEmail: currentUser.email || '',
+        customerPhone: currentUser.phone || currentUser.phone_number || '',
+        address: currentUser.address || ''
+      }));
+    }
+  }, [currentUser]);
+
+  const fetchData = async () => {
     try {
-      const response = await packagesAPI.getAll();
-      setPackages(response.data);
+      const [packagesResponse, caregiversResponse] = await Promise.all([
+        packagesAPI.getAll(),
+        caregiversAPI.getAll()
+      ]);
+      setPackages(packagesResponse.data);
+      setCaregivers(caregiversResponse.data);
     } catch (error) {
-      console.error('Error fetching packages:', error);
-      toast.error('Failed to load packages');
+      console.error('Error fetching data:', error);
+      toast.error('Failed to load data');
     } finally {
       setLoading(false);
     }
@@ -70,6 +91,7 @@ const BookingPage = () => {
     try {
       const appointmentData = {
         package_id: parseInt(formData.selectedPackage),
+        caregiver_id: formData.selectedCaregiver ? parseInt(formData.selectedCaregiver) : null,
         customer_name: formData.customerName,
         customer_email: formData.customerEmail,
         customer_phone: formData.customerPhone,
@@ -147,6 +169,11 @@ const BookingPage = () => {
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                 <User className="h-5 w-5 mr-2" />
                 Customer Information
+                {currentUser && !isAdmin && (
+                  <span className="ml-2 text-sm text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                    Auto-filled from your profile
+                  </span>
+                )}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -158,8 +185,9 @@ const BookingPage = () => {
                     name="customerName"
                     value={formData.customerName}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${currentUser && !isAdmin ? 'bg-gray-50 cursor-not-allowed' : ''}`}
                     required
+                    readOnly={currentUser && !isAdmin}
                   />
                 </div>
                 <div>
@@ -171,8 +199,9 @@ const BookingPage = () => {
                     name="customerEmail"
                     value={formData.customerEmail}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${currentUser && !isAdmin ? 'bg-gray-50 cursor-not-allowed' : ''}`}
                     required
+                    readOnly={currentUser && !isAdmin}
                   />
                 </div>
                 <div>
@@ -184,8 +213,9 @@ const BookingPage = () => {
                     name="customerPhone"
                     value={formData.customerPhone}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${currentUser && !isAdmin ? 'bg-gray-50 cursor-not-allowed' : ''}`}
                     required
+                    readOnly={currentUser && !isAdmin}
                   />
                 </div>
                 <div>
@@ -197,8 +227,9 @@ const BookingPage = () => {
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${currentUser && !isAdmin ? 'bg-gray-50 cursor-not-allowed' : ''}`}
                     placeholder="Service address"
+                    readOnly={currentUser && !isAdmin}
                   />
                 </div>
               </div>
@@ -253,6 +284,104 @@ const BookingPage = () => {
                     placeholder={selectedPackage?.duration_hours || "Hours"}
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Caregiver Selection */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <User className="h-5 w-5 mr-2" />
+                Caregiver Selection (Optional)
+              </h2>
+              <div className="mb-4">
+                <p className="text-sm text-gray-600 mb-4">
+                  You can optionally select a specific caregiver for your appointment. If you don't select one, we'll assign the best available caregiver for your needs.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* No preference option */}
+                  <div
+                    className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
+                      formData.selectedCaregiver === ''
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                    onClick={() => setFormData(prev => ({
+                      ...prev,
+                      selectedCaregiver: ''
+                    }))}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                          <User className="h-6 w-6 text-gray-500" />
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-medium text-gray-900">
+                          No Preference
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                          Let us assign the best caregiver
+                        </p>
+                        <p className="text-xs text-gray-600 mt-1">
+                          We'll match you with the most suitable caregiver based on your needs and availability.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {caregivers.map((caregiver) => (
+                    <div
+                      key={caregiver.id}
+                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
+                        formData.selectedCaregiver === caregiver.id.toString()
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => setFormData(prev => ({
+                        ...prev,
+                        selectedCaregiver: prev.selectedCaregiver === caregiver.id.toString() ? '' : caregiver.id.toString()
+                      }))}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-shrink-0">
+                          <img
+                            src={caregiver.profilePicture}
+                            alt={`${caregiver.firstName} ${caregiver.lastName}`}
+                            className="w-12 h-12 rounded-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-sm font-medium text-gray-900">
+                            {caregiver.firstName} {caregiver.lastName}
+                          </h3>
+                          <p className="text-xs text-gray-500">
+                            {caregiver.yearsOfExperience} years experience
+                          </p>
+                          <div className="flex items-center mt-1">
+                            <span className="text-xs text-yellow-600">★</span>
+                            <span className="text-xs text-gray-600 ml-1">
+                              {caregiver.rating} ({caregiver.totalReviews} reviews)
+                            </span>
+                          </div>
+                          <p className="text-xs text-blue-600 font-medium mt-1">
+                            ${caregiver.hourlyRate}/hr
+                          </p>
+                        </div>
+                      </div>
+                      {caregiver.bio && (
+                        <p className="text-xs text-gray-600 mt-2 line-clamp-2">
+                          {caregiver.bio}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {caregivers.length === 0 && (
+                  <p className="text-sm text-gray-500 text-center py-4">
+                    No caregivers available at the moment.
+                  </p>
+                )}
               </div>
             </div>
 

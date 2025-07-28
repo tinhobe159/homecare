@@ -103,7 +103,7 @@ const AdminAppointments = () => {
   };
 
   const getCustomerById = (customerId) => {
-    return customers.find(customer => customer.customer_id === customerId);
+    return customers.find(customer => customer.id === customerId);
   };
 
   const getStatusColor = (status) => {
