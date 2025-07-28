@@ -17,7 +17,8 @@ const AdminPackages = () => {
     code: '',
     total_cost: '',
     duration_hours: '',
-    is_active: true
+    is_active: true,
+    serviceIds: []
   });
 
   useEffect(() => {
@@ -48,8 +49,22 @@ const AdminPackages = () => {
     }));
   };
 
+  const handleServiceToggle = (serviceId) => {
+    setFormData(prev => ({
+      ...prev,
+      serviceIds: prev.serviceIds.includes(serviceId)
+        ? prev.serviceIds.filter(id => id !== serviceId)
+        : [...prev.serviceIds, serviceId]
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (formData.serviceIds.length === 0) {
+      toast.error('Please select at least one service');
+      return;
+    }
     
     try {
       const packageData = {
@@ -59,6 +74,7 @@ const AdminPackages = () => {
         total_cost: parseFloat(formData.total_cost),
         duration_hours: parseInt(formData.duration_hours),
         is_active: formData.is_active,
+        serviceIds: formData.serviceIds,
         created_at: new Date().toISOString()
       };
 
@@ -78,7 +94,8 @@ const AdminPackages = () => {
         code: '', 
         total_cost: '', 
         duration_hours: '', 
-        is_active: true 
+        is_active: true,
+        serviceIds: []
       });
       fetchData();
     } catch (error) {
@@ -95,7 +112,8 @@ const AdminPackages = () => {
       code: pkg.code,
       total_cost: pkg.total_cost?.toString() || '',
       duration_hours: pkg.duration_hours?.toString() || '',
-      is_active: pkg.is_active
+      is_active: pkg.is_active,
+      serviceIds: pkg.serviceIds || []
     });
     setShowModal(true);
   };
@@ -111,6 +129,16 @@ const AdminPackages = () => {
         toast.error('Failed to delete package');
       }
     }
+  };
+
+  const getServiceNames = (serviceIds) => {
+    if (!serviceIds || !Array.isArray(serviceIds)) {
+      return 'No services selected';
+    }
+    return serviceIds.map(id => {
+      const service = services.find(s => s.service_id === id);
+      return service ? service.name : 'Unknown';
+    }).join(', ');
   };
 
   const filteredPackages = packages.filter(pkg => {
@@ -143,7 +171,7 @@ const AdminPackages = () => {
             <button
               onClick={() => {
                 setEditingPackage(null);
-                setFormData({ name: '', description: '', code: '', total_cost: '', duration_hours: '', is_active: true });
+                setFormData({ name: '', description: '', code: '', total_cost: '', duration_hours: '', is_active: true, serviceIds: [] });
                 setShowModal(true);
               }}
               className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
@@ -204,6 +232,9 @@ const AdminPackages = () => {
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Duration: {pkg.duration_hours} hours</span>
                     <span className="text-green-600 font-semibold">${pkg.total_cost}</span>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    <strong>Services:</strong> {getServiceNames(pkg.serviceIds)}
                   </div>
                 </div>
 
@@ -296,6 +327,29 @@ const AdminPackages = () => {
                       required
                     />
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Select Services</label>
+                    <div className="max-h-40 overflow-y-auto border border-gray-300 rounded-md p-3">
+                      {services.map(service => (
+                        <div key={service.service_id} className="flex items-center mb-2">
+                          <input
+                            type="checkbox"
+                            id={`service-${service.service_id}`}
+                            checked={formData.serviceIds.includes(service.service_id)}
+                            onChange={() => handleServiceToggle(service.service_id)}
+                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <label htmlFor={`service-${service.service_id}`} className="ml-2 text-sm text-gray-700">
+                            {service.name} - ${service.hourly_rate}/hr
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                    {formData.serviceIds.length === 0 && (
+                      <p className="text-xs text-red-500 mt-1">Please select at least one service</p>
+                    )}
+                  </div>
+
                   <div className="flex items-center">
                     <input
                       type="checkbox"

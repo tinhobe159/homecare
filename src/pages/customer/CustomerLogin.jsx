@@ -14,8 +14,8 @@ const CustomerLogin = () => {
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: 'john.doe@example.com',
+    password: 'password123',
     name: '',
     phone: '',
     address: ''

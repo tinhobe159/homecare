@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { packagesAPI, packageServicesAPI, servicesAPI } from '../../services/api';
+import { packagesAPI, servicesAPI } from '../../services/api';
 import SearchBar from '../../components/common/SearchBar';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -8,7 +8,6 @@ import { Clock, DollarSign, ArrowRight, Package } from 'lucide-react';
 
 const PackagesPage = () => {
   const [packages, setPackages] = useState([]);
-  const [packageServices, setPackageServices] = useState({});
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,24 +18,13 @@ const PackagesPage = () => {
 
   const fetchData = async () => {
     try {
-      const [packagesRes, packageServicesRes, servicesRes] = await Promise.all([
+      const [packagesRes, servicesRes] = await Promise.all([
         packagesAPI.getAll(),
-        packageServicesAPI.getAll(),
         servicesAPI.getAll()
       ]);
 
       setPackages(packagesRes.data);
       setServices(servicesRes.data);
-
-      // Group package services by package_id
-      const groupedServices = {};
-      packageServicesRes.data.forEach(ps => {
-        if (!groupedServices[ps.package_id]) {
-          groupedServices[ps.package_id] = [];
-        }
-        groupedServices[ps.package_id].push(ps.service_id);
-      });
-      setPackageServices(groupedServices);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load packages');
@@ -46,7 +34,8 @@ const PackagesPage = () => {
   };
 
   const getPackageServices = (packageId) => {
-    const serviceIds = packageServices[packageId] || [];
+    const packageData = packages.find(pkg => pkg.package_id === packageId);
+    const serviceIds = packageData?.serviceIds || [];
     return services.filter(service => 
       serviceIds && Array.isArray(serviceIds) && 
       serviceIds.includes(service.service_id) && service.is_active
@@ -139,7 +128,7 @@ const PackagesPage = () => {
                               <Clock className="h-3 w-3" />
                               <span>{service.duration}min</span>
                               <DollarSign className="h-3 w-3" />
-                              <span>${service.cost}</span>
+                              <span>${service.hourly_rate}</span>
                             </div>
                           </div>
                         ))}

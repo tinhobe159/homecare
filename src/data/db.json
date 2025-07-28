@@ -24,6 +24,8 @@
       "customer_id": "6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d",
       "first_name": "John",
       "last_name": "Doe",
+      "email": "john.doe@example.com",
+      "password": "password123",
       "date_of_birth": "1950-03-15",
       "phone_number": "555-0101",
       "emergency_contact_name": "Jane Doe",
@@ -38,6 +40,8 @@
       "customer_id": "7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
       "first_name": "Mary",
       "last_name": "Smith",
+      "email": "mary.smith@example.com",
+      "password": "password123",
       "date_of_birth": "1945-07-22",
       "phone_number": "555-0103",
       "emergency_contact_name": "Tom Smith",
@@ -52,6 +56,8 @@
       "customer_id": "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
       "first_name": "Robert",
       "last_name": "Johnson",
+      "email": "robert.johnson@example.com",
+      "password": "password123",
       "date_of_birth": "1960-11-10",
       "phone_number": "555-0105",
       "emergency_contact_name": "Lisa Johnson",
@@ -66,6 +72,8 @@
       "customer_id": "9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a",
       "first_name": "Susan",
       "last_name": "Brown",
+      "email": "susan.brown@example.com",
+      "password": "password123",
       "date_of_birth": "1955-04-18",
       "phone_number": "555-0107",
       "emergency_contact_name": "Mike Brown",
@@ -80,6 +88,8 @@
       "customer_id": "0e1f2a3b-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
       "first_name": "James",
       "last_name": "Wilson",
+      "email": "james.wilson@example.com",
+      "password": "password123",
       "date_of_birth": "1948-09-05",
       "phone_number": "555-0109",
       "emergency_contact_name": "Emma Wilson",
@@ -185,21 +195,40 @@
       "code": "PC001",
       "name": "Basic Personal Care",
       "total_cost": 38.0,
-      "description": "Daily personal care services including bathing and dressing assistance for independent living support."
+      "description": "Daily personal care services including bathing and dressing assistance for independent living support.",
+      "duration_hours": 2,
+      "is_active": true,
+      "serviceIds": [
+        "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e",
+        "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f"
+      ]
     },
     {
       "package_id": "7f8a9b0c-1d2e-3f4a-5b6c-7d8e9f0a1b2c",
       "code": "PC002",
       "name": "Mobility Support",
       "total_cost": 45.0,
-      "description": "Comprehensive assistance with mobility and daily activities, including meal preparation and safe transfers."
+      "description": "Comprehensive assistance with mobility and daily activities, including meal preparation and safe transfers.",
+      "duration_hours": 2.5,
+      "is_active": true,
+      "serviceIds": [
+        "1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a",
+        "2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b"
+      ]
     },
     {
       "package_id": "8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d",
       "code": "PC003",
       "name": "Comprehensive Care",
       "total_cost": 60.0,
-      "description": "Full range of personal and medical support services for individuals requiring extensive daily assistance."
+      "description": "Full range of personal and medical support services for individuals requiring extensive daily assistance.",
+      "duration_hours": 3,
+      "is_active": true,
+      "serviceIds": [
+        "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e",
+        "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f",
+        "3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c"
+      ]
     }
   ],
   "packageServices": [
@@ -237,7 +266,7 @@
       "service_id": "9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e",
       "code": "SVC001",
       "name": "Bathing Assistance",
-      "cost": 20.0,
+      "hourly_rate": 20.0,
       "duration": 60,
       "description": "Professional assistance with bathing and personal hygiene",
       "is_active": true
@@ -246,7 +275,7 @@
       "service_id": "0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f",
       "code": "SVC002",
       "name": "Dressing Assistance",
-      "cost": 18.0,
+      "hourly_rate": 18.0,
       "duration": 45,
       "description": "Help with dressing and grooming activities",
       "is_active": true
@@ -255,7 +284,7 @@
       "service_id": "1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a",
       "code": "SVC003",
       "name": "Mobility Assistance",
-      "cost": 25.0,
+      "hourly_rate": 25.0,
       "duration": 60,
       "description": "Support with walking, transfers, and mobility exercises",
       "is_active": true
@@ -264,7 +293,7 @@
       "service_id": "2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b",
       "code": "SVC004",
       "name": "Meal Preparation",
-      "cost": 20.0,
+      "hourly_rate": 20.0,
       "duration": 60,
       "description": "Preparing nutritious meals according to dietary requirements",
       "is_active": true
@@ -273,7 +302,7 @@
       "service_id": "3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c",
       "code": "SVC005",
       "name": "Medication Reminders",
-      "cost": 15.0,
+      "hourly_rate": 15.0,
       "duration": 30,
       "description": "Ensuring timely medication intake and monitoring",
       "is_active": true
@@ -282,7 +311,7 @@
       "service_id": "4a5b6c7d-8e9f-0a1b-2c3d-4e5f6a7b8c9d",
       "code": "SVC006",
       "name": "Light Housekeeping",
-      "cost": 22.0,
+      "hourly_rate": 22.0,
       "duration": 60,
       "description": "Basic cleaning and organization of living spaces",
       "is_active": false

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { packagesAPI, packageServicesAPI, servicesAPI } from '../../services/api';
+import { packagesAPI, servicesAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 import { ArrowLeft, Clock, DollarSign, Check, Calendar, Package } from 'lucide-react';
@@ -18,9 +18,8 @@ const PackageDetails = () => {
 
   const fetchPackageDetails = async () => {
     try {
-      const [packageRes, packageServicesRes, servicesRes] = await Promise.all([
+      const [packageRes, servicesRes] = await Promise.all([
         packagesAPI.getById(id),
-        packageServicesAPI.getByPackageId(id),
         servicesAPI.getAll()
       ]);
 
@@ -32,8 +31,8 @@ const PackageDetails = () => {
 
       setPackageData(packageRes.data);
 
-      // Get services for this package
-      const serviceIds = packageServicesRes.data.map(ps => ps.service_id);
+      // Get services for this package using serviceIds array
+      const serviceIds = packageRes.data.serviceIds || [];
       const packageServices = servicesRes.data.filter(service => 
         serviceIds && Array.isArray(serviceIds) && 
         serviceIds.includes(service.service_id) && service.is_active
