@@ -599,6 +599,7 @@
     {
       "id": 1,
       "customer_id": 1,
+      "caregiver_id": 1,
       "overall_goal": "Maintain stable blood pressure and improve mobility",
       "start_date": "2025-07-01",
       "status": "Active"
@@ -606,6 +607,7 @@
     {
       "id": 2,
       "customer_id": 2,
+      "caregiver_id": 2,
       "overall_goal": "Manage diabetes through diet and medication compliance",
       "start_date": "2025-06-15",
       "status": "Active"
@@ -613,6 +615,7 @@
     {
       "id": 3,
       "customer_id": 3,
+      "caregiver_id": 3,
       "overall_goal": "Improve joint mobility and pain management",
       "start_date": "2025-08-01",
       "status": "Planned"
