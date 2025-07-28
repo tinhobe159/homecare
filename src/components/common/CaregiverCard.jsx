@@ -13,12 +13,12 @@ const CaregiverCard = ({ caregiver, skills }) => {
       <div className="flex items-center mb-4">
         <img
           src={caregiver.profilePicture}
-          alt={`${caregiver.firstName} ${caregiver.lastName}`}
+          alt={`${caregiver.first_name} ${caregiver.last_name}`}
           className="w-16 h-16 rounded-full object-cover mr-4"
         />
         <div>
           <h3 className="text-xl font-semibold text-gray-900">
-            {caregiver.firstName} {caregiver.lastName}
+            {caregiver.first_name} {caregiver.last_name}
           </h3>
           <div className="flex items-center space-x-2 mt-1">
             <Clock className="h-4 w-4 text-gray-500" />

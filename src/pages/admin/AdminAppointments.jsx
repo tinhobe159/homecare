@@ -263,7 +263,7 @@ const AdminAppointments = () => {
                         Customer
                       </h4>
                       <div className="space-y-1 text-sm">
-                        <p className="font-medium">{customer?.name || 'Unknown'}</p>
+                        <p className="font-medium">{customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown'}</p>
                         <p className="text-gray-600 flex items-center">
                           <Mail className="h-3 w-3 mr-1" />
                           {customer?.email || appointment.customer_email}

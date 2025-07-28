@@ -110,12 +110,12 @@ const CaregiverManagement = () => {
                           <img
                             className="h-10 w-10 rounded-full object-cover"
                             src={caregiver.profilePicture}
-                            alt={`${caregiver.firstName} ${caregiver.lastName}`}
+                            alt={`${caregiver.first_name} ${caregiver.last_name}`}
                           />
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {caregiver.firstName} {caregiver.lastName}
+                            {caregiver.first_name} {caregiver.last_name}
                           </div>
                           <div className="text-sm text-gray-500 truncate max-w-xs">
                             {caregiver.bio}

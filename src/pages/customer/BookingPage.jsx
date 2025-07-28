@@ -17,7 +17,7 @@ const BookingPage = () => {
   
   // Form state
   const [formData, setFormData] = useState({
-    selectedPackage: location.state?.packageId || '',
+    selectedPackage: location.state?.packageId || new URLSearchParams(location.search).get('package') || '',
     customerName: '',
     customerEmail: '',
     customerPhone: '',
@@ -185,9 +185,8 @@ const BookingPage = () => {
                     name="customerName"
                     value={formData.customerName}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${currentUser && !isAdmin ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
-                    readOnly={currentUser && !isAdmin}
                   />
                 </div>
                 <div>
@@ -199,9 +198,8 @@ const BookingPage = () => {
                     name="customerEmail"
                     value={formData.customerEmail}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${currentUser && !isAdmin ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
-                    readOnly={currentUser && !isAdmin}
                   />
                 </div>
                 <div>
@@ -213,9 +211,8 @@ const BookingPage = () => {
                     name="customerPhone"
                     value={formData.customerPhone}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${currentUser && !isAdmin ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
-                    readOnly={currentUser && !isAdmin}
                   />
                 </div>
                 <div>
@@ -227,9 +224,8 @@ const BookingPage = () => {
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${currentUser && !isAdmin ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Service address"
-                    readOnly={currentUser && !isAdmin}
                   />
                 </div>
               </div>
@@ -347,13 +343,13 @@ const BookingPage = () => {
                         <div className="flex-shrink-0">
                           <img
                             src={caregiver.profilePicture}
-                            alt={`${caregiver.firstName} ${caregiver.lastName}`}
+                            alt={`${caregiver.first_name} ${caregiver.last_name}`}
                             className="w-12 h-12 rounded-full object-cover"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <h3 className="text-sm font-medium text-gray-900">
-                            {caregiver.firstName} {caregiver.lastName}
+                            {caregiver.first_name} {caregiver.last_name}
                           </h3>
                           <p className="text-xs text-gray-500">
                             {caregiver.yearsOfExperience} years experience

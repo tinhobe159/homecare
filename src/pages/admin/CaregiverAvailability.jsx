@@ -92,7 +92,7 @@ const CaregiverAvailability = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Availability for {caregiver.firstName} {caregiver.lastName}
+                Availability for {caregiver.first_name} {caregiver.last_name}
               </h1>
               <p className="text-gray-600">Manage caregiver availability schedule</p>
             </div>
@@ -109,11 +109,11 @@ const CaregiverAvailability = () => {
             <img
               className="h-16 w-16 rounded-full object-cover"
               src={caregiver.profilePicture}
-              alt={`${caregiver.firstName} ${caregiver.lastName}`}
+              alt={`${caregiver.first_name} ${caregiver.last_name}`}
             />
             <div>
               <h2 className="text-xl font-semibold text-gray-900">
-                {caregiver.firstName} {caregiver.lastName}
+                {caregiver.first_name} {caregiver.last_name}
               </h2>
               <p className="text-gray-600">Background Check: {caregiver.backgroundCheckStatus}</p>
             </div>

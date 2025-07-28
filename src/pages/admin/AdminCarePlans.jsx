@@ -15,12 +15,9 @@ const AdminCarePlans = () => {
   const [formData, setFormData] = useState({
     customer_id: '',
     caregiver_id: '',
-    plan_name: '',
-    description: '',
+    overall_goal: '',
     start_date: '',
-    end_date: '',
-    frequency: 'daily',
-    status: 'active'
+    status: 'Active'
   });
 
   useEffect(() => {
@@ -60,11 +57,8 @@ const AdminCarePlans = () => {
       const carePlanData = {
         customer_id: formData.customer_id,
         caregiver_id: formData.caregiver_id,
-        plan_name: formData.plan_name,
-        description: formData.description,
+        overall_goal: formData.overall_goal,
         start_date: formData.start_date,
-        end_date: formData.end_date,
-        frequency: formData.frequency,
         status: formData.status,
         created_at: new Date().toISOString()
       };
@@ -82,12 +76,9 @@ const AdminCarePlans = () => {
       setFormData({
         customer_id: '',
         caregiver_id: '',
-        plan_name: '',
-        description: '',
+        overall_goal: '',
         start_date: '',
-        end_date: '',
-        frequency: 'daily',
-        status: 'active'
+        status: 'Active'
       });
       fetchData();
     } catch (error) {
@@ -101,11 +92,8 @@ const AdminCarePlans = () => {
     setFormData({
       customer_id: carePlan.customer_id,
       caregiver_id: carePlan.caregiver_id,
-      plan_name: carePlan.plan_name,
-      description: carePlan.description,
+      overall_goal: carePlan.overall_goal,
       start_date: carePlan.start_date,
-      end_date: carePlan.end_date,
-      frequency: carePlan.frequency,
       status: carePlan.status
     });
     setShowModal(true);
@@ -131,7 +119,7 @@ const AdminCarePlans = () => {
 
   const getCaregiverName = (caregiverId) => {
     const caregiver = caregivers.find(c => c.id === caregiverId);
-    return caregiver ? `${caregiver.firstName} ${caregiver.lastName}` : 'Unknown Caregiver';
+    return caregiver ? `${caregiver.first_name} ${caregiver.last_name}` : 'Unknown Caregiver';
   };
 
   const filteredCarePlans = carePlans.filter(plan => {
@@ -217,8 +205,8 @@ const AdminCarePlans = () => {
                       <Heart className="h-6 w-6 text-blue-600" />
                     </div>
                     <div className="ml-3">
-                      <h3 className="text-lg font-semibold text-gray-900">{plan.plan_name}</h3>
-                      <p className="text-sm text-gray-500">ID: {plan.id}</p>
+                      <h3 className="text-lg font-semibold text-gray-900">Care Plan #{plan.id}</h3>
+                      <p className="text-sm text-gray-500">Customer: {getCustomerName(plan.customer_id)}</p>
                     </div>
                   </div>
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -230,19 +218,11 @@ const AdminCarePlans = () => {
 
                 {/* Care Plan Details */}
                 <div className="space-y-2 mb-4">
-                  <p className="text-sm text-gray-600">{plan.description}</p>
+                  <p className="text-sm text-gray-600">{plan.overall_goal}</p>
                   <div className="space-y-1 text-sm">
                     <div className="flex items-center text-gray-600">
-                      <Users className="h-4 w-4 mr-2" />
-                      <span>Customer: {getCustomerName(plan.customer_id)}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <Users className="h-4 w-4 mr-2" />
-                      <span>Caregiver: {getCaregiverName(plan.caregiver_id)}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
                       <Calendar className="h-4 w-4 mr-2" />
-                      <span>Frequency: {plan.frequency}</span>
+                      <span>Start Date: {new Date(plan.start_date).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
@@ -277,24 +257,14 @@ const AdminCarePlans = () => {
                 </h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Plan Name</label>
-                    <input
-                      type="text"
-                      name="plan_name"
-                      value={formData.plan_name}
-                      onChange={handleInputChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                    <label className="block text-sm font-medium text-gray-700">Overall Goal</label>
                     <textarea
-                      name="description"
-                      value={formData.description}
+                      name="overall_goal"
+                      value={formData.overall_goal}
                       onChange={handleInputChange}
                       rows="3"
                       className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Describe the overall goal for this care plan..."
                       required
                     />
                   </div>
@@ -327,7 +297,7 @@ const AdminCarePlans = () => {
                       <option value="">Select Caregiver</option>
                       {caregivers.map(caregiver => (
                         <option key={caregiver.id} value={caregiver.id}>
-                          {caregiver.firstName} {caregiver.lastName}
+                          {caregiver.first_name} {caregiver.last_name}
                         </option>
                       ))}
                     </select>
@@ -345,34 +315,6 @@ const AdminCarePlans = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">End Date</label>
-                      <input
-                        type="date"
-                        name="end_date"
-                        value={formData.end_date}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Frequency</label>
-                      <select
-                        name="frequency"
-                        value={formData.frequency}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      >
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="biweekly">Bi-weekly</option>
-                        <option value="monthly">Monthly</option>
-                      </select>
-                    </div>
-                    <div>
                       <label className="block text-sm font-medium text-gray-700">Status</label>
                       <select
                         name="status"
@@ -381,9 +323,9 @@ const AdminCarePlans = () => {
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                       >
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="completed">Completed</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Completed">Completed</option>
                       </select>
                     </div>
                   </div>

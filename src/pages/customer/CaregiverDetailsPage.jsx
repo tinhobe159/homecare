@@ -79,13 +79,13 @@ const CaregiverDetailsPage = () => {
             <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
               <img
                 src={caregiver.profilePicture}
-                alt={`${caregiver.firstName} ${caregiver.lastName}`}
+                alt={`${caregiver.first_name} ${caregiver.last_name}`}
                 className="w-32 h-32 rounded-full object-cover mx-auto md:mx-0"
               />
               
               <div className="flex-1 text-center md:text-left">
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {caregiver.firstName} {caregiver.lastName}
+                  {caregiver.first_name} {caregiver.last_name}
                 </h1>
                 
                 <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6 mb-4">
@@ -131,7 +131,7 @@ const CaregiverDetailsPage = () => {
 
         {/* Bio Section */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mt-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">About {caregiver.firstName}</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">About {caregiver.first_name}</h2>
           <p className="text-gray-600 leading-relaxed">{caregiver.bio}</p>
         </div>
 
