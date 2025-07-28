@@ -79,7 +79,7 @@ const AdminPackages = () => {
       };
 
       if (editingPackage) {
-        await packagesAPI.update(editingPackage.package_id, packageData);
+        await packagesAPI.update(editingPackage.id, packageData);
         toast.success('Package updated successfully');
       } else {
         await packagesAPI.create(packageData);
@@ -136,7 +136,7 @@ const AdminPackages = () => {
       return 'No services selected';
     }
     return serviceIds.map(id => {
-      const service = services.find(s => s.service_id === id);
+              const service = services.find(s => s.id === id);
       return service ? service.name : 'Unknown';
     }).join(', ');
   };
@@ -206,7 +206,7 @@ const AdminPackages = () => {
         {/* Packages Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPackages.map((pkg) => (
-            <div key={pkg.package_id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                            <div key={pkg.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
@@ -247,7 +247,7 @@ const AdminPackages = () => {
                     <Edit className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => handleDelete(pkg.package_id)}
+                    onClick={() => handleDelete(pkg.id)}
                     className="text-red-600 hover:text-red-900 p-1"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -331,15 +331,15 @@ const AdminPackages = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Select Services</label>
                     <div className="max-h-40 overflow-y-auto border border-gray-300 rounded-md p-3">
                       {services.map(service => (
-                        <div key={service.service_id} className="flex items-center mb-2">
-                          <input
-                            type="checkbox"
-                            id={`service-${service.service_id}`}
-                            checked={formData.serviceIds.includes(service.service_id)}
-                            onChange={() => handleServiceToggle(service.service_id)}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
-                          <label htmlFor={`service-${service.service_id}`} className="ml-2 text-sm text-gray-700">
+                                              <div key={service.id} className="flex items-center mb-2">
+                        <input
+                          type="checkbox"
+                          id={`service-${service.id}`}
+                          checked={formData.serviceIds.includes(service.id)}
+                          onChange={() => handleServiceToggle(service.id)}
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <label htmlFor={`service-${service.id}`} className="ml-2 text-sm text-gray-700">
                             {service.name} - ${service.hourly_rate}/hr
                           </label>
                         </div>

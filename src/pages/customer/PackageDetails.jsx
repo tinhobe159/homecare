@@ -43,7 +43,7 @@ const PackageDetails = () => {
       
       const packageServices = servicesRes.data.filter(service => 
         serviceIds && Array.isArray(serviceIds) && 
-        serviceIds.includes(service.service_id) && service.is_active
+        serviceIds.includes(service.id) && service.is_active
       );
       
       console.log('Filtered services:', packageServices);
@@ -130,7 +130,7 @@ const PackageDetails = () => {
           
           <div className="grid gap-6">
             {services.map((service) => (
-              <div key={service.service_id} className="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors duration-200">
+                              <div key={service.id} className="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors duration-200">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-1">{service.name}</h3>
@@ -186,7 +186,7 @@ const PackageDetails = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to={`/book?package=${packageData.package_id}`}
+                to={`/book?package=${packageData.id}`}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2"
               >
                 <Calendar className="h-5 w-5" />

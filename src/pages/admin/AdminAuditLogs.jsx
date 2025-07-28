@@ -170,7 +170,7 @@ const AdminAuditLogs = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredAuditLogs.map((log) => (
-                  <tr key={log.audit_log_id} className="hover:bg-gray-50">
+                  <tr key={log.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <span className="text-lg mr-2">{getActionIcon(log.action)}</span>

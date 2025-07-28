@@ -34,11 +34,11 @@ const PackagesPage = () => {
   };
 
   const getPackageServices = (packageId) => {
-    const packageData = packages.find(pkg => pkg.package_id === packageId);
+    const packageData = packages.find(pkg => pkg.id === packageId);
     const serviceIds = packageData?.serviceIds || [];
     return services.filter(service => 
       serviceIds && Array.isArray(serviceIds) && 
-      serviceIds.includes(service.service_id) && service.is_active
+              serviceIds.includes(service.id) && service.is_active
     );
   };
 
@@ -94,11 +94,11 @@ const PackagesPage = () => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {filteredPackages.map((pkg) => {
-              const pkgServices = getPackageServices(pkg.package_id);
+              const pkgServices = getPackageServices(pkg.id);
               const totalDuration = pkgServices.reduce((sum, service) => sum + service.duration, 0);
 
               return (
-                <div key={pkg.package_id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 overflow-hidden group">
+                <div key={pkg.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 overflow-hidden group">
                   <div className="p-6">
                     {/* Package Header */}
                     <div className="flex justify-between items-start mb-4">
@@ -122,7 +122,7 @@ const PackagesPage = () => {
                       <h4 className="text-sm font-semibold text-gray-900 mb-3">Included Services ({pkgServices.length})</h4>
                       <div className="space-y-2">
                         {pkgServices.slice(0, 3).map((service) => (
-                          <div key={service.service_id} className="flex items-center justify-between text-sm">
+                          <div key={service.id} className="flex items-center justify-between text-sm">
                             <span className="text-gray-700">{service.name}</span>
                             <div className="flex items-center space-x-2 text-gray-500">
                               <Clock className="h-3 w-3" />
@@ -155,14 +155,14 @@ const PackagesPage = () => {
                     {/* Actions */}
                     <div className="flex space-x-3">
                       <Link
-                        to={`/packages/${pkg.package_id}`}
+                        to={`/packages/${pkg.id}`}
                         className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-center font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                       >
                         <span>View Details</span>
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                       <Link
-                        to={`/book?package=${pkg.package_id}`}
+                        to={`/book?package=${pkg.id}`}
                         className="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 py-2 px-4 rounded-lg text-center font-medium transition-colors duration-200"
                       >
                         Book Now

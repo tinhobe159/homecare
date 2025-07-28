@@ -59,7 +59,7 @@ const AdminServices = () => {
       };
 
       if (editingService) {
-        await servicesAPI.update(editingService.service_id, serviceData);
+        await servicesAPI.update(editingService.id, serviceData);
         toast.success('Service updated successfully');
       } else {
         await servicesAPI.create(serviceData);
@@ -186,7 +186,7 @@ const AdminServices = () => {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredServices.map((service) => (
-            <div key={service.service_id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                            <div key={service.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
@@ -224,7 +224,7 @@ const AdminServices = () => {
                     <Edit className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => handleDelete(service.service_id)}
+                    onClick={() => handleDelete(service.id)}
                     className="text-red-600 hover:text-red-900 p-1"
                   >
                     <Trash2 className="h-4 w-4" />

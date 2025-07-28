@@ -95,7 +95,7 @@ const BookingPage = () => {
     }
   };
 
-  const selectedPackage = packages.find(pkg => pkg.package_id === parseInt(formData.selectedPackage));
+  const selectedPackage = packages.find(pkg => pkg.id === parseInt(formData.selectedPackage));
 
   if (loading) {
     return (
@@ -125,13 +125,13 @@ const BookingPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {packages.map((pkg) => (
                   <div
-                    key={pkg.package_id}
+                    key={pkg.id}
                     className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                      parseInt(formData.selectedPackage) === pkg.package_id
+                      parseInt(formData.selectedPackage) === pkg.id
                         ? 'border-blue-500 bg-blue-50'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
-                    onClick={() => setFormData(prev => ({ ...prev, selectedPackage: pkg.package_id.toString() }))}
+                    onClick={() => setFormData(prev => ({ ...prev, selectedPackage: pkg.id.toString() }))}
                   >
                     <h3 className="font-semibold text-gray-900">{pkg.name}</h3>
                     <p className="text-2xl font-bold text-blue-600">${pkg.total_cost}</p>

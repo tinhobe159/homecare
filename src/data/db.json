@@ -1,19 +1,19 @@
 {
   "users": [
     {
-      "user_id": 1,
+      "id": 1,
       "email": "admin@homecare.com",
       "user_type": "Admin",
       "is_active": true
     },
     {
-      "user_id": 2,
+      "id": 2,
       "email": "customer1@homecare.com",
       "user_type": "Customer",
       "is_active": true
     },
     {
-      "user_id": 3,
+      "id": 3,
       "email": "caregiver1@homecare.com",
       "user_type": "Caregiver",
       "is_active": true
@@ -21,7 +21,7 @@
   ],
   "customers": [
     {
-      "customer_id": 1,
+      "id": 1,
       "first_name": "John",
       "last_name": "Doe",
       "email": "john.doe@example.com",
@@ -37,7 +37,7 @@
       }
     },
     {
-      "customer_id": 2,
+      "id": 2,
       "first_name": "Mary",
       "last_name": "Smith",
       "email": "mary.smith@example.com",
@@ -53,7 +53,7 @@
       }
     },
     {
-      "customer_id": 3,
+      "id": 3,
       "first_name": "Robert",
       "last_name": "Johnson",
       "email": "robert.johnson@example.com",
@@ -69,7 +69,7 @@
       }
     },
     {
-      "customer_id": 4,
+      "id": 4,
       "first_name": "Susan",
       "last_name": "Brown",
       "email": "susan.brown@example.com",
@@ -85,7 +85,7 @@
       }
     },
     {
-      "customer_id": 5,
+      "id": 5,
       "first_name": "James",
       "last_name": "Wilson",
       "email": "james.wilson@example.com",
@@ -183,7 +183,7 @@
   ],
   "administrators": [
     {
-      "admin_id": 1,
+      "id": 1,
       "first_name": "Emma",
       "last_name": "White",
       "email": "admin@homecare.com"
@@ -191,7 +191,7 @@
   ],
   "packages": [
     {
-      "package_id": 1,
+      "id": 1,
       "code": "PC001",
       "name": "Basic Personal Care",
       "total_cost": 38.0,
@@ -201,7 +201,7 @@
       "serviceIds": [1, 2]
     },
     {
-      "package_id": 2,
+      "id": 2,
       "code": "PC002",
       "name": "Mobility Support",
       "total_cost": 45.0,
@@ -211,7 +211,7 @@
       "serviceIds": [3, 4]
     },
     {
-      "package_id": 3,
+      "id": 3,
       "code": "PC003",
       "name": "Comprehensive Care",
       "total_cost": 60.0,
@@ -223,37 +223,44 @@
   ],
   "packageServices": [
     {
+      "id": 1,
       "package_id": 1,
       "service_id": 1
     },
     {
+      "id": 2,
       "package_id": 1,
       "service_id": 2
     },
     {
+      "id": 3,
       "package_id": 2,
       "service_id": 3
     },
     {
+      "id": 4,
       "package_id": 2,
       "service_id": 4
     },
     {
+      "id": 5,
       "package_id": 3,
       "service_id": 1
     },
     {
+      "id": 6,
       "package_id": 3,
       "service_id": 2
     },
     {
+      "id": 7,
       "package_id": 3,
       "service_id": 5
     }
   ],
   "services": [
     {
-      "service_id": 1,
+      "id": 1,
       "code": "SVC001",
       "name": "Bathing Assistance",
       "hourly_rate": 20.0,
@@ -262,7 +269,7 @@
       "is_active": true
     },
     {
-      "service_id": 2,
+      "id": 2,
       "code": "SVC002",
       "name": "Dressing Assistance",
       "hourly_rate": 18.0,
@@ -271,7 +278,7 @@
       "is_active": true
     },
     {
-      "service_id": 3,
+      "id": 3,
       "code": "SVC003",
       "name": "Mobility Assistance",
       "hourly_rate": 25.0,
@@ -280,7 +287,7 @@
       "is_active": true
     },
     {
-      "service_id": 4,
+      "id": 4,
       "code": "SVC004",
       "name": "Meal Preparation",
       "hourly_rate": 20.0,
@@ -289,7 +296,7 @@
       "is_active": true
     },
     {
-      "service_id": 5,
+      "id": 5,
       "code": "SVC005",
       "name": "Medication Reminders",
       "hourly_rate": 15.0,
@@ -298,7 +305,7 @@
       "is_active": true
     },
     {
-      "service_id": 6,
+      "id": 6,
       "code": "SVC006",
       "name": "Light Housekeeping",
       "hourly_rate": 22.0,
@@ -309,7 +316,7 @@
   ],
   "appointments": [
     {
-      "appointment_id": 1,
+      "id": 1,
       "customer_id": 1,
       "caregiver_id": 1,
       "package_id": 1,
@@ -321,7 +328,7 @@
       "total_cost": 38.0
     },
     {
-      "appointment_id": 2,
+      "id": 2,
       "customer_id": 2,
       "caregiver_id": 2,
       "package_id": 2,
@@ -333,7 +340,7 @@
       "total_cost": 45.0
     },
     {
-      "appointment_id": 3,
+      "id": 3,
       "customer_id": 3,
       "caregiver_id": 3,
       "package_id": 3,
@@ -345,7 +352,7 @@
       "total_cost": 60.0
     },
     {
-      "appointment_id": 4,
+      "id": 4,
       "customer_id": 4,
       "caregiver_id": 4,
       "package_id": 1,
@@ -357,7 +364,7 @@
       "total_cost": 38.0
     },
     {
-      "appointment_id": 5,
+      "id": 5,
       "customer_id": 5,
       "caregiver_id": 1,
       "package_id": 2,
@@ -369,7 +376,7 @@
       "total_cost": 45.0
     },
     {
-      "appointment_id": 6,
+      "id": 6,
       "customer_id": 1,
       "caregiver_id": 2,
       "package_id": 3,
@@ -381,7 +388,7 @@
       "total_cost": 60.0
     },
     {
-      "appointment_id": 7,
+      "id": 7,
       "customer_id": 2,
       "caregiver_id": 3,
       "package_id": 1,
@@ -393,7 +400,7 @@
       "total_cost": 38.0
     },
     {
-      "appointment_id": 8,
+      "id": 8,
       "customer_id": 3,
       "caregiver_id": 4,
       "package_id": 2,
@@ -405,7 +412,7 @@
       "total_cost": 45.0
     },
     {
-      "appointment_id": 9,
+      "id": 9,
       "customer_id": 4,
       "caregiver_id": 1,
       "package_id": 3,
@@ -417,7 +424,7 @@
       "total_cost": 60.0
     },
     {
-      "appointment_id": 10,
+      "id": 10,
       "customer_id": 5,
       "caregiver_id": 2,
       "package_id": 1,
@@ -431,7 +438,7 @@
   ],
   "recurringSchedules": [
     {
-      "schedule_id": 1,
+      "id": 1,
       "customer_id": 1,
       "package_id": 1,
       "caregiver_id": 1,
@@ -443,7 +450,7 @@
       "is_active": true
     },
     {
-      "schedule_id": 2,
+      "id": 2,
       "customer_id": 2,
       "package_id": 2,
       "caregiver_id": 2,
@@ -455,7 +462,7 @@
       "is_active": true
     },
     {
-      "schedule_id": 3,
+      "id": 3,
       "customer_id": 3,
       "package_id": 3,
       "caregiver_id": 3,
@@ -469,7 +476,7 @@
   ],
   "caregiverAvailability": [
     {
-      "availability_id": 1,
+      "id": 1,
       "caregiver_id": 1,
       "date": "2025-08-01",
       "start_time": "08:00:00",
@@ -477,7 +484,7 @@
       "is_available": true
     },
     {
-      "availability_id": 2,
+      "id": 2,
       "caregiver_id": 2,
       "date": "2025-08-02",
       "start_time": "09:00:00",
@@ -485,7 +492,7 @@
       "is_available": true
     },
     {
-      "availability_id": 3,
+      "id": 3,
       "caregiver_id": 3,
       "date": "2025-08-03",
       "start_time": "07:00:00",
@@ -493,7 +500,7 @@
       "is_available": true
     },
     {
-      "availability_id": 4,
+      "id": 4,
       "caregiver_id": 4,
       "date": "2025-08-04",
       "start_time": "10:00:00",
@@ -501,7 +508,7 @@
       "is_available": true
     },
     {
-      "availability_id": 5,
+      "id": 5,
       "caregiver_id": 1,
       "date": "2025-08-05",
       "start_time": "08:00:00",
@@ -558,47 +565,53 @@
   ],
   "caregiverSkills": [
     {
+      "id": 1,
       "caregiver_id": 1,
       "skill_id": 1
     },
     {
+      "id": 2,
       "caregiver_id": 1,
       "skill_id": 2
     },
     {
+      "id": 3,
       "caregiver_id": 2,
       "skill_id": 1
     },
     {
+      "id": 4,
       "caregiver_id": 3,
       "skill_id": 3
     },
     {
+      "id": 5,
       "caregiver_id": 4,
       "skill_id": 2
     },
     {
+      "id": 6,
       "caregiver_id": 4,
       "skill_id": 4
     }
   ],
   "carePlans": [
     {
-      "care_plan_id": 1,
+      "id": 1,
       "customer_id": 1,
       "overall_goal": "Maintain stable blood pressure and improve mobility",
       "start_date": "2025-07-01",
       "status": "Active"
     },
     {
-      "care_plan_id": 2,
+      "id": 2,
       "customer_id": 2,
       "overall_goal": "Manage diabetes through diet and medication compliance",
       "start_date": "2025-06-15",
       "status": "Active"
     },
     {
-      "care_plan_id": 3,
+      "id": 3,
       "customer_id": 3,
       "overall_goal": "Improve joint mobility and pain management",
       "start_date": "2025-08-01",
@@ -607,7 +620,7 @@
   ],
   "payments": [
     {
-      "payment_id": 1,
+      "id": 1,
       "appointment_id": 1,
       "customer_id": 1,
       "amount": 38.0,
@@ -616,7 +629,7 @@
       "status": "Completed"
     },
     {
-      "payment_id": 2,
+      "id": 2,
       "appointment_id": 2,
       "customer_id": 2,
       "amount": 45.0,
@@ -625,7 +638,7 @@
       "status": "Pending"
     },
     {
-      "payment_id": 3,
+      "id": 3,
       "appointment_id": 3,
       "customer_id": 3,
       "amount": 60.0,
@@ -634,7 +647,7 @@
       "status": "Completed"
     },
     {
-      "payment_id": 4,
+      "id": 4,
       "appointment_id": 4,
       "customer_id": 4,
       "amount": 38.0,
@@ -643,7 +656,7 @@
       "status": "Completed"
     },
     {
-      "payment_id": 5,
+      "id": 5,
       "appointment_id": 5,
       "customer_id": 5,
       "amount": 45.0,
@@ -654,7 +667,7 @@
   ],
   "addresses": [
     {
-      "address_id": 1,
+      "id": 1,
       "street_address": "123 Main St",
       "city": "Springfield",
       "state_province": "IL",
@@ -662,7 +675,7 @@
       "country": "USA"
     },
     {
-      "address_id": 2,
+      "id": 2,
       "street_address": "456 Elm St",
       "city": "Springfield",
       "state_province": "IL",
@@ -670,7 +683,7 @@
       "country": "USA"
     },
     {
-      "address_id": 3,
+      "id": 3,
       "street_address": "789 Oak St",
       "city": "Springfield",
       "state_province": "IL",
@@ -680,7 +693,7 @@
   ],
   "evvRecords": [
     {
-      "evv_id": 1,
+      "id": 1,
       "appointment_id": 1,
       "caregiver_id": 1,
       "check_in_time": "2025-08-01T09:00:00Z",
@@ -690,7 +703,7 @@
       "patient_signature_url": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200&h=100&fit=crop"
     },
     {
-      "evv_id": 2,
+      "id": 2,
       "appointment_id": 2,
       "caregiver_id": 2,
       "check_in_time": null,
@@ -700,7 +713,7 @@
       "patient_signature_url": null
     },
     {
-      "evv_id": 3,
+      "id": 3,
       "appointment_id": 3,
       "caregiver_id": 3,
       "check_in_time": "2025-08-03T08:00:00Z",
@@ -710,7 +723,7 @@
       "patient_signature_url": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=100&fit=crop"
     },
     {
-      "evv_id": 4,
+      "id": 4,
       "appointment_id": 4,
       "caregiver_id": 4,
       "check_in_time": "2025-08-04T11:00:00Z",
@@ -720,7 +733,7 @@
       "patient_signature_url": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=100&fit=crop"
     },
     {
-      "evv_id": 5,
+      "id": 5,
       "appointment_id": 5,
       "caregiver_id": 1,
       "check_in_time": null,
@@ -732,7 +745,7 @@
   ],
   "auditLogs": [
     {
-      "log_id": 1,
+      "id": 1,
       "user_id": 1,
       "action": "create",
       "entity": "package",
@@ -741,7 +754,7 @@
       "details": "{\"name\": \"Basic Personal Care\", \"code\": \"PC001\"}"
     },
     {
-      "log_id": 2,
+      "id": 2,
       "user_id": 1,
       "action": "create",
       "entity": "service",
@@ -750,7 +763,7 @@
       "details": "{\"name\": \"Bathing Assistance\", \"code\": \"SVC001\"}"
     },
     {
-      "log_id": 3,
+      "id": 3,
       "user_id": 2,
       "action": "create",
       "entity": "appointment",
@@ -759,7 +772,7 @@
       "details": "{\"package_id\": \"Basic Personal Care\", \"date\": \"2025-08-01\"}"
     },
     {
-      "log_id": 4,
+      "id": 4,
       "user_id": 1,
       "action": "update",
       "entity": "appointment",
@@ -768,7 +781,7 @@
       "details": "{\"status\": \"cancelled\", \"reason\": \"Customer hospital visit\"}"
     },
     {
-      "log_id": 5,
+      "id": 5,
       "user_id": 1,
       "action": "create",
       "entity": "caregiver",
@@ -777,7 +790,7 @@
       "details": "{\"name\": \"Alice Taylor\"}"
     },
     {
-      "log_id": 6,
+      "id": 6,
       "user_id": 1,
       "action": "update",
       "entity": "customer",
@@ -786,7 +799,7 @@
       "details": "{\"phone_number\": \"555-0101\"}"
     },
     {
-      "log_id": 7,
+      "id": 7,
       "user_id": 1,
       "action": "create",
       "entity": "recurringSchedule",
@@ -795,7 +808,7 @@
       "details": "{\"package_id\": \"Basic Personal Care\", \"start_date\": \"2025-08-01\"}"
     },
     {
-      "log_id": 8,
+      "id": 8,
       "user_id": 1,
       "action": "create",
       "entity": "carePlan",
@@ -804,7 +817,7 @@
       "details": "{\"overall_goal\": \"Maintain stable blood pressure\"}"
     },
     {
-      "log_id": 9,
+      "id": 9,
       "user_id": 1,
       "action": "delete",
       "entity": "service",
@@ -813,7 +826,7 @@
       "details": "{\"name\": \"Light Housekeeping\", \"reason\": \"Inactive\"}"
     },
     {
-      "log_id": 10,
+      "id": 10,
       "user_id": 1,
       "action": "update",
       "entity": "appointment",

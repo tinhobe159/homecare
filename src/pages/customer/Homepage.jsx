@@ -23,21 +23,21 @@ const Homepage = () => {
       // Fallback to mock data if API fails
       setPackages([
         {
-          package_id: 1,
+          id: 1,
           name: 'Basic Personal Care',
           description: 'Essential personal care services including bathing, dressing, and grooming assistance.',
           total_cost: 50,
           duration_hours: 2
         },
         {
-          package_id: 2,
+          id: 2,
           name: 'Comprehensive Care',
           description: 'Complete care package with personal care, medication management, and companionship.',
           total_cost: 100,
           duration_hours: 4
         },
         {
-          package_id: 3,
+          id: 3,
           name: 'Premium Care Plus',
           description: 'Premium care with additional services including meal preparation and errands.',
           total_cost: 150,
@@ -151,7 +151,7 @@ const Homepage = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {packages.map((pkg) => (
-                <div key={pkg.package_id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
+                <div key={pkg.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
                   <div className="p-6">
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">{pkg.name}</h3>
                     <p className="text-gray-600 mb-4">{pkg.description}</p>
@@ -166,7 +166,7 @@ const Homepage = () => {
                       </div>
                     </div>
                     <Link
-                      to={`/packages/${pkg.package_id}`}
+                      to={`/packages/${pkg.id}`}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-center font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                     >
                       <span>View Details</span>

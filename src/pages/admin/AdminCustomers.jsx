@@ -60,7 +60,7 @@ const AdminCustomers = () => {
     
     try {
       if (editingCustomer) {
-        await customersAPI.update(editingCustomer.customer_id, formData);
+        await customersAPI.update(editingCustomer.id, formData);
         toast.success('Customer updated successfully');
       } else {
         await customersAPI.create(formData);
@@ -203,7 +203,7 @@ const AdminCustomers = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredCustomers.map((customer) => (
-                  <tr key={customer.customer_id} className="hover:bg-gray-50">
+                  <tr key={customer.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
@@ -215,7 +215,7 @@ const AdminCustomers = () => {
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">{customer.name}</div>
-                          <div className="text-sm text-gray-500">ID: {customer.customer_id}</div>
+                          <div className="text-sm text-gray-500">ID: {customer.id}</div>
                         </div>
                       </div>
                     </td>
@@ -247,7 +247,7 @@ const AdminCustomers = () => {
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(customer.customer_id)}
+                          onClick={() => handleDelete(customer.id)}
                           className="text-red-600 hover:text-red-900"
                         >
                           <Trash2 className="h-4 w-4" />

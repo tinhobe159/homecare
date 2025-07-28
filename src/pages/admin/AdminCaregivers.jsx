@@ -91,11 +91,11 @@ const AdminCaregivers = () => {
       };
 
       if (editingCaregiver) {
-        await caregiversAPI.update(editingCaregiver.caregiver_id, caregiverData);
+        await caregiversAPI.update(editingCaregiver.id, caregiverData);
         toast.success('Caregiver updated successfully');
       } else {
         const response = await caregiversAPI.create(caregiverData);
-        const newCaregiverId = response.data.caregiver_id;
+        const newCaregiverId = response.data.id;
         
         // Add skills for the new caregiver
         for (const skillId of formData.selectedSkills) {
@@ -245,7 +245,7 @@ const AdminCaregivers = () => {
         {/* Caregivers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCaregivers.map((caregiver) => (
-            <div key={caregiver.caregiver_id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            <div key={caregiver.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
@@ -257,7 +257,7 @@ const AdminCaregivers = () => {
                     </div>
                     <div className="ml-3">
                       <h3 className="text-lg font-semibold text-gray-900">{caregiver.name}</h3>
-                      <p className="text-sm text-gray-500">ID: {caregiver.caregiver_id}</p>
+                      <p className="text-sm text-gray-500">ID: {caregiver.id}</p>
                     </div>
                   </div>
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -319,7 +319,7 @@ const AdminCaregivers = () => {
                     <Edit className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => handleDelete(caregiver.caregiver_id)}
+                    onClick={() => handleDelete(caregiver.id)}
                     className="text-red-600 hover:text-red-900 p-1"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -438,13 +438,13 @@ const AdminCaregivers = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Skills</label>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                       {skills.map((skill) => (
-                        <label key={skill.skill_id} className="flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={(formData.selectedSkills || []).includes(skill.skill_id)}
-                            onChange={() => handleSkillToggle(skill.skill_id)}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
+                                              <label key={skill.id} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={(formData.selectedSkills || []).includes(skill.id)}
+                          onChange={() => handleSkillToggle(skill.id)}
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
                           <span className="ml-2 text-sm text-gray-700">{skill.name}</span>
                         </label>
                       ))}

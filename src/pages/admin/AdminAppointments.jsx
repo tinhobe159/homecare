@@ -87,7 +87,7 @@ const AdminAppointments = () => {
     e.preventDefault();
     
     try {
-      await appointmentsAPI.update(selectedAppointment.appointment_id, formData);
+      await appointmentsAPI.update(selectedAppointment.id, formData);
       toast.success('Appointment updated successfully');
       setShowModal(false);
       setSelectedAppointment(null);
@@ -99,7 +99,7 @@ const AdminAppointments = () => {
   };
 
   const getPackageById = (packageId) => {
-    return packages.find(pkg => pkg.package_id === packageId);
+    return packages.find(pkg => pkg.id === packageId);
   };
 
   const getCustomerById = (customerId) => {
@@ -198,7 +198,7 @@ const AdminAppointments = () => {
             const pkg = getPackageById(appointment.package_id);
             
             return (
-              <div key={appointment.appointment_id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+              <div key={appointment.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-4">
@@ -209,7 +209,7 @@ const AdminAppointments = () => {
                       </div>
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
-                          Appointment #{appointment.appointment_id}
+                          Appointment #{appointment.id}
                         </h3>
                         <p className="text-sm text-gray-500">
                           {new Date(appointment.preferred_date).toLocaleDateString()} at {appointment.preferred_time}
@@ -230,13 +230,13 @@ const AdminAppointments = () => {
                         {appointment.status === 'pending' && (
                           <>
                             <button
-                              onClick={() => handleStatusUpdate(appointment.appointment_id, 'confirmed')}
+                              onClick={() => handleStatusUpdate(appointment.id, 'confirmed')}
                               className="text-green-600 hover:text-green-900 p-1"
                             >
                               <CheckCircle className="h-4 w-4" />
                             </button>
                             <button
-                              onClick={() => handleStatusUpdate(appointment.appointment_id, 'cancelled')}
+                              onClick={() => handleStatusUpdate(appointment.id, 'cancelled')}
                               className="text-red-600 hover:text-red-900 p-1"
                             >
                               <XCircle className="h-4 w-4" />
@@ -245,7 +245,7 @@ const AdminAppointments = () => {
                         )}
                         {appointment.status === 'confirmed' && (
                           <button
-                            onClick={() => handleStatusUpdate(appointment.appointment_id, 'completed')}
+                            onClick={() => handleStatusUpdate(appointment.id, 'completed')}
                             className="text-blue-600 hover:text-blue-900 p-1"
                           >
                             <CheckCircle className="h-4 w-4" />
@@ -343,7 +343,7 @@ const AdminAppointments = () => {
             <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
               <div className="mt-3">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  Appointment Details - #{selectedAppointment.appointment_id}
+                  Appointment Details - #{selectedAppointment.id}
                 </h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>

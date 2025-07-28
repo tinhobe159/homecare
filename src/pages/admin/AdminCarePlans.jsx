@@ -70,7 +70,7 @@ const AdminCarePlans = () => {
       };
 
       if (editingCarePlan) {
-        await carePlansAPI.update(editingCarePlan.care_plan_id, carePlanData);
+        await carePlansAPI.update(editingCarePlan.id, carePlanData);
         toast.success('Care plan updated successfully');
       } else {
         await carePlansAPI.create(carePlanData);
@@ -208,7 +208,7 @@ const AdminCarePlans = () => {
         {/* Care Plans Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCarePlans.map((plan) => (
-            <div key={plan.care_plan_id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                            <div key={plan.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
@@ -218,7 +218,7 @@ const AdminCarePlans = () => {
                     </div>
                     <div className="ml-3">
                       <h3 className="text-lg font-semibold text-gray-900">{plan.plan_name}</h3>
-                      <p className="text-sm text-gray-500">ID: {plan.care_plan_id}</p>
+                      <p className="text-sm text-gray-500">ID: {plan.id}</p>
                     </div>
                   </div>
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -256,7 +256,7 @@ const AdminCarePlans = () => {
                     <Edit className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => handleDelete(plan.care_plan_id)}
+                    onClick={() => handleDelete(plan.id)}
                     className="text-red-600 hover:text-red-900 p-1"
                   >
                     <Trash2 className="h-4 w-4" />

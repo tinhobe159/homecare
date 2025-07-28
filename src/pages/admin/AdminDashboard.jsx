@@ -193,10 +193,10 @@ const AdminDashboard = () => {
             
             <div className="space-y-4">
               {recentAppointments.map((appointment) => (
-                <div key={appointment.appointment_id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={appointment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
                     <p className="font-medium text-gray-900">
-                      Appointment #{appointment.appointment_id}
+                      Appointment #{appointment.id}
                     </p>
                     <p className="text-sm text-gray-600">
                       {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at{' '}

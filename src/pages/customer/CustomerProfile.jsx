@@ -93,7 +93,7 @@ const CustomerProfile = () => {
   };
 
   const getPackageById = (packageId) => {
-    return packages.find(pkg => pkg.package_id === packageId);
+    return packages.find(pkg => pkg.id === packageId);
   };
 
   const getStatusColor = (status) => {
@@ -285,7 +285,7 @@ const CustomerProfile = () => {
                   {appointments.map((appointment) => {
                     const pkg = getPackageById(appointment.package_id);
                     return (
-                      <div key={appointment.appointment_id} className="border border-gray-200 rounded-lg p-4">
+                      <div key={appointment.id} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center">
                             <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
