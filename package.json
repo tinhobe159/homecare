@@ -2,17 +2,19 @@
   "name": "homecare-booking-service",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "json-server --watch src/data/db.json --config json-server.json",
-    "start": "json-server --watch src/data/db.json --port $PORT --host 0.0.0.0"
+    "api-server": "node server.js",
+    "start": "concurrently \"npm run api-server\" \"npm run dev\""
   },
   "dependencies": {
     "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
