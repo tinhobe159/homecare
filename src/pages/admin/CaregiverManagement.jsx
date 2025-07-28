@@ -40,6 +40,9 @@ const CaregiverManagement = () => {
   };
 
   const getSkillNames = (skillIds) => {
+    if (!skillIds || !Array.isArray(skillIds)) {
+      return 'No skills listed';
+    }
     return skillIds.map(id => {
       const skill = skills.find(s => s.id === id);
       return skill ? skill.name : 'Unknown';

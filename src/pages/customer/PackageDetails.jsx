@@ -35,6 +35,7 @@ const PackageDetails = () => {
       // Get services for this package
       const serviceIds = packageServicesRes.data.map(ps => ps.service_id);
       const packageServices = servicesRes.data.filter(service => 
+        serviceIds && Array.isArray(serviceIds) && 
         serviceIds.includes(service.service_id) && service.is_active
       );
       setServices(packageServices);

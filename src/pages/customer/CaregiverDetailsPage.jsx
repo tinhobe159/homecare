@@ -56,7 +56,10 @@ const CaregiverDetailsPage = () => {
     );
   }
 
-  const caregiverSkills = skills.filter(skill => caregiver.skillIds.includes(skill.id));
+  const caregiverSkills = skills.filter(skill => 
+    caregiver.skillIds && Array.isArray(caregiver.skillIds) && 
+    caregiver.skillIds.includes(skill.id)
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">

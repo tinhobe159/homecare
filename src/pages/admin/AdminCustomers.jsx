@@ -103,9 +103,9 @@ const AdminCustomers = () => {
   };
 
   const filteredCustomers = customers.filter(customer => {
-    const matchesSearch = customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         customer.phone.includes(searchTerm);
+    const matchesSearch = (customer.name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (customer.email || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (customer.phone || '').includes(searchTerm || '');
     const matchesFilter = filterStatus === 'all' || customer.status === filterStatus;
     return matchesSearch && matchesFilter;
   });
@@ -209,7 +209,7 @@ const AdminCustomers = () => {
                         <div className="flex-shrink-0 h-10 w-10">
                           <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
                             <span className="text-sm font-medium text-blue-600">
-                              {customer.name.charAt(0).toUpperCase()}
+                              {(customer.name || '').charAt(0).toUpperCase()}
                             </span>
                           </div>
                         </div>

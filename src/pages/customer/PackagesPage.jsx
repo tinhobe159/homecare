@@ -47,12 +47,15 @@ const PackagesPage = () => {
 
   const getPackageServices = (packageId) => {
     const serviceIds = packageServices[packageId] || [];
-    return services.filter(service => serviceIds.includes(service.service_id) && service.is_active);
+    return services.filter(service => 
+      serviceIds && Array.isArray(serviceIds) && 
+      serviceIds.includes(service.service_id) && service.is_active
+    );
   };
 
   const filteredPackages = packages.filter(pkg =>
-    pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    pkg.description.toLowerCase().includes(searchQuery.toLowerCase())
+    (pkg.name || '').toLowerCase().includes((searchQuery || '').toLowerCase()) ||
+    (pkg.description || '').toLowerCase().includes((searchQuery || '').toLowerCase())
   );
 
   if (loading) {

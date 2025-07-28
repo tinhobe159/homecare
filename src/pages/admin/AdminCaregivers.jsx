@@ -68,9 +68,9 @@ const AdminCaregivers = () => {
   const handleSkillToggle = (skillId) => {
     setFormData(prev => ({
       ...prev,
-      selectedSkills: prev.selectedSkills.includes(skillId)
-        ? prev.selectedSkills.filter(id => id !== skillId)
-        : [...prev.selectedSkills, skillId]
+      selectedSkills: (prev.selectedSkills || []).includes(skillId)
+        ? (prev.selectedSkills || []).filter(id => id !== skillId)
+        : [...(prev.selectedSkills || []), skillId]
     }));
   };
 
@@ -157,9 +157,9 @@ const AdminCaregivers = () => {
   };
 
   const filteredCaregivers = caregivers.filter(caregiver => {
-    const matchesSearch = caregiver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         caregiver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         caregiver.phone.includes(searchTerm);
+    const matchesSearch = (caregiver.name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (caregiver.email || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (caregiver.phone || '').includes(searchTerm || '');
     const matchesFilter = filterStatus === 'all' || caregiver.status === filterStatus;
     return matchesSearch && matchesFilter;
   });
@@ -252,7 +252,7 @@ const AdminCaregivers = () => {
                   <div className="flex items-center">
                     <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
                       <span className="text-lg font-medium text-blue-600">
-                        {caregiver.name.charAt(0).toUpperCase()}
+                        {(caregiver.name || '').charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div className="ml-3">
@@ -441,7 +441,7 @@ const AdminCaregivers = () => {
                         <label key={skill.skill_id} className="flex items-center">
                           <input
                             type="checkbox"
-                            checked={formData.selectedSkills.includes(skill.skill_id)}
+                            checked={(formData.selectedSkills || []).includes(skill.skill_id)}
                             onChange={() => handleSkillToggle(skill.skill_id)}
                             className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                           />

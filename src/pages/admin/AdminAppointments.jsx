@@ -121,9 +121,9 @@ const AdminAppointments = () => {
     const pkg = getPackageById(appointment.package_id);
     
     const matchesSearch = 
-      (customer?.name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (customer?.email?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (pkg?.name?.toLowerCase().includes(searchTerm.toLowerCase()));
+      (customer?.name?.toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+      (customer?.email?.toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+      (pkg?.name?.toLowerCase().includes((searchTerm || '').toLowerCase()));
     
     const matchesFilter = filterStatus === 'all' || appointment.status === filterStatus;
     return matchesSearch && matchesFilter;

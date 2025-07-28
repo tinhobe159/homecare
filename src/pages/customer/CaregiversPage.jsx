@@ -21,7 +21,10 @@ const CaregiversPage = () => {
       setFilteredCaregivers(caregivers);
     } else {
       setFilteredCaregivers(
-        caregivers.filter(caregiver => caregiver.skillIds.includes(selectedSkill))
+        caregivers.filter(caregiver => 
+          caregiver.skillIds && Array.isArray(caregiver.skillIds) && 
+          caregiver.skillIds.includes(selectedSkill)
+        )
       );
     }
   }, [selectedSkill, caregivers]);

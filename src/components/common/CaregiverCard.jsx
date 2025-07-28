@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { CheckCircle, Clock, Star } from 'lucide-react';
 
 const CaregiverCard = ({ caregiver, skills }) => {
-  const caregiverSkills = skills.filter(skill => caregiver.skillIds.includes(skill.id));
+  const caregiverSkills = skills.filter(skill => 
+    caregiver.skillIds && Array.isArray(caregiver.skillIds) && 
+    caregiver.skillIds.includes(skill.id)
+  );
 
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border border-gray-200">
