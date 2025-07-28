@@ -80,6 +80,24 @@ export const caregiversAPI = {
   delete: (id) => api.delete(`/caregivers/${id}`),
 };
 
+// Skills
+export const skillsAPI = {
+  getAll: () => api.get('/skills'),
+  getById: (id) => api.get(`/skills/${id}`),
+  create: (data) => api.post('/skills', data),
+  update: (id, data) => api.put(`/skills/${id}`, data),
+  delete: (id) => api.delete(`/skills/${id}`),
+};
+
+// Caregiver Availability
+export const caregiverAvailabilityAPI = {
+  getAll: () => api.get('/caregiverAvailability'),
+  getByCaregiverId: (caregiverId) => api.get(`/caregiverAvailability?caregiver_id=${caregiverId}`),
+  create: (data) => api.post('/caregiverAvailability', data),
+  update: (id, data) => api.put(`/caregiverAvailability/${id}`, data),
+  delete: (id) => api.delete(`/caregiverAvailability/${id}`),
+};
+
 // Appointments
 export const appointmentsAPI = {
   getAll: () => api.get('/appointments'),
@@ -98,23 +116,6 @@ export const recurringSchedulesAPI = {
   create: (data) => api.post('/recurringSchedules', data),
   update: (id, data) => api.put(`/recurringSchedules/${id}`, data),
   delete: (id) => api.delete(`/recurringSchedules/${id}`),
-};
-
-// Caregiver Availability
-export const caregiverAvailabilityAPI = {
-  getAll: () => api.get('/caregiverAvailability'),
-  getByCaregiverId: (caregiverId) => api.get(`/caregiverAvailability?caregiver_id=${caregiverId}`),
-  create: (data) => api.post('/caregiverAvailability', data),
-  update: (id, data) => api.put(`/caregiverAvailability/${id}`, data),
-  delete: (id) => api.delete(`/caregiverAvailability/${id}`),
-};
-
-// Skills
-export const skillsAPI = {
-  getAll: () => api.get('/skills'),
-  getById: (id) => api.get(`/skills/${id}`),
-  create: (data) => api.post('/skills', data),
-  delete: (id) => api.delete(`/skills/${id}`),
 };
 
 // Caregiver Skills

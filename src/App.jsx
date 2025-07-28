@@ -17,11 +17,15 @@ import PackageDetails from "./pages/customer/PackageDetails";
 import BookingPage from "./pages/customer/BookingPage";
 import CustomerLogin from "./pages/customer/CustomerLogin";
 import CustomerProfile from "./pages/customer/CustomerProfile";
+import CaregiversPage from "./pages/customer/CaregiversPage";
+import CaregiverDetailsPage from "./pages/customer/CaregiverDetailsPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminCaregivers from "./pages/admin/AdminCaregivers";
 import AdminAppointments from "./pages/admin/AdminAppointments";
+import CaregiverManagement from "./pages/admin/CaregiverManagement";
+import CaregiverAvailability from "./pages/admin/CaregiverAvailability";
 
 function App() {
   return (
@@ -38,26 +42,21 @@ function App() {
               <Route path="/book" element={<BookingPage />} />
               <Route path="/login" element={<CustomerLogin />} />
               <Route path="/profile" element={<CustomerProfile />} />
+              <Route path="/caregivers" element={<CaregiversPage />} />
+              <Route path="/caregivers/:id" element={<CaregiverDetailsPage />} />
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/customers" element={<AdminCustomers />} />
-              <Route path="/admin/caregivers" element={<AdminCaregivers />} />
+              <Route path="/admin/caregivers" element={<CaregiverManagement />} />
+              <Route path="/admin/caregivers/:id/availability" element={<CaregiverAvailability />} />
               <Route
                 path="/admin/appointments"
                 element={<AdminAppointments />}
               />
 
               {/* Add more routes as needed */}
-              <Route
-                path="/caregivers"
-                element={
-                  <div className="p-8 text-center">
-                    Caregivers page coming soon...
-                  </div>
-                }
-              />
               <Route
                 path="/payments"
                 element={
