@@ -15,9 +15,10 @@ import {
   Calendar,
   MessageCircle,
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
+  Plus
 } from 'lucide-react';
-import { userRequestsAPI, customersAPI, packagesAPI, appointmentsAPI } from '../../services/api';
+import { userRequestsAPI, customersAPI, packagesAPI, appointmentsAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -25,14 +26,29 @@ const AdminUserRequests = () => {
   const [userRequests, setUserRequests] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [packages, setPackages] = useState([]);
+  const [caregivers, setCaregivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [showModal, setShowModal] = useState(false);
+  const [showCreateAppointmentModal, setShowCreateAppointmentModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedRequestForAppointment, setSelectedRequestForAppointment] = useState(null);
   const [formData, setFormData] = useState({
     status: '',
     notes: ''
+  });
+  const [appointmentFormData, setAppointmentFormData] = useState({
+    customer_id: '',
+    caregiver_id: '',
+    package_id: '',
+    appointment_datetime_start: '',
+    appointment_datetime_end: '',
+    duration_minutes: '',
+    status: 'Pending',
+    booking_notes: '',
+    total_cost: '',
+    user_request_id: ''
   });
 
   useEffect(() => {
@@ -41,14 +57,16 @@ const AdminUserRequests = () => {
 
   const fetchData = async () => {
     try {
-      const [requestsResponse, customersResponse, packagesResponse] = await Promise.all([
+      const [requestsResponse, customersResponse, packagesResponse, caregiversResponse] = await Promise.all([
         userRequestsAPI.getAll(),
         customersAPI.getAll(),
-        packagesAPI.getAll()
+        packagesAPI.getAll(),
+        caregiversAPI.getAll()
       ]);
       setUserRequests(requestsResponse.data);
       setCustomers(customersResponse.data);
       setPackages(packagesResponse.data);
+      setCaregivers(caregiversResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load user requests');
@@ -63,6 +81,96 @@ const AdminUserRequests = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleAppointmentInputChange = (e) => {
+    const { name, value } = e.target;
+    setAppointmentFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleCreateAppointmentFromRequest = (request) => {
+    const customer = customers.find(c => c.id === request.customer_id);
+    const pkg = packages.find(p => p.id === request.package_id);
+    
+    // Auto-fill appointment form with request data
+    setAppointmentFormData({
+      customer_id: request.customer_id,
+      caregiver_id: '', // Admin needs to select
+      package_id: request.package_id,
+      appointment_datetime_start: '',
+      appointment_datetime_end: '',
+      duration_minutes: pkg ? pkg.duration_hours * 60 : '',
+      status: 'Pending',
+      booking_notes: request.notes || '',
+      total_cost: pkg ? pkg.total_cost : '',
+      user_request_id: request.id
+    });
+    
+    setSelectedRequestForAppointment(request);
+    setShowCreateAppointmentModal(true);
+  };
+
+  const handleCreateAppointment = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // Calculate end time if not provided
+      let endTime = appointmentFormData.appointment_datetime_end;
+      if (!endTime && appointmentFormData.appointment_datetime_start && appointmentFormData.duration_minutes) {
+        const startTime = new Date(appointmentFormData.appointment_datetime_start);
+        const endTimeDate = new Date(startTime.getTime() + (parseInt(appointmentFormData.duration_minutes) * 60 * 1000));
+        endTime = endTimeDate.toISOString();
+      }
+
+      const appointmentData = {
+        ...appointmentFormData,
+        appointment_datetime_end: endTime,
+        created_at: new Date().toISOString()
+      };
+
+      await appointmentsAPI.create(appointmentData);
+      
+      // Update request status to converted
+      await userRequestsAPI.update(appointmentFormData.user_request_id, { 
+        status: 'converted',
+        converted_at: new Date().toISOString()
+      });
+
+      toast.success('Appointment created successfully from request');
+      setShowCreateAppointmentModal(false);
+      setSelectedRequestForAppointment(null);
+      setAppointmentFormData({
+        customer_id: '',
+        caregiver_id: '',
+        package_id: '',
+        appointment_datetime_start: '',
+        appointment_datetime_end: '',
+        duration_minutes: '',
+        status: 'Pending',
+        booking_notes: '',
+        total_cost: '',
+        user_request_id: ''
+      });
+      fetchData();
+    } catch (error) {
+      console.error('Error creating appointment:', error);
+      toast.error('Failed to create appointment');
+    }
+  };
+
+  const handlePackageChange = (packageId) => {
+    const selectedPackage = packages.find(pkg => pkg.id === parseInt(packageId));
+    if (selectedPackage) {
+      setAppointmentFormData(prev => ({
+        ...prev,
+        package_id: packageId,
+        total_cost: selectedPackage.total_cost,
+        duration_minutes: selectedPackage.duration_hours * 60
+      }));
+    }
   };
 
   const handleStatusUpdate = async (requestId, newStatus) => {
@@ -294,8 +402,15 @@ const AdminUserRequests = () => {
                         {request.status === 'contacted' && (
                           <>
                             <button
-                              onClick={() => handleConvertToAppointment(request.id)}
+                              onClick={() => handleCreateAppointmentFromRequest(request)}
                               className="text-green-600 hover:text-green-900 p-1"
+                              title="Create Appointment"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => handleConvertToAppointment(request.id)}
+                              className="text-blue-600 hover:text-blue-900 p-1"
                               title="Convert to Appointment"
                             >
                               <CheckCircle2 className="h-4 w-4" />
@@ -308,6 +423,15 @@ const AdminUserRequests = () => {
                               <XCircle className="h-4 w-4" />
                             </button>
                           </>
+                        )}
+                        {request.status === 'new' && (
+                          <button
+                            onClick={() => handleCreateAppointmentFromRequest(request)}
+                            className="text-green-600 hover:text-green-900 p-1"
+                            title="Create Appointment"
+                          >
+                            <Plus className="h-4 w-4" />
+                          </button>
                         )}
                       </div>
                     </div>
@@ -398,7 +522,223 @@ const AdminUserRequests = () => {
           })}
         </div>
 
-        {/* Modal */}
+        {/* Create Appointment Modal */}
+        {showCreateAppointmentModal && selectedRequestForAppointment && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+              <div className="mt-3">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Create Appointment from Request #{selectedRequestForAppointment.id}
+                  </h3>
+                  <button
+                    onClick={() => setShowCreateAppointmentModal(false)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <XCircle className="h-6 w-6" />
+                  </button>
+                </div>
+                
+                {/* Request Info Summary */}
+                <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+                  <h4 className="font-medium text-blue-900 mb-2">Request Information (Auto-filled)</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium text-blue-800">Customer:</span> 
+                      <span className="ml-2 text-blue-700">
+                        {(() => {
+                          const customer = customers.find(c => c.id === selectedRequestForAppointment.customer_id);
+                          return customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown';
+                        })()}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-blue-800">Package:</span> 
+                      <span className="ml-2 text-blue-700">
+                        {(() => {
+                          const pkg = packages.find(p => p.id === selectedRequestForAppointment.package_id);
+                          return pkg ? pkg.name : 'No package selected';
+                        })()}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-blue-800">Contact Method:</span> 
+                      <span className="ml-2 text-blue-700 capitalize">{selectedRequestForAppointment.preferred_contact_method}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-blue-800">Request Notes:</span> 
+                      <span className="ml-2 text-blue-700">{selectedRequestForAppointment.notes || 'No notes'}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <form onSubmit={handleCreateAppointment} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Customer Selection (Auto-filled, editable) */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Customer *</label>
+                      <select
+                        name="customer_id"
+                        value={appointmentFormData.customer_id}
+                        onChange={handleAppointmentInputChange}
+                        required
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select Customer</option>
+                        {customers.map(customer => (
+                          <option key={customer.id} value={customer.id}>
+                            {customer.first_name} {customer.last_name} - {customer.email}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Caregiver Selection */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Caregiver *</label>
+                      <select
+                        name="caregiver_id"
+                        value={appointmentFormData.caregiver_id}
+                        onChange={handleAppointmentInputChange}
+                        required
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select Caregiver</option>
+                        {caregivers.map(caregiver => (
+                          <option key={caregiver.id} value={caregiver.id}>
+                            {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourlyRate}/hr
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Package Selection (Auto-filled, editable) */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Package *</label>
+                      <select
+                        name="package_id"
+                        value={appointmentFormData.package_id}
+                        onChange={(e) => {
+                          handleAppointmentInputChange(e);
+                          handlePackageChange(e.target.value);
+                        }}
+                        required
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select Package</option>
+                        {packages.map(pkg => (
+                          <option key={pkg.id} value={pkg.id}>
+                            {pkg.name} - ${pkg.total_cost} ({pkg.duration_hours}h)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Status */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                      <select
+                        name="status"
+                        value={appointmentFormData.status}
+                        onChange={handleAppointmentInputChange}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                      </select>
+                    </div>
+
+                    {/* Start Date & Time */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Start Date & Time *</label>
+                      <input
+                        type="datetime-local"
+                        name="appointment_datetime_start"
+                        value={appointmentFormData.appointment_datetime_start}
+                        onChange={handleAppointmentInputChange}
+                        required
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    {/* End Date & Time */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">End Date & Time</label>
+                      <input
+                        type="datetime-local"
+                        name="appointment_datetime_end"
+                        value={appointmentFormData.appointment_datetime_end}
+                        onChange={handleAppointmentInputChange}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Leave empty to auto-calculate based on duration</p>
+                    </div>
+
+                    {/* Duration */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Duration (minutes)</label>
+                      <input
+                        type="number"
+                        name="duration_minutes"
+                        value={appointmentFormData.duration_minutes}
+                        onChange={handleAppointmentInputChange}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Auto-filled from package"
+                      />
+                    </div>
+
+                    {/* Total Cost */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Total Cost ($)</label>
+                      <input
+                        type="number"
+                        name="total_cost"
+                        value={appointmentFormData.total_cost}
+                        onChange={handleAppointmentInputChange}
+                        step="0.01"
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Auto-filled from package"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Booking Notes (Auto-filled from request notes) */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Booking Notes</label>
+                    <textarea
+                      name="booking_notes"
+                      value={appointmentFormData.booking_notes}
+                      onChange={handleAppointmentInputChange}
+                      rows="3"
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Add any special instructions or notes for this appointment..."
+                    />
+                  </div>
+
+                  <div className="flex justify-end space-x-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={() => setShowCreateAppointmentModal(false)}
+                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                    >
+                      Create Appointment
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Request Modal */}
         {showModal && selectedRequest && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
             <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
