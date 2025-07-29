@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Users, Shield, Heart, ArrowRight, Star, Clock, DollarSign } from 'lucide-react';
+import { Calendar, Users, Shield, Heart, ArrowRight, Star, Clock, DollarSign, MessageSquare } from 'lucide-react';
 import { packagesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -68,7 +68,7 @@ const Homepage = () => {
                 className="bg-white text-blue-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
               >
                 <Calendar className="h-5 w-5" />
-                <span>Book a Package</span>
+                <span>Request Care Package</span>
               </Link>
               <Link
                 to="/packages"
@@ -204,7 +204,7 @@ const Homepage = () => {
             className="bg-white text-blue-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl inline-flex items-center space-x-2"
           >
             <Calendar className="h-5 w-5" />
-            <span>Book Your First Visit</span>
+            <span>Request Your First Visit</span>
           </Link>
         </div>
       </section>

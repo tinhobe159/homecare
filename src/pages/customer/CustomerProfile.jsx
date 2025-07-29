@@ -13,10 +13,11 @@ import {
   DollarSign,
   CheckCircle,
   XCircle,
-  AlertCircle
+  AlertCircle,
+  MessageSquare
 } from 'lucide-react';
 import { AuthContext } from '../../contexts/AuthContext';
-import { appointmentsAPI, packagesAPI } from '../../services/api';
+import { appointmentsAPI, packagesAPI, userRequestsAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -24,6 +25,7 @@ const CustomerProfile = () => {
   const { currentUser, login } = useContext(AuthContext);
   const [appointments, setAppointments] = useState([]);
   const [packages, setPackages] = useState([]);
+  const [userRequests, setUserRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -42,9 +44,10 @@ const CustomerProfile = () => {
 
   const fetchUserData = async () => {
     try {
-      const [appointmentsResponse, packagesResponse] = await Promise.all([
+      const [appointmentsResponse, packagesResponse, userRequestsResponse] = await Promise.all([
         appointmentsAPI.getAll(),
-        packagesAPI.getAll()
+        packagesAPI.getAll(),
+        userRequestsAPI.getAll()
       ]);
       
       // Filter appointments for current user
@@ -52,8 +55,14 @@ const CustomerProfile = () => {
         apt => apt.customer_email === currentUser.email || apt.customer_id === currentUser.id
       );
       
+      // Filter user requests for current user
+      const userUserRequests = userRequestsResponse.data.filter(
+        req => req.customer_id === currentUser.id
+      );
+      
       setAppointments(userAppointments);
       setPackages(packagesResponse.data);
+      setUserRequests(userUserRequests);
     } catch (error) {
       console.error('Error fetching user data:', error);
       toast.error('Failed to load user data');
@@ -379,6 +388,89 @@ const CustomerProfile = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* User Requests Section */}
+        <div className="mt-6">
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">My Requests</h2>
+            
+            {userRequests.length === 0 ? (
+              <div className="text-center py-8">
+                <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No requests yet</h3>
+                <p className="text-gray-600 mb-4">Submit a request to get a personalized quote</p>
+                <a
+                  href="/book"
+                  className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                >
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Submit Request
+                </a>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {userRequests.map((request) => {
+                  const pkg = getPackageById(request.package_id);
+                  return (
+                    <div key={request.id} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center">
+                          <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                            <MessageSquare className="h-5 w-5 text-green-600" />
+                          </div>
+                          <div className="ml-3">
+                            <h3 className="font-semibold text-gray-900">
+                              Request #{request.id}
+                            </h3>
+                            <p className="text-sm text-gray-500">
+                              {new Date(request.created_at).toLocaleDateString()} at {new Date(request.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <span className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(request.status)}`}>
+                            <span className="ml-1">{request.status}</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div>
+                          <span className="font-medium text-gray-700">Package:</span>
+                          <p className="text-gray-600">{pkg?.name || 'Not specified'}</p>
+                        </div>
+                        <div>
+                          <span className="font-medium text-gray-700">Contact Method:</span>
+                          <p className="text-gray-600 capitalize">{request.preferred_contact_method}</p>
+                        </div>
+                        <div>
+                          <span className="font-medium text-gray-700">Status:</span>
+                          <p className="text-gray-600">{request.status}</p>
+                        </div>
+                      </div>
+
+                      {request.notes && (
+                        <div className="mt-3 p-3 bg-gray-50 rounded-md">
+                          <h4 className="font-medium text-gray-900 mb-1">Request Details:</h4>
+                          <p className="text-sm text-gray-600">{request.notes}</p>
+                        </div>
+                      )}
+
+                      {request.converted_at && (
+                        <div className="mt-3 p-3 bg-blue-50 rounded-md">
+                          <h4 className="font-medium text-blue-900 mb-1">Converted to Appointment:</h4>
+                          <p className="text-sm text-blue-700">
+                            {new Date(request.converted_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>

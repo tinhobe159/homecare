@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard } from 'lucide-react';
-import { packagesAPI, appointmentsAPI, caregiversAPI } from '../../services/api';
+import { packagesAPI, userRequestsAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { useAuth } from '../../contexts/AuthContext';
@@ -89,29 +89,31 @@ const BookingPage = () => {
     setSubmitting(true);
     
     try {
-      const appointmentData = {
+      const requestData = {
+        customer_id: currentUser?.id || null,
         package_id: parseInt(formData.selectedPackage),
-        caregiver_id: formData.selectedCaregiver ? parseInt(formData.selectedCaregiver) : null,
-        customer_name: formData.customerName,
-        customer_email: formData.customerEmail,
-        customer_phone: formData.customerPhone,
-        address: formData.address,
-        preferred_date: formData.preferredDate,
-        preferred_time: formData.preferredTime,
-        duration: formData.duration,
-        special_instructions: formData.specialInstructions,
-        emergency_contact: formData.emergencyContact,
-        emergency_phone: formData.emergencyPhone,
-        status: 'pending',
+        status: 'new',
+        preferred_contact_method: 'email',
+        notes: `Customer: ${formData.customerName}
+Email: ${formData.customerEmail}
+Phone: ${formData.customerPhone}
+Address: ${formData.address}
+Preferred Date: ${formData.preferredDate}
+Preferred Time: ${formData.preferredTime}
+Duration: ${formData.duration} hours
+Special Instructions: ${formData.specialInstructions}
+Emergency Contact: ${formData.emergencyContact}
+Emergency Phone: ${formData.emergencyPhone}
+Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
         created_at: new Date().toISOString()
       };
 
-      await appointmentsAPI.create(appointmentData);
-      toast.success('Booking submitted successfully! We will contact you soon.');
+      await userRequestsAPI.create(requestData);
+      toast.success('Request submitted successfully! We will contact you soon.');
       navigate('/');
     } catch (error) {
-      console.error('Error creating appointment:', error);
-      toast.error('Failed to submit booking. Please try again.');
+      console.error('Error creating request:', error);
+      toast.error('Failed to submit request. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -133,8 +135,8 @@ const BookingPage = () => {
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           {/* Header */}
           <div className="bg-blue-600 text-white px-6 py-8">
-            <h1 className="text-3xl font-bold mb-2">Book Your Care Package</h1>
-            <p className="text-blue-100">Schedule your personalized homecare service</p>
+            <h1 className="text-3xl font-bold mb-2">Request Care Package</h1>
+            <p className="text-blue-100">Submit your care request and we'll get back to you</p>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
@@ -471,7 +473,7 @@ const BookingPage = () => {
                 ) : (
                   <>
                     <CreditCard className="h-4 w-4 mr-2" />
-                    Submit Booking
+                    Submit Request
                   </>
                 )}
               </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Heart, Users, Package, Calendar, User, CreditCard, LogOut, Home, Settings, LogIn } from 'lucide-react';
+import { Heart, Users, Package, Calendar, User, CreditCard, LogOut, Home, Settings, LogIn, MessageSquare } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
 
@@ -22,6 +22,7 @@ const Navbar = () => {
     { path: '/packages', label: 'Packages', icon: Package },
     { path: '/caregivers', label: 'Caregivers', icon: Users },
     { path: '/book', label: 'Book Now', icon: Calendar },
+    { path: '/user-requests', label: 'Get Quote', icon: MessageSquare },
   ];
 
   const authenticatedCustomerNavItems = [
@@ -35,9 +36,9 @@ const Navbar = () => {
     { path: '/admin/customers', label: 'Customers', icon: Users },
     { path: '/admin/caregivers', label: 'Caregivers', icon: Users },
     { path: '/admin/appointments', label: 'Appointments', icon: Calendar },
+    { path: '/admin/user-requests', label: 'User Requests', icon: MessageSquare },
     { path: '/admin/services', label: 'Services', icon: Settings },
     { path: '/admin/packages', label: 'Packages', icon: Package },
-    { path: '/admin/care-plans', label: 'Care Plans', icon: Heart },
     { path: '/admin/audit-logs', label: 'Audit Logs', icon: Settings },
   ];
 

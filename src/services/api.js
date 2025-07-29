@@ -126,15 +126,6 @@ export const caregiverSkillsAPI = {
   delete: (caregiverId, skillId) => api.delete(`/caregiverSkills?caregiver_id=${caregiverId}&skill_id=${skillId}`),
 };
 
-// Care Plans
-export const carePlansAPI = {
-  getAll: () => api.get('/carePlans'),
-  getById: (id) => api.get(`/carePlans/${id}`),
-  create: (data) => api.post('/carePlans', data),
-  update: (id, data) => api.put(`/carePlans/${id}`, data),
-  delete: (id) => api.delete(`/carePlans/${id}`),
-};
-
 // Payments
 export const paymentsAPI = {
   getAll: () => api.get('/payments'),
@@ -175,6 +166,17 @@ export const evvRecordsAPI = {
 export const auditLogsAPI = {
   getAll: () => api.get('/auditLogs'),
   create: (data) => api.post('/auditLogs', data),
+};
+
+// User Requests
+export const userRequestsAPI = {
+  getAll: () => api.get('/userRequests'),
+  getById: (id) => api.get(`/userRequests/${id}`),
+  getByCustomerId: (customerId) => api.get(`/userRequests?customer_id=${customerId}`),
+  create: (data) => api.post('/userRequests', data),
+  update: (id, data) => api.put(`/userRequests/${id}`, data),
+  delete: (id) => api.delete(`/userRequests/${id}`),
+  convert: (id) => api.patch(`/userRequests/${id}/convert`),
 };
 
 export default api;

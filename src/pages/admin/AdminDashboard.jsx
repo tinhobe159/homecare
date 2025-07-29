@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { 
   customersAPI, caregiversAPI, packagesAPI, servicesAPI, 
-  appointmentsAPI, carePlansAPI, paymentsAPI 
+  appointmentsAPI, paymentsAPI 
 } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -17,7 +17,6 @@ const AdminDashboard = () => {
     packages: 0,
     services: 0,
     appointments: 0,
-    carePlans: 0,
     totalRevenue: 0,
     pendingAppointments: 0
   });
@@ -32,14 +31,13 @@ const AdminDashboard = () => {
     try {
       const [
         customersRes, caregiversRes, packagesRes, servicesRes,
-        appointmentsRes, carePlansRes, paymentsRes
+        appointmentsRes, paymentsRes
       ] = await Promise.all([
         customersAPI.getAll(),
         caregiversAPI.getAll(),
         packagesAPI.getAll(),
         servicesAPI.getAll(),
         appointmentsAPI.getAll(),
-        carePlansAPI.getAll(),
         paymentsAPI.getAll()
       ]);
 
@@ -52,7 +50,6 @@ const AdminDashboard = () => {
         packages: packagesRes.data.length,
         services: servicesRes.data.length,
         appointments: appointments.length,
-        carePlans: carePlansRes.data.length,
         totalRevenue: payments.reduce((sum, payment) => sum + (payment.amount || 0), 0),
         pendingAppointments: appointments.filter(apt => apt.status === 'Pending').length
       });
@@ -106,13 +103,6 @@ const AdminDashboard = () => {
       icon: Calendar,
       color: 'indigo',
       change: '+18%'
-    },
-    {
-      title: 'Active Care Plans',
-      value: stats.carePlans,
-      icon: Heart,
-      color: 'yellow',
-      change: '+15%'
     },
     {
       title: 'Total Revenue',
@@ -234,8 +224,7 @@ const AdminDashboard = () => {
                 { title: 'Manage Caregivers', desc: 'Add and edit caregiver info', href: '/admin/caregivers' },
                 { title: 'Service Management', desc: 'Update services and pricing', href: '/admin/services' },
                 { title: 'Package Management', desc: 'Create and edit packages', href: '/admin/packages' },
-                { title: 'View Appointments', desc: 'Manage all appointments', href: '/admin/appointments' },
-                { title: 'Care Plans', desc: 'Review and update plans', href: '/admin/care-plans' }
+                { title: 'View Appointments', desc: 'Manage all appointments', href: '/admin/appointments' }
               ].map((action, index) => (
                 <a
                   key={index}

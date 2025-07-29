@@ -19,6 +19,7 @@ import CustomerLogin from "./pages/customer/CustomerLogin";
 import CustomerProfile from "./pages/customer/CustomerProfile";
 import CaregiversPage from "./pages/customer/CaregiversPage";
 import CaregiverDetailsPage from "./pages/customer/CaregiverDetailsPage";
+
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminCustomers from "./pages/admin/AdminCustomers";
@@ -26,8 +27,8 @@ import AdminCaregivers from "./pages/admin/AdminCaregivers";
 import AdminAppointments from "./pages/admin/AdminAppointments";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminPackages from "./pages/admin/AdminPackages";
-import AdminCarePlans from "./pages/admin/AdminCarePlans";
 import AdminAuditLogs from "./pages/admin/AdminAuditLogs";
+import AdminUserRequests from "./pages/admin/AdminUserRequests";
 import CaregiverManagement from "./pages/admin/CaregiverManagement";
 import CaregiverAvailability from "./pages/admin/CaregiverAvailability";
 
@@ -49,6 +50,7 @@ function App() {
               <Route path="/caregivers" element={<CaregiversPage />} />
               <Route path="/caregivers/:id" element={<CaregiverDetailsPage />} />
 
+
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/login" element={<AdminLogin />} />
@@ -58,8 +60,8 @@ function App() {
               <Route path="/admin/appointments" element={<AdminAppointments />} />
               <Route path="/admin/services" element={<AdminServices />} />
               <Route path="/admin/packages" element={<AdminPackages />} />
-              <Route path="/admin/care-plans" element={<AdminCarePlans />} />
               <Route path="/admin/audit-logs" element={<AdminAuditLogs />} />
+              <Route path="/admin/user-requests" element={<AdminUserRequests />} />
 
               {/* Add more routes as needed */}
               <Route

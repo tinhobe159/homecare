@@ -320,6 +320,7 @@
       "customer_id": 1,
       "caregiver_id": 1,
       "package_id": 1,
+      "user_request_id": 1,
       "appointment_datetime_start": "2025-08-01T09:00:00Z",
       "appointment_datetime_end": "2025-08-01T10:45:00Z",
       "duration_minutes": 105,
@@ -595,32 +596,6 @@
       "skill_id": 4
     }
   ],
-  "carePlans": [
-    {
-      "id": 1,
-      "customer_id": 1,
-      "caregiver_id": 1,
-      "overall_goal": "Maintain stable blood pressure and improve mobility",
-      "start_date": "2025-07-01",
-      "status": "Active"
-    },
-    {
-      "id": 2,
-      "customer_id": 2,
-      "caregiver_id": 2,
-      "overall_goal": "Manage diabetes through diet and medication compliance",
-      "start_date": "2025-06-15",
-      "status": "Active"
-    },
-    {
-      "id": 3,
-      "customer_id": 3,
-      "caregiver_id": 3,
-      "overall_goal": "Improve joint mobility and pain management",
-      "start_date": "2025-08-01",
-      "status": "Planned"
-    }
-  ],
   "payments": [
     {
       "id": 1,
@@ -811,15 +786,6 @@
       "details": "{\"package_id\": \"Basic Personal Care\", \"start_date\": \"2025-08-01\"}"
     },
     {
-      "id": 8,
-      "user_id": 1,
-      "action": "create",
-      "entity": "carePlan",
-      "entity_id": 1,
-      "timestamp": "2025-07-25T14:15:00Z",
-      "details": "{\"overall_goal\": \"Maintain stable blood pressure\"}"
-    },
-    {
       "id": 9,
       "user_id": 1,
       "action": "delete",
@@ -836,6 +802,58 @@
       "entity_id": 6,
       "timestamp": "2025-07-25T15:00:00Z",
       "details": "{\"status\": \"Rescheduled\", \"newTime\": \"Afternoon\"}"
+    }
+  ],
+  "userRequests": [
+    {
+      "id": 1,
+      "customer_id": 1,
+      "package_id": 1,
+      "status": "converted",
+      "preferred_contact_method": "phone",
+      "notes": "Need help with bathing 3x/week for my mother who has mobility issues. Prefer morning appointments.",
+      "created_at": "2025-07-25T10:00:00Z",
+      "converted_at": "2025-07-25T14:00:00Z"
+    },
+    {
+      "id": 2,
+      "customer_id": 2,
+      "package_id": 2,
+      "status": "contacted",
+      "preferred_contact_method": "email",
+      "notes": "Looking for meal preparation and mobility assistance for my father. He has diabetes and needs help with daily activities.",
+      "created_at": "2025-07-26T09:30:00Z",
+      "converted_at": null
+    },
+    {
+      "id": 3,
+      "customer_id": 3,
+      "package_id": null,
+      "status": "new",
+      "preferred_contact_method": "phone",
+      "notes": "Interested in home care services but not sure which package is best. Need someone to help with medication reminders and light housekeeping.",
+      "created_at": "2025-07-27T11:15:00Z",
+      "converted_at": null
+    },
+    {
+      "id": 4,
+      "customer_id": 4,
+      "package_id": 3,
+      "status": "rejected",
+      "preferred_contact_method": "email",
+      "notes": "Need comprehensive care for my grandmother who has dementia. Looking for experienced caregiver with dementia care training.",
+      "created_at": "2025-07-28T08:45:00Z",
+      "converted_at": null
+    },
+    {
+      "id": 5,
+      "customer_id": 5,
+      "package_id": 1,
+      "status": "new",
+      "preferred_contact_method": "phone",
+      "notes": "Need basic personal care for my wife who recently had surgery. Looking for 2-3 hours per day.",
+      "created_at": "2025-07-29T16:20:00Z",
+      "converted_at": null
     }
   ]
 }
