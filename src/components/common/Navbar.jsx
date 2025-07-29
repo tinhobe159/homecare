@@ -22,7 +22,6 @@ const Navbar = () => {
     { path: '/packages', label: 'Packages', icon: Package },
     { path: '/caregivers', label: 'Caregivers', icon: Users },
     { path: '/book', label: 'Book Now', icon: Calendar },
-    { path: '/user-requests', label: 'Get Quote', icon: MessageSquare },
   ];
 
   const authenticatedCustomerNavItems = [
