@@ -15,7 +15,7 @@ const CustomerLogin = () => {
   
   const [formData, setFormData] = useState({
     email: 'john.doe@example.com',
-    password: 'password123',
+    password: 'SecureP@ss2024!',
     name: '',
     phone: '',
     address: ''
@@ -246,6 +246,16 @@ const CustomerLogin = () => {
             >
               ← Back to Home
             </Link>
+          </div>
+
+          {/* Demo Credentials */}
+          <div className="mt-6 p-4 bg-blue-50 rounded-md">
+            <h3 className="text-sm font-medium text-blue-800 mb-2">Demo Credentials</h3>
+            <p className="text-sm text-blue-700">
+              <strong>John Doe:</strong> john.doe@example.com / SecureP@ss2024!<br />
+              <strong>Mary Smith:</strong> mary.smith@example.com / StrongP@ssw0rd#2024<br />
+              <strong>Robert Johnson:</strong> robert.johnson@example.com / C0mplexP@ss!2024
+            </p>
           </div>
         </div>
       </div>

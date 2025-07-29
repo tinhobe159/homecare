@@ -6,7 +6,7 @@ import { ArrowLeft, LogIn, Eye, EyeOff } from 'lucide-react';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('admin@homecare.com');
-  const [password, setPassword] = useState('admin123');
+  const [password, setPassword] = useState('AdminP@ss2024!@#');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -18,7 +18,7 @@ const AdminLogin = () => {
 
     try {
       // Mock admin authentication
-      if (email === 'admin@homecare.com' && password === 'admin123') {
+      if (email === 'admin@homecare.com' && password === 'AdminP@ss2024!@#') {
         const adminUser = {
           email: email,
           user_type: 'Admin',
@@ -137,7 +137,7 @@ const AdminLogin = () => {
             <h3 className="text-sm font-medium text-blue-800 mb-2">Demo Credentials</h3>
             <p className="text-sm text-blue-700">
               <strong>Email:</strong> admin@homecare.com<br />
-              <strong>Password:</strong> admin123
+              <strong>Password:</strong> AdminP@ss2024!@#
             </p>
           </div>
         </div>

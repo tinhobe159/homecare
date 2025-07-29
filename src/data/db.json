@@ -17,6 +17,18 @@
       "email": "caregiver1@homecare.com",
       "user_type": "Caregiver",
       "is_active": true
+    },
+    {
+      "id": 4,
+      "email": "customer2@homecare.com",
+      "user_type": "Customer",
+      "is_active": true
+    },
+    {
+      "id": 5,
+      "email": "caregiver2@homecare.com",
+      "user_type": "Caregiver",
+      "is_active": true
     }
   ],
   "customers": [
@@ -25,7 +37,7 @@
       "first_name": "John",
       "last_name": "Doe",
       "email": "john.doe@example.com",
-      "password": "password123",
+      "password": "SecureP@ss2024!",
       "date_of_birth": "1950-03-15",
       "phone_number": "555-0101",
       "emergency_contact_name": "Jane Doe",
@@ -43,7 +55,7 @@
       "first_name": "Mary",
       "last_name": "Smith",
       "email": "mary.smith@example.com",
-      "password": "password123",
+      "password": "StrongP@ssw0rd#2024",
       "date_of_birth": "1945-07-22",
       "phone_number": "555-0103",
       "emergency_contact_name": "Tom Smith",
@@ -61,7 +73,7 @@
       "first_name": "Robert",
       "last_name": "Johnson",
       "email": "robert.johnson@example.com",
-      "password": "password123",
+      "password": "C0mplexP@ss!2024",
       "date_of_birth": "1960-11-10",
       "phone_number": "555-0105",
       "emergency_contact_name": "Lisa Johnson",
@@ -79,7 +91,7 @@
       "first_name": "Susan",
       "last_name": "Brown",
       "email": "susan.brown@example.com",
-      "password": "password123",
+      "password": "S@feP@ssw0rd$2024",
       "date_of_birth": "1955-04-18",
       "phone_number": "555-0107",
       "emergency_contact_name": "Mike Brown",
@@ -97,7 +109,7 @@
       "first_name": "James",
       "last_name": "Wilson",
       "email": "james.wilson@example.com",
-      "password": "password123",
+      "password": "P@ssw0rd2024!@#",
       "date_of_birth": "1948-09-05",
       "phone_number": "555-0109",
       "emergency_contact_name": "Emma Wilson",
@@ -115,7 +127,7 @@
       "first_name": "Patricia",
       "last_name": "Davis",
       "email": "patricia.davis@example.com",
-      "password": "password123",
+      "password": "Str0ngP@ss!2024",
       "date_of_birth": "1952-06-30",
       "phone_number": "555-0111",
       "emergency_contact_name": "Robert Davis",
@@ -133,7 +145,7 @@
       "first_name": "Michael",
       "last_name": "Miller",
       "email": "michael.miller@example.com",
-      "password": "password123",
+      "password": "C0mplexP@ss!2024",
       "date_of_birth": "1947-12-03",
       "phone_number": "555-0113",
       "emergency_contact_name": "Jennifer Miller",
@@ -145,6 +157,42 @@
       },
       "created_at": "2025-07-29T15:30:00Z",
       "last_active": "2025-07-29T15:30:00Z"
+    },
+    {
+      "id": 8,
+      "first_name": "Elizabeth",
+      "last_name": "Taylor",
+      "email": "elizabeth.taylor@example.com",
+      "password": "S@feP@ssw0rd$2024",
+      "date_of_birth": "1953-08-17",
+      "phone_number": "555-0115",
+      "emergency_contact_name": "William Taylor",
+      "emergency_contact_phone": "555-0116",
+      "medical_info": {
+        "allergies": ["Sulfa"],
+        "medications": ["Atorvastatin"],
+        "medical_conditions": ["High Cholesterol"]
+      },
+      "created_at": "2025-06-10T09:45:00Z",
+      "last_active": "2025-08-05T14:20:00Z"
+    },
+    {
+      "id": 9,
+      "first_name": "David",
+      "last_name": "Anderson",
+      "email": "david.anderson@example.com",
+      "password": "P@ssw0rd2024!@#",
+      "date_of_birth": "1949-05-25",
+      "phone_number": "555-0117",
+      "emergency_contact_name": "Sarah Anderson",
+      "emergency_contact_phone": "555-0118",
+      "medical_info": {
+        "allergies": [],
+        "medications": ["Levothyroxine"],
+        "medical_conditions": ["Hypothyroidism"]
+      },
+      "created_at": "2025-05-22T11:10:00Z",
+      "last_active": "2025-08-06T10:15:00Z"
     }
   ],
   "caregivers": [
@@ -225,6 +273,32 @@
       "hourlyRate": 35,
       "rating": 4.9,
       "totalReviews": 178
+    },
+    {
+      "id": 7,
+      "first_name": "Maria",
+      "last_name": "Garcia",
+      "profilePicture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
+      "bio": "Bilingual caregiver with 6 years of experience. Specializes in Alzheimer's care and end-of-life support.",
+      "yearsOfExperience": 6,
+      "backgroundCheckStatus": "verified",
+      "skillIds": ["3", "8", "9"],
+      "hourlyRate": 27,
+      "rating": 4.7,
+      "totalReviews": 112
+    },
+    {
+      "id": 8,
+      "first_name": "Thomas",
+      "last_name": "Lee",
+      "profilePicture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face",
+      "bio": "Certified occupational therapy assistant with 9 years of experience. Focuses on improving daily living skills for seniors.",
+      "yearsOfExperience": 9,
+      "backgroundCheckStatus": "verified",
+      "skillIds": ["4", "7", "9"],
+      "hourlyRate": 32,
+      "rating": 4.8,
+      "totalReviews": 145
     }
   ],
   "administrators": [
@@ -232,7 +306,15 @@
       "id": 1,
       "first_name": "Emma",
       "last_name": "White",
-      "email": "admin@homecare.com"
+      "email": "admin@homecare.com",
+      "password": "AdminP@ss2024!@#"
+    },
+    {
+      "id": 2,
+      "first_name": "Daniel",
+      "last_name": "Harris",
+      "email": "daniel.harris@homecare.com",
+      "password": "SuperAdmin2024!@#"
     }
   ],
   "packages": [
@@ -265,6 +347,26 @@
       "duration_hours": 3,
       "is_active": true,
       "serviceIds": [1, 2, 5]
+    },
+    {
+      "id": 4,
+      "code": "PC004",
+      "name": "Memory Care",
+      "total_cost": 55.0,
+      "description": "Specialized care for individuals with dementia or Alzheimer's, including cognitive stimulation activities.",
+      "duration_hours": 2.5,
+      "is_active": true,
+      "serviceIds": [1, 3, 8]
+    },
+    {
+      "id": 5,
+      "code": "PC005",
+      "name": "Respite Care",
+      "total_cost": 50.0,
+      "description": "Temporary relief for family caregivers, providing companionship and basic care services.",
+      "duration_hours": 2.5,
+      "is_active": true,
+      "serviceIds": [1, 8]
     }
   ],
   "packageServices": [
@@ -302,6 +404,31 @@
       "id": 7,
       "package_id": 3,
       "service_id": 5
+    },
+    {
+      "id": 8,
+      "package_id": 4,
+      "service_id": 1
+    },
+    {
+      "id": 9,
+      "package_id": 4,
+      "service_id": 3
+    },
+    {
+      "id": 10,
+      "package_id": 4,
+      "service_id": 8
+    },
+    {
+      "id": 11,
+      "package_id": 5,
+      "service_id": 1
+    },
+    {
+      "id": 12,
+      "package_id": 5,
+      "service_id": 8
     }
   ],
   "services": [
@@ -358,6 +485,33 @@
       "duration": 60,
       "description": "Basic cleaning and organization of living spaces",
       "is_active": false
+    },
+    {
+      "id": 7,
+      "code": "SVC007",
+      "name": "Transportation Assistance",
+      "hourly_rate": 25.0,
+      "duration": 60,
+      "description": "Help with transportation to appointments and errands",
+      "is_active": true
+    },
+    {
+      "id": 8,
+      "code": "SVC008",
+      "name": "Companionship",
+      "hourly_rate": 18.0,
+      "duration": 60,
+      "description": "Social interaction and emotional support",
+      "is_active": true
+    },
+    {
+      "id": 9,
+      "code": "SVC009",
+      "name": "Overnight Care",
+      "hourly_rate": 30.0,
+      "duration": 480,
+      "description": "Overnight supervision and assistance",
+      "is_active": true
     }
   ],
   "appointments": [
@@ -510,6 +664,34 @@
       "total_cost": 38.0,
       "created_at": "2025-08-03T10:00:00Z",
       "feedback": null
+    },
+    {
+      "id": 11,
+      "customer_id": 6,
+      "caregiver_id": 5,
+      "package_id": 4,
+      "appointment_datetime_start": "2025-08-11T13:00:00Z",
+      "appointment_datetime_end": "2025-08-11T15:30:00Z",
+      "duration_minutes": 150,
+      "status": "Confirmed",
+      "booking_notes": "Patient has early-stage dementia",
+      "total_cost": 55.0,
+      "created_at": "2025-08-04T14:00:00Z",
+      "feedback": null
+    },
+    {
+      "id": 12,
+      "customer_id": 7,
+      "caregiver_id": 6,
+      "package_id": 5,
+      "appointment_datetime_start": "2025-08-12T14:00:00Z",
+      "appointment_datetime_end": "2025-08-12T16:30:00Z",
+      "duration_minutes": 150,
+      "status": "Confirmed",
+      "booking_notes": "Respite care for family caregiver",
+      "total_cost": 50.0,
+      "created_at": "2025-08-05T09:30:00Z",
+      "feedback": null
     }
   ],
   "recurringSchedules": [
@@ -546,6 +728,30 @@
       "end_date": "2025-10-31",
       "recurrence_pattern": "weekly",
       "start_time_of_day": "08:00:00",
+      "duration_minutes": 150,
+      "is_active": true
+    },
+    {
+      "id": 4,
+      "customer_id": 4,
+      "package_id": 1,
+      "caregiver_id": 4,
+      "start_date": "2025-08-04",
+      "end_date": "2025-11-30",
+      "recurrence_pattern": "biweekly",
+      "start_time_of_day": "11:00:00",
+      "duration_minutes": 105,
+      "is_active": true
+    },
+    {
+      "id": 5,
+      "customer_id": 5,
+      "package_id": 4,
+      "caregiver_id": 5,
+      "start_date": "2025-08-05",
+      "end_date": null,
+      "recurrence_pattern": "weekly",
+      "start_time_of_day": "13:00:00",
       "duration_minutes": 150,
       "is_active": true
     }
@@ -589,6 +795,30 @@
       "date": "2025-08-05",
       "start_time": "08:00:00",
       "end_time": "12:00:00",
+      "is_available": true
+    },
+    {
+      "id": 6,
+      "caregiver_id": 5,
+      "date": "2025-08-06",
+      "start_time": "09:00:00",
+      "end_time": "15:00:00",
+      "is_available": true
+    },
+    {
+      "id": 7,
+      "caregiver_id": 6,
+      "date": "2025-08-07",
+      "start_time": "08:00:00",
+      "end_time": "16:00:00",
+      "is_available": true
+    },
+    {
+      "id": 8,
+      "caregiver_id": 7,
+      "date": "2025-08-08",
+      "start_time": "10:00:00",
+      "end_time": "18:00:00",
       "is_available": true
     }
   ],
@@ -637,6 +867,11 @@
       "id": "9",
       "name": "Health Monitoring",
       "description": "Vital signs monitoring and health assessments"
+    },
+    {
+      "id": "10",
+      "name": "Palliative Care",
+      "description": "Comfort-focused care for serious illnesses"
     }
   ],
   "caregiverSkills": [
@@ -652,23 +887,118 @@
     },
     {
       "id": 3,
+      "caregiver_id": 1,
+      "skill_id": 3
+    },
+    {
+      "id": 4,
       "caregiver_id": 2,
       "skill_id": 1
     },
     {
-      "id": 4,
+      "id": 5,
+      "caregiver_id": 2,
+      "skill_id": 4
+    },
+    {
+      "id": 6,
+      "caregiver_id": 2,
+      "skill_id": 5
+    },
+    {
+      "id": 7,
+      "caregiver_id": 3,
+      "skill_id": 2
+    },
+    {
+      "id": 8,
       "caregiver_id": 3,
       "skill_id": 3
     },
     {
-      "id": 5,
+      "id": 9,
+      "caregiver_id": 3,
+      "skill_id": 6
+    },
+    {
+      "id": 10,
       "caregiver_id": 4,
+      "skill_id": 4
+    },
+    {
+      "id": 11,
+      "caregiver_id": 4,
+      "skill_id": 5
+    },
+    {
+      "id": 12,
+      "caregiver_id": 4,
+      "skill_id": 7
+    },
+    {
+      "id": 13,
+      "caregiver_id": 5,
+      "skill_id": 1
+    },
+    {
+      "id": 14,
+      "caregiver_id": 5,
       "skill_id": 2
     },
     {
-      "id": 6,
-      "caregiver_id": 4,
+      "id": 15,
+      "caregiver_id": 5,
+      "skill_id": 8
+    },
+    {
+      "id": 16,
+      "caregiver_id": 6,
+      "skill_id": 2
+    },
+    {
+      "id": 17,
+      "caregiver_id": 6,
+      "skill_id": 3
+    },
+    {
+      "id": 18,
+      "caregiver_id": 6,
+      "skill_id": 6
+    },
+    {
+      "id": 19,
+      "caregiver_id": 6,
+      "skill_id": 9
+    },
+    {
+      "id": 20,
+      "caregiver_id": 7,
+      "skill_id": 3
+    },
+    {
+      "id": 21,
+      "caregiver_id": 7,
+      "skill_id": 8
+    },
+    {
+      "id": 22,
+      "caregiver_id": 7,
+      "skill_id": 9
+    },
+    {
+      "id": 23,
+      "caregiver_id": 8,
       "skill_id": 4
+    },
+    {
+      "id": 24,
+      "caregiver_id": 8,
+      "skill_id": 7
+    },
+    {
+      "id": 25,
+      "caregiver_id": 8,
+      "skill_id": 9
     }
   ],
   "payments": [
@@ -716,32 +1046,133 @@
       "payment_date": null,
       "payment_method": "Pending",
       "status": "Cancelled"
+    },
+    {
+      "id": 6,
+      "appointment_id": 6,
+      "customer_id": 1,
+      "amount": 60.0,
+      "payment_date": "2025-08-05T00:00:00Z",
+      "payment_method": "Credit Card",
+      "status": "Completed"
+    },
+    {
+      "id": 7,
+      "appointment_id": 7,
+      "customer_id": 2,
+      "amount": 38.0,
+      "payment_date": null,
+      "payment_method": "Pending",
+      "status": "Pending"
+    },
+    {
+      "id": 8,
+      "appointment_id": 8,
+      "customer_id": 3,
+      "amount": 45.0,
+      "payment_date": "2025-08-07T00:00:00Z",
+      "payment_method": "Credit Card",
+      "status": "Completed"
+    },
+    {
+      "id": 9,
+      "appointment_id": 9,
+      "customer_id": 4,
+      "amount": 60.0,
+      "payment_date": "2025-08-09T00:00:00Z",
+      "payment_method": "Credit Card",
+      "status": "Completed"
+    },
+    {
+      "id": 10,
+      "appointment_id": 10,
+      "customer_id": 5,
+      "amount": 38.0,
+      "payment_date": null,
+      "payment_method": "Pending",
+      "status": "Pending"
     }
   ],
   "addresses": [
     {
       "id": 1,
+      "customer_id": 1,
       "street_address": "123 Main St",
       "city": "Springfield",
       "state_province": "IL",
       "postal_code": "62701",
-      "country": "USA"
+      "country": "USA",
+      "is_primary": true
     },
     {
       "id": 2,
+      "customer_id": 2,
       "street_address": "456 Elm St",
       "city": "Springfield",
       "state_province": "IL",
       "postal_code": "62702",
-      "country": "USA"
+      "country": "USA",
+      "is_primary": true
     },
     {
       "id": 3,
+      "customer_id": 3,
       "street_address": "789 Oak St",
       "city": "Springfield",
       "state_province": "IL",
       "postal_code": "62703",
-      "country": "USA"
+      "country": "USA",
+      "is_primary": true
+    },
+    {
+      "id": 4,
+      "customer_id": 4,
+      "street_address": "101 Pine St",
+      "city": "Springfield",
+      "state_province": "IL",
+      "postal_code": "62704",
+      "country": "USA",
+      "is_primary": true
+    },
+    {
+      "id": 5,
+      "customer_id": 5,
+      "street_address": "202 Maple St",
+      "city": "Springfield",
+      "state_province": "IL",
+      "postal_code": "62705",
+      "country": "USA",
+      "is_primary": true
+    },
+    {
+      "id": 6,
+      "customer_id": 6,
+      "street_address": "303 Cedar St",
+      "city": "Springfield",
+      "state_province": "IL",
+      "postal_code": "62706",
+      "country": "USA",
+      "is_primary": true
+    },
+    {
+      "id": 7,
+      "customer_id": 7,
+      "street_address": "404 Birch St",
+      "city": "Springfield",
+      "state_province": "IL",
+      "postal_code": "62707",
+      "country": "USA",
+      "is_primary": true
+    },
+    {
+      "id": 8,
+      "caregiver_id": 1,
+      "street_address": "505 Spruce St",
+      "city": "Springfield",
+      "state_province": "IL",
+      "postal_code": "62708",
+      "country": "USA",
+      "is_primary": true
     }
   ],
   "evvRecords": [
@@ -794,6 +1225,36 @@
       "status": "Cancelled",
       "caregiver_notes": "",
       "patient_signature_url": null
+    },
+    {
+      "id": 6,
+      "appointment_id": 6,
+      "caregiver_id": 2,
+      "check_in_time": "2025-08-06T10:00:00Z",
+      "check_out_time": "2025-08-06T12:30:00Z",
+      "status": "Completed",
+      "caregiver_notes": "Rescheduled appointment went well",
+      "patient_signature_url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=100&fit=crop"
+    },
+    {
+      "id": 7,
+      "appointment_id": 7,
+      "caregiver_id": 3,
+      "check_in_time": null,
+      "check_out_time": null,
+      "status": "Pending",
+      "caregiver_notes": "",
+      "patient_signature_url": null
+    },
+    {
+      "id": 8,
+      "appointment_id": 8,
+      "caregiver_id": 4,
+      "check_in_time": "2025-08-08T11:00:00Z",
+      "check_out_time": "2025-08-08T13:00:00Z",
+      "status": "Completed",
+      "caregiver_notes": "Patient was in good spirits today",
+      "patient_signature_url": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=100&fit=crop"
     }
   ],
   "auditLogs": [
@@ -877,6 +1338,33 @@
       "entity_id": 6,
       "timestamp": "2025-07-25T15:00:00Z",
       "details": "{\"status\": \"Rescheduled\", \"newTime\": \"Afternoon\"}"
+    },
+    {
+      "id": 11,
+      "user_id": 2,
+      "action": "create",
+      "entity": "customer",
+      "entity_id": 8,
+      "timestamp": "2025-06-10T09:45:00Z",
+      "details": "{\"name\": \"Elizabeth Taylor\"}"
+    },
+    {
+      "id": 12,
+      "user_id": 2,
+      "action": "create",
+      "entity": "caregiver",
+      "entity_id": 7,
+      "timestamp": "2025-06-15T11:20:00Z",
+      "details": "{\"name\": \"Maria Garcia\"}"
+    },
+    {
+      "id": 13,
+      "user_id": 1,
+      "action": "create",
+      "entity": "package",
+      "entity_id": 4,
+      "timestamp": "2025-06-20T14:00:00Z",
+      "details": "{\"name\": \"Memory Care\", \"code\": \"PC004\"}"
     }
   ],
   "userRequests": [
@@ -929,6 +1417,36 @@
       "notes": "Need basic personal care for my wife who recently had surgery. Looking for 2-3 hours per day.",
       "created_at": "2025-07-29T16:20:00Z",
       "converted_at": null
+    },
+    {
+      "id": 6,
+      "customer_id": 6,
+      "package_id": null,
+      "status": "new",
+      "preferred_contact_method": "email",
+      "notes": "Looking for memory care services for my father with Alzheimer's. Need someone with experience in cognitive stimulation.",
+      "created_at": "2025-08-01T10:30:00Z",
+      "converted_at": null
+    },
+    {
+      "id": 7,
+      "customer_id": 7,
+      "package_id": 5,
+      "status": "contacted",
+      "preferred_contact_method": "phone",
+      "notes": "Need respite care for my mother while I attend a family event out of town.",
+      "created_at": "2025-08-02T14:15:00Z",
+      "converted_at": null
+    },
+    {
+      "id": 8,
+      "customer_id": 8,
+      "package_id": null,
+      "status": "new",
+      "preferred_contact_method": "email",
+      "notes": "Exploring options for long-term care for my husband who has Parkinson's disease.",
+      "created_at": "2025-08-03T09:45:00Z",
+      "converted_at": null
     }
   ],
   "feedback": [
@@ -971,6 +1489,14 @@
       "rating": 4,
       "comment": "Good care provided, would recommend.",
       "created_at": "2025-08-06T13:00:00Z"
+    },
+    {
+      "id": 6,
+      "appointment_id": 8,
+      "customer_id": 3,
+      "rating": 5,
+      "comment": "Caregiver was wonderful with my father, very patient and kind.",
+      "created_at": "2025-08-08T18:00:00Z"
     }
   ]
 }
