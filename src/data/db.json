@@ -34,7 +34,9 @@
         "allergies": ["Penicillin"],
         "medications": ["Aspirin"],
         "medical_conditions": ["Hypertension"]
-      }
+      },
+      "created_at": "2025-01-15T10:00:00Z",
+      "last_active": "2025-08-01T10:45:00Z"
     },
     {
       "id": 2,
@@ -50,7 +52,9 @@
         "allergies": [],
         "medications": ["Metformin"],
         "medical_conditions": ["Diabetes"]
-      }
+      },
+      "created_at": "2025-02-20T14:30:00Z",
+      "last_active": "2025-08-02T12:00:00Z"
     },
     {
       "id": 3,
@@ -66,7 +70,9 @@
         "allergies": ["Shellfish"],
         "medications": [],
         "medical_conditions": ["Arthritis"]
-      }
+      },
+      "created_at": "2025-03-10T09:15:00Z",
+      "last_active": "2025-08-03T10:30:00Z"
     },
     {
       "id": 4,
@@ -82,7 +88,9 @@
         "allergies": [],
         "medications": ["Lisinopril"],
         "medical_conditions": ["Hypertension"]
-      }
+      },
+      "created_at": "2025-04-05T16:45:00Z",
+      "last_active": "2025-08-04T12:45:00Z"
     },
     {
       "id": 5,
@@ -98,7 +106,45 @@
         "allergies": ["Nuts"],
         "medications": [],
         "medical_conditions": []
-      }
+      },
+      "created_at": "2025-05-12T11:20:00Z",
+      "last_active": "2025-07-15T09:00:00Z"
+    },
+    {
+      "id": 6,
+      "first_name": "Patricia",
+      "last_name": "Davis",
+      "email": "patricia.davis@example.com",
+      "password": "password123",
+      "date_of_birth": "1952-06-30",
+      "phone_number": "555-0111",
+      "emergency_contact_name": "Robert Davis",
+      "emergency_contact_phone": "555-0112",
+      "medical_info": {
+        "allergies": [],
+        "medications": ["Metoprolol"],
+        "medical_conditions": ["Heart Disease"]
+      },
+      "created_at": "2025-07-28T13:10:00Z",
+      "last_active": "2025-07-28T13:10:00Z"
+    },
+    {
+      "id": 7,
+      "first_name": "Michael",
+      "last_name": "Miller",
+      "email": "michael.miller@example.com",
+      "password": "password123",
+      "date_of_birth": "1947-12-03",
+      "phone_number": "555-0113",
+      "emergency_contact_name": "Jennifer Miller",
+      "emergency_contact_phone": "555-0114",
+      "medical_info": {
+        "allergies": ["Latex"],
+        "medications": ["Warfarin"],
+        "medical_conditions": ["Blood Clot Disorder"]
+      },
+      "created_at": "2025-07-29T15:30:00Z",
+      "last_active": "2025-07-29T15:30:00Z"
     }
   ],
   "caregivers": [
@@ -326,7 +372,12 @@
       "duration_minutes": 105,
       "status": "Confirmed",
       "booking_notes": "Customer prefers morning appointments",
-      "total_cost": 38.0
+      "total_cost": 38.0,
+      "created_at": "2025-07-25T10:00:00Z",
+      "feedback": {
+        "rating": 5,
+        "comment": "Excellent service, caregiver was very attentive and caring."
+      }
     },
     {
       "id": 2,
@@ -338,7 +389,9 @@
       "duration_minutes": 120,
       "status": "Pending",
       "booking_notes": "",
-      "total_cost": 45.0
+      "total_cost": 45.0,
+      "created_at": "2025-07-26T09:30:00Z",
+      "feedback": null
     },
     {
       "id": 3,
@@ -350,7 +403,9 @@
       "duration_minutes": 150,
       "status": "Confirmed",
       "booking_notes": "Needs wheelchair assistance",
-      "total_cost": 60.0
+      "total_cost": 60.0,
+      "created_at": "2025-07-27T11:15:00Z",
+      "feedback": null
     },
     {
       "id": 4,
@@ -362,7 +417,12 @@
       "duration_minutes": 105,
       "status": "Completed",
       "booking_notes": "",
-      "total_cost": 38.0
+      "total_cost": 38.0,
+      "created_at": "2025-07-28T08:45:00Z",
+      "feedback": {
+        "rating": 4,
+        "comment": "Good service, but caregiver could have been more punctual."
+      }
     },
     {
       "id": 5,
@@ -374,7 +434,9 @@
       "duration_minutes": 120,
       "status": "Cancelled",
       "booking_notes": "Customer cancelled due to hospital visit",
-      "total_cost": 45.0
+      "total_cost": 45.0,
+      "created_at": "2025-07-29T16:20:00Z",
+      "feedback": null
     },
     {
       "id": 6,
@@ -386,7 +448,9 @@
       "duration_minutes": 150,
       "status": "Rescheduled",
       "booking_notes": "Rescheduled to afternoon",
-      "total_cost": 60.0
+      "total_cost": 60.0,
+      "created_at": "2025-07-30T10:00:00Z",
+      "feedback": null
     },
     {
       "id": 7,
@@ -398,7 +462,9 @@
       "duration_minutes": 105,
       "status": "Pending",
       "booking_notes": "",
-      "total_cost": 38.0
+      "total_cost": 38.0,
+      "created_at": "2025-07-31T08:00:00Z",
+      "feedback": null
     },
     {
       "id": 8,
@@ -410,7 +476,9 @@
       "duration_minutes": 120,
       "status": "Confirmed",
       "booking_notes": "",
-      "total_cost": 45.0
+      "total_cost": 45.0,
+      "created_at": "2025-08-01T11:00:00Z",
+      "feedback": null
     },
     {
       "id": 9,
@@ -422,7 +490,12 @@
       "duration_minutes": 150,
       "status": "Completed",
       "booking_notes": "Customer satisfied with service",
-      "total_cost": 60.0
+      "total_cost": 60.0,
+      "created_at": "2025-08-02T09:00:00Z",
+      "feedback": {
+        "rating": 5,
+        "comment": "Great caregiver, very professional and knowledgeable."
+      }
     },
     {
       "id": 10,
@@ -434,7 +507,9 @@
       "duration_minutes": 105,
       "status": "Pending",
       "booking_notes": "",
-      "total_cost": 38.0
+      "total_cost": 38.0,
+      "created_at": "2025-08-03T10:00:00Z",
+      "feedback": null
     }
   ],
   "recurringSchedules": [
@@ -854,6 +929,48 @@
       "notes": "Need basic personal care for my wife who recently had surgery. Looking for 2-3 hours per day.",
       "created_at": "2025-07-29T16:20:00Z",
       "converted_at": null
+    }
+  ],
+  "feedback": [
+    {
+      "id": 1,
+      "appointment_id": 1,
+      "customer_id": 1,
+      "rating": 5,
+      "comment": "Excellent service, caregiver was very attentive and caring.",
+      "created_at": "2025-08-01T15:00:00Z"
+    },
+    {
+      "id": 2,
+      "appointment_id": 4,
+      "customer_id": 4,
+      "rating": 4,
+      "comment": "Good service, but caregiver could have been more punctual.",
+      "created_at": "2025-08-04T16:30:00Z"
+    },
+    {
+      "id": 3,
+      "appointment_id": 9,
+      "customer_id": 4,
+      "rating": 5,
+      "comment": "Great caregiver, very professional and knowledgeable.",
+      "created_at": "2025-08-09T14:00:00Z"
+    },
+    {
+      "id": 4,
+      "appointment_id": 3,
+      "customer_id": 3,
+      "rating": 3,
+      "comment": "Service was okay, but caregiver seemed rushed.",
+      "created_at": "2025-08-03T17:00:00Z"
+    },
+    {
+      "id": 5,
+      "appointment_id": 6,
+      "customer_id": 1,
+      "rating": 4,
+      "comment": "Good care provided, would recommend.",
+      "created_at": "2025-08-06T13:00:00Z"
     }
   ]
 }
