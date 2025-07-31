@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Package, Edit, Trash2, Play, Pause, X, Eye } from 'lucide-react';
-import { scheduledPackagesAPI, packagesAPI, customersAPI, caregiversAPI } from '../../../services/api';
+import { scheduledPackagesAPI, packagesAPI, customersAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
-import LoadingSpinner from '../../../components/common/LoadingSpinner';
-import Modal from '../../../components/common/Modal';
-import RecurrenceBuilder from '../../../components/common/RecurrenceBuilder';
-import CalendarPreview from '../../../components/common/CalendarPreview';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Modal from '../../components/common/Modal';
+import RecurrenceBuilder from '../../components/common/RecurrenceBuilder';
+import CalendarPreview from '../../components/common/CalendarPreview';
 
 const AdminScheduledPackages = () => {
   const [scheduledPackages, setScheduledPackages] = useState([]);
