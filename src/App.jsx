@@ -29,6 +29,7 @@ import AdminServices from "./pages/admin/AdminServices";
 import AdminPackages from "./pages/admin/AdminPackages";
 import AdminAuditLogs from "./pages/admin/AdminAuditLogs";
 import AdminUserRequests from "./pages/admin/AdminUserRequests";
+import AdminScheduledPackages from "./pages/admin/AdminScheduledPackages";
 import CaregiverManagement from "./pages/admin/CaregiverManagement";
 import CaregiverAvailability from "./pages/admin/CaregiverAvailability";
 
@@ -58,6 +59,7 @@ function App() {
               <Route path="/admin/caregivers" element={<CaregiverManagement />} />
               <Route path="/admin/caregivers/:id/availability" element={<CaregiverAvailability />} />
               <Route path="/admin/appointments" element={<AdminAppointments />} />
+              <Route path="/admin/scheduled-packages" element={<AdminScheduledPackages />} />
               <Route path="/admin/services" element={<AdminServices />} />
               <Route path="/admin/packages" element={<AdminPackages />} />
               <Route path="/admin/audit-logs" element={<AdminAuditLogs />} />

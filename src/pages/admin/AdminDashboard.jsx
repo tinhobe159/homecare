@@ -487,6 +487,7 @@ const AdminDashboard = () => {
                 { title: 'Manage Caregivers', desc: 'Add and edit caregiver info', href: '/admin/caregivers' },
                 { title: 'Service Management', desc: 'Update services and pricing', href: '/admin/services' },
                 { title: 'Package Management', desc: 'Create and edit packages', href: '/admin/packages' },
+                { title: 'Scheduled Packages', desc: 'Manage recurring schedules', href: '/admin/scheduled-packages' },
                 { title: 'View Appointments', desc: 'Manage all appointments', href: '/admin/appointments' }
               ].map((action, index) => (
                 <a

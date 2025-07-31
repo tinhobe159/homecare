@@ -108,14 +108,20 @@ export const appointmentsAPI = {
   delete: (id) => api.delete(`/appointments/${id}`),
 };
 
-// Recurring Schedules
-export const recurringSchedulesAPI = {
-  getAll: () => api.get('/recurringSchedules'),
-  getById: (id) => api.get(`/recurringSchedules/${id}`),
-  getByCustomerId: (customerId) => api.get(`/recurringSchedules?customer_id=${customerId}`),
-  create: (data) => api.post('/recurringSchedules', data),
-  update: (id, data) => api.put(`/recurringSchedules/${id}`, data),
-  delete: (id) => api.delete(`/recurringSchedules/${id}`),
+// Scheduled Packages (replaces recurringSchedules)
+export const scheduledPackagesAPI = {
+  getAll: () => api.get('/scheduledPackages'),
+  getById: (id) => api.get(`/scheduledPackages/${id}`),
+  getByCustomerId: (customerId) => api.get(`/scheduledPackages?customer_id=${customerId}`),
+  create: (data) => api.post('/scheduledPackages', data),
+  update: (id, data) => api.put(`/scheduledPackages/${id}`, data),
+  delete: (id) => api.delete(`/scheduledPackages/${id}`),
+  getOccurrences: (id, from, to) => api.get(`/scheduledPackages/${id}/occurrences?from=${from}&to=${to}`),
+  addException: (id, data) => api.post(`/scheduledPackages/${id}/exceptions`, data),
+  removeException: (id, date) => api.delete(`/scheduledPackages/${id}/exceptions/${date}`),
+  pause: (id) => api.patch(`/scheduledPackages/${id}`, { status: 'paused' }),
+  resume: (id) => api.patch(`/scheduledPackages/${id}`, { status: 'active' }),
+  cancel: (id) => api.patch(`/scheduledPackages/${id}`, { status: 'cancelled' })
 };
 
 // Caregiver Skills
