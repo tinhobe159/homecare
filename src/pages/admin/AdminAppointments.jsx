@@ -251,12 +251,12 @@ const AdminAppointments = () => {
           </div>
         </div>
       </div>
-
+  
       {/* Filters and Search */}
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-[50%] transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <input
               type="text"
               placeholder="Search appointments..."
@@ -272,10 +272,10 @@ const AdminAppointments = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
             </select>
           </div>
           <div className="text-right">
@@ -285,7 +285,7 @@ const AdminAppointments = () => {
           </div>
         </div>
       </div>
-
+  
       {/* Appointments List */}
       <div className="space-y-4">
         {filteredAppointments.map((appointment) => {
@@ -307,7 +307,8 @@ const AdminAppointments = () => {
                         Appointment #{appointment.id}
                       </h3>
                       <p className="text-sm text-gray-500">
-                        {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                        {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at {' '}
+                        {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
                   </div>
@@ -316,375 +317,417 @@ const AdminAppointments = () => {
                       {appointment.status}
                     </span>
                     <div className="flex space-x-1">
-                        <button
-                          onClick={() => handleViewDetails(appointment)}
-                          className="text-blue-600 hover:text-blue-900 p-1"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        {appointment.status === 'pending' && (
-                          <>
-                            <button
-                              onClick={() => handleStatusUpdate(appointment.id, 'confirmed')}
-                              className="text-green-600 hover:text-green-900 p-1"
-                            >
-                              <CheckCircle className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => handleStatusUpdate(appointment.id, 'cancelled')}
-                              className="text-red-600 hover:text-red-900 p-1"
-                            >
-                              <XCircle className="h-4 w-4" />
-                            </button>
-                          </>
-                        )}
-                        {appointment.status === 'confirmed' && (
+                      <button
+                        onClick={() => handleViewDetails(appointment)}
+                        className="text-blue-600 hover:text-blue-900 p-1"
+                        aria-label="View details"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </button>
+                      {appointment.status === 'Pending' && (
+                        <>
                           <button
-                            onClick={() => handleStatusUpdate(appointment.id, 'completed')}
-                            className="text-blue-600 hover:text-blue-900 p-1"
+                            onClick={() => handleStatusUpdate(appointment.id, 'Confirmed')}
+                            className="text-green-600 hover:text-green-900 p-1"
+                            aria-label="Confirm appointment"
                           >
                             <CheckCircle className="h-4 w-4" />
                           </button>
-                        )}
-                      </div>
+                          <button
+                            onClick={() => handleStatusUpdate(appointment.id, 'Cancelled')}
+                            className="text-red-600 hover:text-red-900 p-1"
+                            aria-label="Cancel appointment"
+                          >
+                            <XCircle className="h-4 w-4" />
+                          </button>
+                        </>
+                      )}
+                      {appointment.status === 'Confirmed' && (
+                        <button
+                          onClick={() => handleStatusUpdate(appointment.id, 'Completed')}
+                          className="text-blue-600 hover:text-blue-900 p-1"
+                          aria-label="Mark as completed"
+                        >
+                          <CheckCircle className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Customer Info */}
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2 flex items-center">
-                        <User className="h-4 w-4 mr-2" />
-                        Customer
-                      </h4>
-                      <div className="space-y-1 text-sm">
-                        <p className="font-medium">{customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown'}</p>
-                        <p className="text-gray-600 flex items-center">
-                          <Mail className="h-3 w-3 mr-1" />
-                          {customer?.email || appointment.customer_email}
-                        </p>
-                        <p className="text-gray-600 flex items-center">
-                          <Phone className="h-3 w-3 mr-1" />
-                          {customer?.phone || appointment.customer_phone}
-                        </p>
-                        {appointment.address && (
-                          <p className="text-gray-600 flex items-center">
-                            <MapPin className="h-3 w-3 mr-1" />
-                            {appointment.address}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Package Info */}
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2 flex items-center">
-                        <Package className="h-4 w-4 mr-2" />
-                        Package
-                      </h4>
-                      <div className="space-y-1 text-sm">
-                        <p className="font-medium">{pkg?.name || 'Unknown Package'}</p>
-                        <p className="text-gray-600">{pkg?.description || 'No description'}</p>
-                        <p className="text-blue-600 font-semibold flex items-center">
-                          <DollarSign className="h-3 w-3 mr-1" />
-                          ${pkg?.total_cost || appointment.total_cost || 0}
-                        </p>
-                        <p className="text-gray-600 flex items-center">
-                          <Clock className="h-3 w-3 mr-1" />
-                          {pkg?.duration_hours || appointment.duration || 0} hours
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Appointment Details */}
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2 flex items-center">
-                        <Calendar className="h-4 w-4 mr-2" />
-                        Details
-                      </h4>
-                      <div className="space-y-1 text-sm">
-                        <p className="text-gray-600">
-                          <span className="font-medium">Date:</span> {new Date(appointment.appointment_datetime_start).toLocaleDateString()}
-                        </p>
-                        <p className="text-gray-600">
-                          <span className="font-medium">Time:</span> {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - {new Date(appointment.appointment_datetime_end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                        </p>
-                        <p className="text-gray-600">
-                          <span className="font-medium">Duration:</span> {appointment.duration_minutes || pkg?.duration_hours || 0} minutes
-                        </p>
-                        <p className="text-gray-600">
-                          <span className="font-medium">Created:</span> {new Date(appointment.appointment_datetime_start).toLocaleDateString()}
-                        </p>
-                        {appointment.user_request_id && (
-                          <div className="mt-2 p-2 bg-blue-50 rounded-md">
-                            <p className="text-xs text-blue-800 font-medium">From User Request #{appointment.user_request_id}</p>
-                            {(() => {
-                              const userRequest = getUserRequestById(appointment.user_request_id);
-                              return userRequest ? (
-                                <p className="text-xs text-blue-700 mt-1">{userRequest.notes}</p>
-                              ) : null;
-                            })()}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Special Instructions */}
-                  {appointment.special_instructions && (
-                    <div className="mt-4 p-3 bg-gray-50 rounded-md">
-                      <h5 className="font-medium text-gray-900 mb-1">Special Instructions:</h5>
-                      <p className="text-sm text-gray-600">{appointment.special_instructions}</p>
-                    </div>
-                  )}
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Create Appointment Modal */}
-        {showCreateModal && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div className="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
-              <div className="mt-3">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">
-                    Create New Appointment
-                  </h3>
-                  <button
-                    onClick={() => setShowCreateModal(false)}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    <XCircle className="h-6 w-6" />
-                  </button>
-                </div>
-                
-                <form onSubmit={handleCreateAppointment} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Customer Selection */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Customer *</label>
-                      <select
-                        name="customer_id"
-                        value={createFormData.customer_id}
-                        onChange={handleCreateInputChange}
-                        required
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="">Select Customer</option>
-                        {customers.map(customer => (
-                          <option key={customer.id} value={customer.id}>
-                            {customer.first_name} {customer.last_name} - {customer.email}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Caregiver Selection */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Caregiver *</label>
-                      <select
-                        name="caregiver_id"
-                        value={createFormData.caregiver_id}
-                        onChange={handleCreateInputChange}
-                        required
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="">Select Caregiver</option>
-                        {caregivers.map(caregiver => (
-                          <option key={caregiver.id} value={caregiver.id}>
-                            {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourlyRate}/hr
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Package Selection */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Package *</label>
-                      <select
-                        name="package_id"
-                        value={createFormData.package_id}
-                        onChange={(e) => {
-                          handleCreateInputChange(e);
-                          handlePackageChange(e.target.value);
-                        }}
-                        required
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="">Select Package</option>
-                        {packages.map(pkg => (
-                          <option key={pkg.id} value={pkg.id}>
-                            {pkg.name} - ${pkg.total_cost} ({pkg.duration_hours}h)
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Status */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                      <select
-                        name="status"
-                        value={createFormData.status}
-                        onChange={handleCreateInputChange}
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Confirmed">Confirmed</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </select>
-                    </div>
-
-                    {/* Start Date & Time */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Start Date & Time *</label>
-                      <input
-                        type="datetime-local"
-                        name="appointment_datetime_start"
-                        value={createFormData.appointment_datetime_start}
-                        onChange={handleCreateInputChange}
-                        required
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    {/* End Date & Time */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">End Date & Time</label>
-                      <input
-                        type="datetime-local"
-                        name="appointment_datetime_end"
-                        value={createFormData.appointment_datetime_end}
-                        onChange={handleCreateInputChange}
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Leave empty to auto-calculate based on duration</p>
-                    </div>
-
-                    {/* Duration */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Duration (minutes)</label>
-                      <input
-                        type="number"
-                        name="duration_minutes"
-                        value={createFormData.duration_minutes}
-                        onChange={handleCreateInputChange}
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Auto-filled from package"
-                      />
-                    </div>
-
-                    {/* Total Cost */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Total Cost ($)</label>
-                      <input
-                        type="number"
-                        name="total_cost"
-                        value={createFormData.total_cost}
-                        onChange={handleCreateInputChange}
-                        step="0.01"
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Auto-filled from package"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Booking Notes */}
+  
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Customer Info */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Booking Notes</label>
-                    <textarea
-                      name="booking_notes"
-                      value={createFormData.booking_notes}
-                      onChange={handleCreateInputChange}
-                      rows="3"
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Add any special instructions or notes for this appointment..."
-                    />
+                    <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                      <User className="h-4 w-4 mr-2" />
+                      Customer
+                    </h4>
+                    <div className="space-y-1 text-sm">
+                      <p className="font-medium">{customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown'}</p>
+                      <p className="text-gray-600 flex items-center">
+                        <Mail className="h-3 w-3 mr-1" />
+                        {customer?.email || appointment.customer_email}
+                      </p>
+                      <p className="text-gray-600 flex items-center">
+                        <Phone className="h-3 w-3 mr-1" />
+                        {customer?.phone || appointment.customer_phone}
+                      </p>
+                      {appointment.address && (
+                        <p className="text-gray-600 flex items-center">
+                          <MapPin className="h-3 w-3 mr-1" />
+                          {appointment.address}
+                        </p>
+                      )}
+                    </div>
                   </div>
-
-                  <div className="flex justify-end space-x-3 pt-4">
-                    <button
-                      type="button"
-                      onClick={() => setShowCreateModal(false)}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                    >
-                      Create Appointment
-                    </button>
+  
+                  {/* Package Info */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                      <Package className="h-4 w-4 mr-2" />
+                      Package
+                    </h4>
+                    <div className="space-y-1 text-sm">
+                      <p className="font-medium">{pkg?.name || 'Unknown Package'}</p>
+                      <p className="text-gray-600">{pkg?.description || 'No description'}</p>
+                      <p className="text-blue-600 font-semibold flex items-center">
+                        <DollarSign className="h-3 w-3 mr-1" />
+                        ${pkg?.total_cost || appointment.total_cost || 0}
+                      </p>
+                      <p className="text-gray-600 flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {pkg?.duration_hours || appointment.duration || 0} hours
+                      </p>
+                    </div>
                   </div>
-                </form>
+  
+                  {/* Appointment Details */}
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Details
+                    </h4>
+                    <div className="space-y-1 text-sm">
+                      <p className="text-gray-600">
+                        <span className="font-medium">Date:</span> {' '}
+                        {new Date(appointment.appointment_datetime_start).toLocaleDateString()}
+                      </p>
+                      <p className="text-gray-600">
+                        <span className="font-medium">Time:</span> {' '}
+                        {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {' '}
+                        {new Date(appointment.appointment_datetime_end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                      <p className="text-gray-600">
+                        <span className="font-medium">Duration:</span> {' '}
+                        {appointment.duration_minutes || pkg?.duration_hours * 60 || 0} minutes
+                      </p>
+                      <p className="text-gray-600">
+                        <span className="font-medium">Created:</span> {' '}
+                        {new Date(appointment.created_at).toLocaleDateString()}
+                      </p>
+                      {appointment.user_request_id && (
+                        <div className="mt-2 p-2 bg-blue-50 rounded-md">
+                          <p className="text-xs text-blue-800 font-medium">
+                            From User Request #{appointment.user_request_id}
+                          </p>
+                          {getUserRequestById(appointment.user_request_id)?.notes && (
+                            <p className="text-xs text-blue-700 mt-1">
+                              {getUserRequestById(appointment.user_request_id).notes}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+  
+                {/* Special Instructions */}
+                {appointment.special_instructions && (
+                  <div className="mt-4 p-3 bg-gray-50 rounded-md">
+                    <h5 className="font-medium text-gray-900 mb-1">Special Instructions:</h5>
+                    <p className="text-sm text-gray-600">{appointment.special_instructions}</p>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Edit Appointment Modal */}
-        {showModal && selectedAppointment && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
-              <div className="mt-3">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  Appointment Details - #{selectedAppointment.id}
+          );
+        })}
+      </div>
+  
+      {/* Create Appointment Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+            <div className="mt-3">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-medium text-gray-900">
+                  Create New Appointment
                 </h3>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <button
+                  onClick={() => setShowCreateModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                  aria-label="Close modal"
+                >
+                  <XCircle className="h-6 w-6" />
+                </button>
+              </div>
+              
+              <form onSubmit={handleCreateAppointment} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Customer Selection */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Status</label>
+                    <label htmlFor="customer_id" className="block text-sm font-medium text-gray-700 mb-2">
+                      Customer *
+                    </label>
                     <select
-                      name="status"
-                      value={formData.status}
-                      onChange={handleInputChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      id="customer_id"
+                      name="customer_id"
+                      value={createFormData.customer_id}
+                      onChange={handleCreateInputChange}
+                      required
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="pending">Pending</option>
-                      <option value="confirmed">Confirmed</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
+                      <option value="">Select Customer</option>
+                      {customers.map(customer => (
+                        <option key={customer.id} value={customer.id}>
+                          {customer.first_name} {customer.last_name} - {customer.email}
+                        </option>
+                      ))}
                     </select>
                   </div>
-                  
+  
+                  {/* Caregiver Selection */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Notes</label>
-                    <textarea
-                      name="notes"
-                      value={formData.notes}
-                      onChange={handleInputChange}
-                      rows="4"
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Add any notes about this appointment..."
+                    <label htmlFor="caregiver_id" className="block text-sm font-medium text-gray-700 mb-2">
+                      Caregiver *
+                    </label>
+                    <select
+                      id="caregiver_id"
+                      name="caregiver_id"
+                      value={createFormData.caregiver_id}
+                      onChange={handleCreateInputChange}
+                      required
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select Caregiver</option>
+                      {caregivers.map(caregiver => (
+                        <option key={caregiver.id} value={caregiver.id}>
+                          {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourlyRate}/hr
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+  
+                  {/* Package Selection */}
+                  <div>
+                    <label htmlFor="package_id" className="block text-sm font-medium text-gray-700 mb-2">
+                      Package *
+                    </label>
+                    <select
+                      id="package_id"
+                      name="package_id"
+                      value={createFormData.package_id}
+                      onChange={(e) => {
+                        handleCreateInputChange(e);
+                        handlePackageChange(e.target.value);
+                      }}
+                      required
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select Package</option>
+                      {packages.map(pkg => (
+                        <option key={pkg.id} value={pkg.id}>
+                          {pkg.name} - ${pkg.total_cost} ({pkg.duration_hours}h)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+  
+                  {/* Status */}
+                  <div>
+                    <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
+                      Status
+                    </label>
+                    <select
+                      id="status"
+                      name="status"
+                      value={createFormData.status}
+                      onChange={handleCreateInputChange}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </div>
+  
+                  {/* Start Date & Time */}
+                  <div>
+                    <label htmlFor="appointment_datetime_start" className="block text-sm font-medium text-gray-700 mb-2">
+                      Start Date & Time *
+                    </label>
+                    <input
+                      id="appointment_datetime_start"
+                      type="datetime-local"
+                      name="appointment_datetime_start"
+                      value={createFormData.appointment_datetime_start}
+                      onChange={handleCreateInputChange}
+                      required
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
-
-                  <div className="flex justify-end space-x-3 pt-4">
-                    <button
-                      type="button"
-                      onClick={() => setShowModal(false)}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                    >
-                      Update Appointment
-                    </button>
+  
+                  {/* End Date & Time */}
+                  <div>
+                    <label htmlFor="appointment_datetime_end" className="block text-sm font-medium text-gray-700 mb-2">
+                      End Date & Time
+                    </label>
+                    <input
+                      id="appointment_datetime_end"
+                      type="datetime-local"
+                      name="appointment_datetime_end"
+                      value={createFormData.appointment_datetime_end}
+                      onChange={handleCreateInputChange}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Leave empty to auto-calculate based on duration</p>
                   </div>
-                </form>
-              </div>
+  
+                  {/* Duration */}
+                  <div>
+                    <label htmlFor="duration_minutes" className="block text-sm font-medium text-gray-700 mb-2">
+                      Duration (minutes)
+                    </label>
+                    <input
+                      id="duration_minutes"
+                      type="number"
+                      name="duration_minutes"
+                      value={createFormData.duration_minutes}
+                      onChange={handleCreateInputChange}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Auto-filled from package"
+                    />
+                  </div>
+  
+                  {/* Total Cost */}
+                  <div>
+                    <label htmlFor="total_cost" className="block text-sm font-medium text-gray-700 mb-2">
+                      Total Cost ($)
+                    </label>
+                    <input
+                      id="total_cost"
+                      type="number"
+                      name="total_cost"
+                      value={createFormData.total_cost}
+                      onChange={handleCreateInputChange}
+                      step="0.01"
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Auto-filled from package"
+                    />
+                  </div>
+                </div>
+  
+                {/* Booking Notes */}
+                <div>
+                  <label htmlFor="booking_notes" className="block text-sm font-medium text-gray-700 mb-2">
+                    Booking Notes
+                  </label>
+                  <textarea
+                    id="booking_notes"
+                    name="booking_notes"
+                    value={createFormData.booking_notes}
+                    onChange={handleCreateInputChange}
+                    rows="3"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Add any special instructions or notes for this appointment..."
+                  />
+                </div>
+  
+                <div className="flex justify-end space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowCreateModal(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  >
+                    Create Appointment
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+  
+      {/* Edit Appointment Modal */}
+      {showModal && selectedAppointment && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div className="mt-3">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Appointment Details - #{selectedAppointment.id}
+              </h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="edit-status" className="block text-sm font-medium text-gray-700">
+                    Status
+                  </label>
+                  <select
+                    id="edit-status"
+                    name="status"
+                    value={formData.status}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="edit-notes" className="block text-sm font-medium text-gray-700">
+                    Notes
+                  </label>
+                  <textarea
+                    id="edit-notes"
+                    name="notes"
+                    value={formData.notes}
+                    onChange={handleInputChange}
+                    rows="4"
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Add any notes about this appointment..."
+                  />
+                </div>
+  
+                <div className="flex justify-end space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  >
+                    Update Appointment
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
-
-export default AdminAppointments; 
+export default AdminAppointments;
