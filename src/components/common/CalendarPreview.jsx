@@ -147,6 +147,7 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
         </h3>
         <div className="flex items-center space-x-2">
           <button
+            type="button"
             onClick={previousMonth}
             className="p-1 hover:bg-gray-100 rounded"
           >
@@ -154,6 +155,7 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
           </button>
           <span className="font-medium">{getMonthName(selectedMonth)}</span>
           <button
+            type="button"
             onClick={nextMonth}
             className="p-1 hover:bg-gray-100 rounded"
           >
@@ -235,6 +237,7 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
                 </div>
                 {isException && (
                   <button
+                    type="button"
                     onClick={() => removeException(dateStr)}
                     className="text-red-600 hover:text-red-800"
                     title="Remove exception"
@@ -253,6 +256,7 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
         <div className="flex items-center justify-between mb-3">
           <h4 className="font-medium text-gray-900">Exceptions</h4>
           <button
+            type="button"
             onClick={() => setShowAddException(!showAddException)}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
@@ -269,6 +273,7 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
+              type="button"
               onClick={addException}
               disabled={!newExceptionDate}
               className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -286,6 +291,7 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
                   {new Date(date).toLocaleDateString()}
                 </span>
                 <button
+                  type="button"
                   onClick={() => removeException(date)}
                   className="text-red-600 hover:text-red-800"
                 >
