@@ -223,283 +223,273 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex items-center justify-center py-12">
         <LoadingSpinner size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
-          <p className="text-gray-600 mt-2">Comprehensive insights into your homecare service performance.</p>
-        </div>
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
+        <p className="text-gray-600 mt-2">Comprehensive insights into your homecare service performance.</p>
+      </div>
 
-        {/* New Users Section */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-            <UserPlus className="h-5 w-5 mr-2" />
-            New Users
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Today</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-2">{analytics.newUsers.today}</p>
-                </div>
-                <div className="p-3 rounded-full bg-blue-100">
-                  <UserPlus className="h-6 w-6 text-blue-600" />
-                </div>
+      {/* New Users Section */}
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+          <UserPlus className="h-5 w-5 mr-2" />
+          New Users
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Today</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{analytics.newUsers.today}</p>
+              </div>
+              <div className="p-3 rounded-full bg-blue-100">
+                <UserPlus className="h-6 w-6 text-blue-600" />
               </div>
             </div>
-            
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">This Week</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-2">{analytics.newUsers.thisWeek}</p>
-                  <p className={`text-sm mt-1 ${analytics.newUsers.trends.weekChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    <TrendingUp className="h-3 w-3 inline mr-1" />
-                    {formatPercentage(analytics.newUsers.trends.weekChange)} from last week
-                  </p>
-                </div>
-                <div className="p-3 rounded-full bg-green-100">
-                  <BarChart3 className="h-6 w-6 text-green-600" />
-                </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">This Week</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{analytics.newUsers.thisWeek}</p>
+                <p className={`text-sm mt-1 ${analytics.newUsers.trends.weekChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <TrendingUp className="h-3 w-3 inline mr-1" />
+                  {formatPercentage(analytics.newUsers.trends.weekChange)} from last week
+                </p>
+              </div>
+              <div className="p-3 rounded-full bg-green-100">
+                <BarChart3 className="h-6 w-6 text-green-600" />
               </div>
             </div>
-            
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">This Month</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-2">{analytics.newUsers.thisMonth}</p>
-                  <p className={`text-sm mt-1 ${analytics.newUsers.trends.monthChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    <TrendingUp className="h-3 w-3 inline mr-1" />
-                    {formatPercentage(analytics.newUsers.trends.monthChange)} from last month
-                  </p>
-                </div>
-                <div className="p-3 rounded-full bg-purple-100">
-                  <LineChart className="h-6 w-6 text-purple-600" />
-                </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">This Month</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{analytics.newUsers.thisMonth}</p>
+                <p className={`text-sm mt-1 ${analytics.newUsers.trends.monthChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <TrendingUp className="h-3 w-3 inline mr-1" />
+                  {formatPercentage(analytics.newUsers.trends.monthChange)} from last month
+                </p>
+              </div>
+              <div className="p-3 rounded-full bg-purple-100">
+                <LineChart className="h-6 w-6 text-purple-600" />
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* User Activity & Retention Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Active Users */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center">
-                <Activity className="h-5 w-5 mr-2" />
-                Active Users
-              </h3>
-              <div className="p-2 rounded-full bg-green-100">
-                <Users className="h-5 w-5 text-green-600" />
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Active in last 30 days</span>
-                <span className="text-2xl font-bold text-gray-900">{analytics.activeUsers.count}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Percentage of total users</span>
-                <span className="text-lg font-semibold text-green-600">{analytics.activeUsers.percentage.toFixed(1)}%</span>
-              </div>
+      {/* User Activity & Retention Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Active Users */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center">
+              <Activity className="h-5 w-5 mr-2" />
+              Active Users
+            </h3>
+            <div className="p-2 rounded-full bg-green-100">
+              <Users className="h-5 w-5 text-green-600" />
             </div>
           </div>
-
-          {/* Retention Rates */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center">
-                <PieChart className="h-5 w-5 mr-2" />
-                Retention Rates
-              </h3>
-              <div className="p-2 rounded-full bg-blue-100">
-                <CheckCircle className="h-5 w-5 text-blue-600" />
-              </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Active in last 30 days</span>
+              <span className="text-2xl font-bold text-gray-900">{analytics.activeUsers.count}</span>
             </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">30-day retention</span>
-                <span className="text-lg font-semibold text-blue-600">{analytics.retention.thirtyDay.toFixed(1)}%</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">90-day retention</span>
-                <span className="text-lg font-semibold text-blue-600">{analytics.retention.ninetyDay.toFixed(1)}%</span>
-              </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Percentage of total users</span>
+              <span className="text-lg font-semibold text-green-600">{analytics.activeUsers.percentage.toFixed(1)}%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Retention Rates */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              Retention Rates
+            </h3>
+            <div className="p-2 rounded-full bg-blue-100">
+              <Clock className="h-5 w-5 text-blue-600" />
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">30-day retention</span>
+              <span className="text-2xl font-bold text-gray-900">{analytics.retention.thirtyDay.toFixed(1)}%</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">90-day retention</span>
+              <span className="text-lg font-semibold text-blue-600">{analytics.retention.ninetyDay.toFixed(1)}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Revenue & Churn Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Revenue Metrics */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center">
+              <DollarSign className="h-5 w-5 mr-2" />
+              Revenue Metrics
+            </h3>
+            <div className="p-2 rounded-full bg-green-100">
+              <DollarSign className="h-5 w-5 text-green-600" />
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Total sessions</span>
+              <span className="text-2xl font-bold text-gray-900">{analytics.sessions.total}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Revenue per session</span>
+              <span className="text-lg font-semibold text-green-600">${analytics.sessions.revenuePerSession.toFixed(2)}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Revenue per user</span>
+              <span className="text-lg font-semibold text-green-600">${analytics.sessions.revenuePerUser.toFixed(2)}</span>
             </div>
           </div>
         </div>
 
         {/* Churn Analysis */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-            <UserMinus className="h-5 w-5 mr-2" />
-            Churn Analysis
-          </h2>
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <p className="text-sm font-medium text-gray-600">Churned Users</p>
-                <p className="text-3xl font-bold text-red-600 mt-2">{analytics.churn.count}</p>
-                <p className="text-sm text-red-600 mt-1">{analytics.churn.percentage.toFixed(1)}% churn rate</p>
-              </div>
-              
-              <div className="text-center">
-                <p className="text-sm font-medium text-gray-600">Common Reasons</p>
-                <div className="mt-2 space-y-1">
-                  {analytics.churn.reasons.slice(0, 3).map((reason, index) => (
-                    <p key={index} className="text-xs text-gray-500">{reason}</p>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="text-center">
-                <p className="text-sm font-medium text-gray-600">Action Required</p>
-                <p className="text-sm text-orange-600 mt-2">Review customer feedback</p>
-                <p className="text-sm text-orange-600">Improve service quality</p>
-              </div>
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center">
+              <UserMinus className="h-5 w-5 mr-2" />
+              Churn Analysis
+            </h3>
+            <div className="p-2 rounded-full bg-red-100">
+              <UserMinus className="h-5 w-5 text-red-600" />
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Churned users</span>
+              <span className="text-2xl font-bold text-gray-900">{analytics.churn.count}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Churn rate</span>
+              <span className="text-lg font-semibold text-red-600">{analytics.churn.percentage.toFixed(1)}%</span>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Session Metrics & Revenue */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Session Metrics */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center">
-                <Calendar className="h-5 w-5 mr-2" />
-                Session Metrics
-              </h3>
-              <div className="p-2 rounded-full bg-indigo-100">
-                <BarChart3 className="h-5 w-5 text-indigo-600" />
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Total sessions delivered</span>
-                <span className="text-xl font-bold text-gray-900">{analytics.sessions.total}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Revenue per session</span>
-                <span className="text-lg font-semibold text-green-600">${analytics.sessions.revenuePerSession.toFixed(2)}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Revenue per user</span>
-                <span className="text-lg font-semibold text-green-600">${analytics.sessions.revenuePerUser.toFixed(2)}</span>
-              </div>
-            </div>
+      {/* User Satisfaction */}
+      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-bold text-gray-900 flex items-center">
+            <Star className="h-5 w-5 mr-2" />
+            User Satisfaction
+          </h3>
+          <div className="p-2 rounded-full bg-yellow-100">
+            <Star className="h-5 w-5 text-yellow-600" />
           </div>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Average rating</span>
+            <span className="text-xl font-bold text-gray-900">{analytics.satisfaction.averageRating.toFixed(1)}/5</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Total reviews</span>
+            <span className="text-lg font-semibold text-gray-900">{analytics.satisfaction.totalReviews}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">NPS Score</span>
+            <span className={`text-lg font-semibold ${analytics.satisfaction.npsScore >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {analytics.satisfaction.npsScore.toFixed(0)}
+            </span>
+          </div>
+        </div>
+      </div>
 
-          {/* User Satisfaction */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center">
-                <Star className="h-5 w-5 mr-2" />
-                User Satisfaction
-              </h3>
-              <div className="p-2 rounded-full bg-yellow-100">
-                <Star className="h-5 w-5 text-yellow-600" />
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Average rating</span>
-                <span className="text-xl font-bold text-gray-900">{analytics.satisfaction.averageRating.toFixed(1)}/5</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Total reviews</span>
-                <span className="text-lg font-semibold text-gray-900">{analytics.satisfaction.totalReviews}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">NPS Score</span>
-                <span className={`text-lg font-semibold ${analytics.satisfaction.npsScore >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {analytics.satisfaction.npsScore.toFixed(0)}
+      {/* Recent Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Recent Appointments */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-gray-900">Recent Appointments</h2>
+            <Calendar className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="space-y-4">
+            {recentAppointments.map((appointment) => (
+              <div key={appointment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <p className="font-medium text-gray-900">
+                    Appointment #{appointment.id}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at{' '}
+                    {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], { 
+                      hour: '2-digit', 
+                      minute: '2-digit' 
+                    })}
+                  </p>
+                  <p className="text-sm text-gray-500">${appointment.total_cost}</p>
+                </div>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(appointment.status)}`}>
+                  {appointment.status}
                 </span>
               </div>
-            </div>
+            ))}
+            
+            {recentAppointments.length === 0 && (
+              <div className="text-center py-4 text-gray-500">
+                No recent appointments
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Recent Activity */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Appointments */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Recent Appointments</h2>
-              <Calendar className="h-5 w-5 text-gray-400" />
-            </div>
-            
-            <div className="space-y-4">
-              {recentAppointments.map((appointment) => (
-                <div key={appointment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      Appointment #{appointment.id}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at{' '}
-                      {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })}
-                    </p>
-                    <p className="text-sm text-gray-500">${appointment.total_cost}</p>
-                  </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(appointment.status)}`}>
-                    {appointment.status}
-                  </span>
-                </div>
-              ))}
-              
-              {recentAppointments.length === 0 && (
-                <div className="text-center py-4 text-gray-500">
-                  No recent appointments
-                </div>
-              )}
-            </div>
+        {/* Quick Actions */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
+            <CheckCircle className="h-5 w-5 text-gray-400" />
           </div>
-
-          {/* Quick Actions */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
-              <CheckCircle className="h-5 w-5 text-gray-400" />
-            </div>
-            
-            <div className="grid grid-cols-1 gap-3">
-              {[
-                { title: 'View All Customers', desc: 'Manage customer profiles', href: '/admin/customers' },
-                { title: 'Manage Caregivers', desc: 'Add and edit caregiver info', href: '/admin/caregivers' },
-                { title: 'Service Management', desc: 'Update services and pricing', href: '/admin/services' },
-                { title: 'Package Management', desc: 'Create and edit packages', href: '/admin/packages' },
-                { title: 'Scheduled Packages', desc: 'Manage recurring schedules', href: '/admin/scheduled-packages' },
-                { title: 'View Appointments', desc: 'Manage all appointments', href: '/admin/appointments' }
-              ].map((action, index) => (
-                <a
-                  key={index}
-                  href={action.href}
-                  className="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors duration-200 group"
-                >
-                  <p className="font-medium text-gray-900 group-hover:text-blue-600">{action.title}</p>
-                  <p className="text-sm text-gray-600">{action.desc}</p>
-                </a>
-              ))}
-            </div>
+          
+          <div className="grid grid-cols-1 gap-3">
+            {[
+              { title: 'View All Customers', desc: 'Manage customer profiles', href: '/admin/customers' },
+              { title: 'Manage Caregivers', desc: 'Add and edit caregiver info', href: '/admin/caregivers' },
+              { title: 'Service Management', desc: 'Update services and pricing', href: '/admin/services' },
+              { title: 'Package Management', desc: 'Create and edit packages', href: '/admin/packages' },
+              { title: 'Scheduled Packages', desc: 'Manage recurring schedules', href: '/admin/scheduled-packages' },
+              { title: 'View Appointments', desc: 'Manage all appointments', href: '/admin/appointments' }
+            ].map((action, index) => (
+              <a
+                key={index}
+                href={action.href}
+                className="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors duration-200 group"
+              >
+                <p className="font-medium text-gray-900 group-hover:text-blue-600">{action.title}</p>
+                <p className="text-sm text-gray-600">{action.desc}</p>
+              </a>
+            ))}
           </div>
         </div>
       </div>

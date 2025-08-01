@@ -149,114 +149,113 @@ const AdminPackages = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center py-12">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                <Package className="h-6 w-6 mr-2" />
-                Package Management
-              </h1>
-              <p className="text-gray-600 mt-1">Manage your care packages</p>
-            </div>
-            <button
-              onClick={() => {
-                setEditingPackage(null);
-                setFormData({ name: '', description: '', code: '', total_cost: '', duration_hours: '', is_active: true, serviceIds: [] });
-                setShowModal(true);
-              }}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Package
-            </button>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+              <Package className="h-6 w-6 mr-2" />
+              Package Management
+            </h1>
+            <p className="text-gray-600 mt-1">Manage your care packages</p>
+          </div>
+          <button
+            onClick={() => {
+              setEditingPackage(null);
+              setFormData({ name: '', description: '', code: '', total_cost: '', duration_hours: '', is_active: true, serviceIds: [] });
+              setShowModal(true);
+            }}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Package
+          </button>
+        </div>
+      </div>
+
+      {/* Search */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center space-x-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <input
+              type="text"
+              placeholder="Search packages..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="text-right">
+            <span className="text-sm text-gray-600">
+              {filteredPackages.length} of {packages.length} packages
+            </span>
           </div>
         </div>
+      </div>
 
-        {/* Search */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex items-center space-x-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <input
-                type="text"
-                placeholder="Search packages..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="text-right">
-              <span className="text-sm text-gray-600">
-                {filteredPackages.length} of {packages.length} packages
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPackages.map((pkg) => (
-                            <div key={pkg.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-              <div className="p-6">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center">
-                    <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Package className="h-6 w-6 text-blue-600" />
-                    </div>
-                    <div className="ml-3">
-                      <h3 className="text-lg font-semibold text-gray-900">{pkg.name}</h3>
-                      <p className="text-sm text-gray-500">Code: {pkg.code}</p>
-                    </div>
+      {/* Packages Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredPackages.map((pkg) => (
+          <div key={pkg.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                    <Package className="h-6 w-6 text-blue-600" />
                   </div>
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    pkg.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
-                    {pkg.is_active ? 'Active' : 'Inactive'}
-                  </span>
-                </div>
-
-                {/* Package Details */}
-                <div className="space-y-2 mb-4">
-                  <p className="text-sm text-gray-600">{pkg.description}</p>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Duration: {pkg.duration_hours} hours</span>
-                    <span className="text-green-600 font-semibold">${pkg.total_cost}</span>
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    <strong>Services:</strong> {getServiceNames(pkg.serviceIds)}
+                  <div className="ml-3">
+                    <h3 className="text-lg font-semibold text-gray-900">{pkg.name}</h3>
+                    <p className="text-sm text-gray-500">Code: {pkg.code}</p>
                   </div>
                 </div>
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                  pkg.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
+                  {pkg.is_active ? 'Active' : 'Inactive'}
+                </span>
+              </div>
 
-                {/* Actions */}
-                <div className="flex justify-end space-x-2">
-                  <button
-                    onClick={() => handleEdit(pkg)}
-                    className="text-blue-600 hover:text-blue-900 p-1"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(pkg.id)}
-                    className="text-red-600 hover:text-red-900 p-1"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+              {/* Package Details */}
+              <div className="space-y-2 mb-4">
+                <p className="text-sm text-gray-600">{pkg.description}</p>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Duration: {pkg.duration_hours} hours</span>
+                  <span className="text-green-600 font-semibold">${pkg.total_cost}</span>
+                </div>
+                <div className="text-xs text-gray-500">
+                  <strong>Services:</strong> {getServiceNames(pkg.serviceIds)}
                 </div>
               </div>
+
+              {/* Actions */}
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={() => handleEdit(pkg)}
+                  className="text-blue-600 hover:text-blue-900 p-1"
+                >
+                  <Edit className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => handleDelete(pkg.id)}
+                  className="text-red-600 hover:text-red-900 p-1"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
         {/* Modal */}
         {showModal && (
@@ -381,7 +380,6 @@ const AdminPackages = () => {
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 };

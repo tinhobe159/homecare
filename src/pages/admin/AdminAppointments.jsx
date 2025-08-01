@@ -218,105 +218,104 @@ const AdminAppointments = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center py-12">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                <Calendar className="h-6 w-6 mr-2" />
-                Appointment Management
-              </h1>
-              <p className="text-gray-600 mt-1">Manage and track all appointments</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <div className="text-2xl font-bold text-blue-600">{appointments.length}</div>
-                <div className="text-sm text-gray-500">Total Appointments</div>
-              </div>
-              <button
-                onClick={() => setShowCreateModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2 transition-colors duration-200"
-              >
-                <Plus className="h-4 w-4" />
-                <span>Create Appointment</span>
-              </button>
-            </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+              <Calendar className="h-6 w-6 mr-2" />
+              Appointment Management
+            </h1>
+            <p className="text-gray-600 mt-1">Manage and track all appointments</p>
           </div>
-        </div>
-
-        {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <input
-                type="text"
-                placeholder="Search appointments..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>
+          <div className="flex items-center space-x-4">
             <div className="text-right">
-              <span className="text-sm text-gray-600">
-                {filteredAppointments.length} of {appointments.length} appointments
-              </span>
+              <div className="text-2xl font-bold text-blue-600">{appointments.length}</div>
+              <div className="text-sm text-gray-500">Total Appointments</div>
             </div>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2 transition-colors duration-200"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Create Appointment</span>
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Appointments List */}
-        <div className="space-y-4">
-          {filteredAppointments.map((appointment) => {
-            const customer = getCustomerById(appointment.customer_id);
-            const pkg = getPackageById(appointment.package_id);
-            
-            return (
-              <div key={appointment.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex-shrink-0">
-                        <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                          <Calendar className="h-6 w-6 text-blue-600" />
-                        </div>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          Appointment #{appointment.id}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                        </p>
+      {/* Filters and Search */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <input
+              type="text"
+              placeholder="Search appointments..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div className="text-right">
+            <span className="text-sm text-gray-600">
+              {filteredAppointments.length} of {appointments.length} appointments
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Appointments List */}
+      <div className="space-y-4">
+        {filteredAppointments.map((appointment) => {
+          const customer = getCustomerById(appointment.customer_id);
+          const pkg = getPackageById(appointment.package_id);
+          
+          return (
+            <div key={appointment.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-shrink-0">
+                      <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                        <Calendar className="h-6 w-6 text-blue-600" />
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getStatusColor(appointment.status)}`}>
-                        {appointment.status}
-                      </span>
-                      <div className="flex space-x-1">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Appointment #{appointment.id}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getStatusColor(appointment.status)}`}>
+                      {appointment.status}
+                    </span>
+                    <div className="flex space-x-1">
                         <button
                           onClick={() => handleViewDetails(appointment)}
                           className="text-blue-600 hover:text-blue-900 p-1"
