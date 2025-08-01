@@ -15,6 +15,7 @@ const RecurrenceBuilder = ({ onRecurrenceChange, initialValue = null }) => {
   });
 
   const [summary, setSummary] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
 
   const frequencies = [
     { value: 'DAILY', label: 'Daily' },
@@ -92,12 +93,25 @@ const RecurrenceBuilder = ({ onRecurrenceChange, initialValue = null }) => {
       rrule += `;BYSETPOS=${recurrence.bySetPos}`;
     }
     
-    if (recurrence.endCondition === 'count' && recurrence.count) {
+    // Only add end condition if it's properly configured
+    if (recurrence.endCondition === 'count' && recurrence.count && recurrence.count > 0) {
       rrule += `;COUNT=${recurrence.count}`;
+      setIsComplete(true);
     } else if (recurrence.endCondition === 'until' && recurrence.until) {
       rrule += `;UNTIL=${recurrence.until}`;
+      setIsComplete(true);
+    } else if (recurrence.endCondition === 'never') {
+      // For never ending, don't add any end condition
+      setIsComplete(true);
+    } else {
+      // If end condition is not properly configured, don't generate RRULE yet
+      console.log('Incomplete recurrence configuration, not generating RRULE yet');
+      setIsComplete(false);
+      onRecurrenceChange('');
+      return;
     }
     
+    console.log('Generated RRULE:', rrule, 'from recurrence state:', recurrence);
     onRecurrenceChange(rrule);
   };
 
@@ -446,6 +460,18 @@ const RecurrenceBuilder = ({ onRecurrenceChange, initialValue = null }) => {
         <div className="mt-6 p-4 bg-blue-50 rounded-lg">
           <h4 className="font-medium text-blue-900 mb-2">Summary</h4>
           <p className="text-blue-800">{summary}</p>
+          {isComplete && (
+            <div className="mt-2 flex items-center text-green-600">
+              <Check className="w-4 h-4 mr-1" />
+              <span className="text-sm font-medium">Configuration complete</span>
+            </div>
+          )}
+          {!isComplete && step === 3 && (
+            <div className="mt-2 flex items-center text-orange-600">
+              <X className="w-4 h-4 mr-1" />
+              <span className="text-sm font-medium">Please complete the end condition</span>
+            </div>
+          )}
         </div>
       )}
 

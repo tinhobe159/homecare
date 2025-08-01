@@ -96,6 +96,7 @@ const BookingPage = () => {
   };
 
   const handleRecurrenceChange = (rrule) => {
+    console.log('RecurrenceBuilder called handleRecurrenceChange with rrule:', rrule);
     setScheduledData(prev => ({
       ...prev,
       rrule
@@ -124,8 +125,20 @@ const BookingPage = () => {
     }
 
     if (formData.bookingType === 'scheduled') {
-      if (!scheduledData.rrule || !scheduledData.startDatetime) {
-        toast.error('Please configure the schedule');
+      console.log('Scheduled package validation:', {
+        rrule: scheduledData.rrule,
+        startDatetime: scheduledData.startDatetime,
+        hasRrule: !!scheduledData.rrule,
+        hasStartDatetime: !!scheduledData.startDatetime
+      });
+      
+      if (!scheduledData.startDatetime) {
+        toast.error('Please select a start date and time for your scheduled package');
+        return;
+      }
+      
+      if (!scheduledData.rrule) {
+        toast.error('Please complete the recurrence configuration. Make sure to set how often it should repeat and when it should end.');
         return;
       }
     } else {
@@ -153,6 +166,7 @@ const BookingPage = () => {
           updated_at: new Date().toISOString()
         };
 
+        console.log('Creating scheduled package with data:', scheduledPackageData);
         await scheduledPackagesAPI.create(scheduledPackageData);
         toast.success('Scheduled package created successfully!');
       } else {
