@@ -138,7 +138,6 @@ const BookingPage = () => {
       }
       
       if (!scheduledData.rrule) {
-        toast.error('Please complete the recurrence configuration. Make sure to set how often it should repeat and when it should end.');
         return;
       }
     } else {
