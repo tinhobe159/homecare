@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,6 +9,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 // Components
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
+import AdminLayout from "./components/admin/AdminLayout";
 
 // Pages
 import Homepage from "./pages/customer/Homepage";
@@ -33,51 +34,64 @@ import AdminScheduledPackages from "./pages/admin/AdminScheduledPackages";
 import CaregiverManagement from "./pages/admin/CaregiverManagement";
 import CaregiverAvailability from "./pages/admin/CaregiverAvailability";
 
+// Wrapper component to conditionally render Navbar
+const AppContent = () => {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin') && location.pathname !== '/admin/login';
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {!isAdminPage && <Navbar />}
+      <main className="flex-grow">
+        <Routes>
+          {/* Customer Routes */}
+          <Route path="/" element={<Homepage />} />
+          <Route path="/packages" element={<PackagesPage />} />
+          <Route path="/packages/:id" element={<PackageDetails />} />
+          <Route path="/book" element={<BookingPage />} />
+          <Route path="/login" element={<CustomerLogin />} />
+          <Route path="/profile" element={<CustomerProfile />} />
+          <Route path="/caregivers" element={<CaregiversPage />} />
+          <Route path="/caregivers/:id" element={<CaregiverDetailsPage />} />
+
+          {/* Admin Login Route (outside layout) */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+
+          {/* Admin Routes with Layout */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="customers" element={<AdminCustomers />} />
+            <Route path="caregivers" element={<CaregiverManagement />} />
+            <Route path="caregivers/:id/availability" element={<CaregiverAvailability />} />
+            <Route path="appointments" element={<AdminAppointments />} />
+            <Route path="scheduled-packages" element={<AdminScheduledPackages />} />
+            <Route path="services" element={<AdminServices />} />
+            <Route path="packages" element={<AdminPackages />} />
+            <Route path="audit-logs" element={<AdminAuditLogs />} />
+            <Route path="user-requests" element={<AdminUserRequests />} />
+          </Route>
+
+          {/* Add more routes as needed */}
+          <Route
+            path="/payments"
+            element={
+              <div className="p-8 text-center">
+                Payments page coming soon...
+              </div>
+            }
+          />
+        </Routes>
+      </main>
+      {!isAdminPage && <Footer />}
+    </div>
+  );
+};
+
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen flex flex-col bg-gray-50">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              {/* Customer Routes */}
-              <Route path="/" element={<Homepage />} />
-              <Route path="/packages" element={<PackagesPage />} />
-              <Route path="/packages/:id" element={<PackageDetails />} />
-              <Route path="/book" element={<BookingPage />} />
-              <Route path="/login" element={<CustomerLogin />} />
-              <Route path="/profile" element={<CustomerProfile />} />
-              <Route path="/caregivers" element={<CaregiversPage />} />
-              <Route path="/caregivers/:id" element={<CaregiverDetailsPage />} />
-
-
-              {/* Admin Routes */}
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/customers" element={<AdminCustomers />} />
-              <Route path="/admin/caregivers" element={<CaregiverManagement />} />
-              <Route path="/admin/caregivers/:id/availability" element={<CaregiverAvailability />} />
-              <Route path="/admin/appointments" element={<AdminAppointments />} />
-              <Route path="/admin/scheduled-packages" element={<AdminScheduledPackages />} />
-              <Route path="/admin/services" element={<AdminServices />} />
-              <Route path="/admin/packages" element={<AdminPackages />} />
-              <Route path="/admin/audit-logs" element={<AdminAuditLogs />} />
-              <Route path="/admin/user-requests" element={<AdminUserRequests />} />
-
-              {/* Add more routes as needed */}
-              <Route
-                path="/payments"
-                element={
-                  <div className="p-8 text-center">
-                    Payments page coming soon...
-                  </div>
-                }
-              />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <AppContent />
         <ToastContainer position="top-right" autoClose={3000} />
       </Router>
     </AuthProvider>

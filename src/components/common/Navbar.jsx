@@ -10,6 +10,7 @@ const Navbar = () => {
   const { isAdmin, currentUser, logout } = useAuth();
 
   const isActive = (path) => location.pathname === path;
+  const isAdminPage = location.pathname.startsWith('/admin') && location.pathname !== '/admin/login';
 
   const handleLogout = () => {
     logout();
@@ -30,18 +31,30 @@ const Navbar = () => {
     { path: '/payments', label: 'Payments', icon: CreditCard },
   ];
 
-  const adminNavItems = [
-    { path: '/admin', label: 'Dashboard', icon: Home },
-    { path: '/admin/customers', label: 'Customers', icon: Users },
-    { path: '/admin/caregivers', label: 'Caregivers', icon: Users },
-    { path: '/admin/appointments', label: 'Appointments', icon: Calendar },
-    { path: '/admin/user-requests', label: 'User Requests', icon: MessageSquare },
-    { path: '/admin/services', label: 'Services', icon: Settings },
-    { path: '/admin/packages', label: 'Packages', icon: Package },
-    { path: '/admin/audit-logs', label: 'Audit Logs', icon: Settings },
-  ];
+  // Don't show admin navigation items in the main navbar when on admin pages
+  const navItems = isAdmin && !isAdminPage ? [] : (currentUser ? authenticatedCustomerNavItems : customerNavItems);
 
-  const navItems = isAdmin ? adminNavItems : (currentUser ? authenticatedCustomerNavItems : customerNavItems);
+  // If we're on an admin page, show a simplified header
+  if (isAdminPage) {
+    return (
+      <nav className="bg-white shadow-lg border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <Link to="/admin" className="flex items-center space-x-2">
+                <Heart className="h-8 w-8 text-blue-600" />
+                <span className="text-xl font-bold text-gray-900">HomeCare Admin</span>
+              </Link>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-600">Admin Panel</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200">
@@ -124,7 +137,7 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
+                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium ${
                   isActive(item.path)
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
