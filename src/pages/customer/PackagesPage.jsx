@@ -5,6 +5,9 @@ import SearchBar from '../../components/common/SearchBar';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 import { Clock, DollarSign, ArrowRight, Package } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 const PackagesPage = () => {
   const [packages, setPackages] = useState([]);
@@ -98,33 +101,33 @@ const PackagesPage = () => {
               const totalDuration = pkgServices.reduce((sum, service) => sum + service.duration, 0);
 
               return (
-                <div key={pkg.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 overflow-hidden group">
-                  <div className="p-6">
-                    {/* Package Header */}
-                    <div className="flex justify-between items-start mb-4">
+                <Card key={pkg.id} className="hover:shadow-lg transition-all duration-200 group">
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-200">
+                        <CardTitle className="group-hover:text-blue-600 transition-colors duration-200">
                           {pkg.name}
-                        </h3>
-                        <p className="text-sm text-gray-500 font-medium">{pkg.code}</p>
+                        </CardTitle>
+                        <CardDescription className="text-sm font-medium">{pkg.code}</CardDescription>
                       </div>
                       <div className="text-right">
                         <div className="text-2xl font-bold text-blue-600">${pkg.total_cost}</div>
-                        <div className="text-sm text-gray-500">per session</div>
+                        <div className="text-sm text-muted-foreground">per session</div>
                       </div>
                     </div>
-
+                  </CardHeader>
+                  <CardContent className="space-y-6">
                     {/* Package Description */}
-                    <p className="text-gray-600 mb-6">{pkg.description}</p>
+                    <p className="text-muted-foreground">{pkg.description}</p>
 
                     {/* Services Summary */}
-                    <div className="mb-6">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-3">Included Services ({pkgServices.length})</h4>
+                    <div>
+                      <h4 className="text-sm font-semibold mb-3">Included Services ({pkgServices.length})</h4>
                       <div className="space-y-2">
                         {pkgServices.slice(0, 3).map((service) => (
                           <div key={service.id} className="flex items-center justify-between text-sm">
-                            <span className="text-gray-700">{service.name}</span>
-                            <div className="flex items-center space-x-2 text-gray-500">
+                            <span className="text-foreground">{service.name}</span>
+                            <div className="flex items-center space-x-2 text-muted-foreground">
                               <Clock className="h-3 w-3" />
                               <span>{service.duration}min</span>
                               <DollarSign className="h-3 w-3" />
@@ -133,7 +136,7 @@ const PackagesPage = () => {
                           </div>
                         ))}
                         {pkgServices.length > 3 && (
-                          <div className="text-sm text-gray-500 italic">
+                          <div className="text-sm text-muted-foreground italic">
                             +{pkgServices.length - 3} more service{pkgServices.length - 3 !== 1 ? 's' : ''}
                           </div>
                         )}
@@ -141,7 +144,7 @@ const PackagesPage = () => {
                     </div>
 
                     {/* Package Stats */}
-                    <div className="flex items-center justify-between text-sm text-gray-600 mb-6 p-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center justify-between text-sm p-3 bg-muted rounded-lg">
                       <div className="flex items-center space-x-1">
                         <Clock className="h-4 w-4" />
                         <span>{totalDuration} min total</span>
@@ -154,48 +157,46 @@ const PackagesPage = () => {
 
                     {/* Actions */}
                     <div className="flex space-x-3">
-                      <Link
-                        to={`/packages/${pkg.id}`}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-center font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
-                      >
-                        <span>View Details</span>
-                        <ArrowRight className="h-4 w-4" />
-                      </Link>
-                      <Link
-                        to={`/book?package=${pkg.id}`}
-                        className="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 py-2 px-4 rounded-lg text-center font-medium transition-colors duration-200"
-                      >
-                        Book Now
-                      </Link>
+                      <Button asChild variant="default" className="flex-1">
+                        <Link to={`/packages/${pkg.id}`}>
+                          <span>View Details</span>
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </Link>
+                      </Button>
+                      <Button asChild variant="outline" className="flex-1">
+                        <Link to={`/book?package=${pkg.id}`}>
+                          Book Now
+                        </Link>
+                      </Button>
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
         )}
 
         {/* CTA Section */}
-        <div className="mt-16 text-center bg-blue-50 rounded-xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">Need a Custom Care Plan?</h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Our packages can be customized to meet your specific needs. Contact us to discuss your requirements.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/book"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-            >
-              Schedule Consultation
-            </Link>
-            <a
-              href="tel:555-123-4567"
-              className="border border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-            >
-              Call (555) 123-4567
-            </a>
-          </div>
-        </div>
+        <Card className="mt-16 text-center">
+          <CardContent className="p-8">
+            <h3 className="text-2xl font-bold mb-4">Need a Custom Care Plan?</h3>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              Our packages can be customized to meet your specific needs. Contact us to discuss your requirements.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild>
+                <Link to="/book">
+                  Schedule Consultation
+                </Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <a href="tel:555-123-4567">
+                  Call (555) 123-4567
+                </a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

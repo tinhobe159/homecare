@@ -1,25 +1,21 @@
-import React, { useState, useContext } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Mail, Lock, User, Phone, Eye, EyeOff } from 'lucide-react';
-import { AuthContext } from '../../contexts/AuthContext';
-import { customersAPI } from '../../services/api';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Eye, EyeOff, Lock, User, Heart, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const CustomerLogin = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { login } = useContext(AuthContext);
-  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  const [formData, setFormData] = useState({
-    email: 'john.doe@example.com',
-    password: 'SecureP@ss2024!',
-    name: '',
-    phone: '',
-    address: ''
-  });
+  const { login } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,230 +30,118 @@ const CustomerLogin = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
-        // Login logic
-        const response = await customersAPI.getAll();
-        const customer = response.data.find(c => 
-          c.email === formData.email && c.password === formData.password
-        );
-        
-        if (customer) {
-          login(customer, false); // false for customer, not admin
-          toast.success('Login successful!');
-          navigate(location.state?.from || '/');
-        } else {
-          toast.error('Invalid email or password');
-        }
-      } else {
-        // Registration logic
-        const newCustomer = {
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-          phone: formData.phone,
-          address: formData.address,
-          status: 'active',
-          created_at: new Date().toISOString()
-        };
-
-        await customersAPI.create(newCustomer);
-        toast.success('Registration successful! Please login.');
-        setIsLogin(true);
-        setFormData({ email: '', password: '', name: '', phone: '', address: '' });
-      }
+      await login(formData.email, formData.password);
+      toast.success('Login successful!');
     } catch (error) {
-      console.error('Error:', error);
-      toast.error(isLogin ? 'Login failed' : 'Registration failed');
+      console.error('Login error:', error);
+      toast.error('Invalid credentials. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
-            {isLogin ? 'Welcome Back' : 'Create Account'}
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            {isLogin ? 'Sign in to your account' : 'Join our homecare community'}
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 font-medium"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back to Home</span>
+          </Link>
         </div>
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {!isLogin && (
-              <>
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Full Name
-                  </label>
-                  <div className="mt-1 relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required={!isLogin}
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter your full name"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                    Phone Number
-                  </label>
-                  <div className="mt-1 relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      required={!isLogin}
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter your phone number"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                    Address
-                  </label>
-                  <div className="mt-1">
-                    <textarea
-                      id="address"
-                      name="address"
-                      rows="3"
-                      value={formData.address}
-                      onChange={handleInputChange}
-                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter your address"
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email Address
-              </label>
-              <div className="mt-1 relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your email"
-                />
+        <Card className="shadow-xl">
+          <CardHeader className="text-center">
+            <div className="flex justify-center mb-4">
+              <div className="h-16 w-16 bg-primary rounded-full flex items-center justify-center">
+                <Heart className="h-8 w-8 text-white" />
               </div>
             </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1 relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete={isLogin ? 'current-password' : 'new-password'}
-                  required
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder={isLogin ? 'Enter your password' : 'Create a password'}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
+            <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
+            <CardDescription>
+              Sign in to access your account and book care services
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Enter your email"
+                    className="pl-10"
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            <div>
-              <button
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Enter your password"
+                    className="pl-10 pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <Button
                 type="submit"
+                className="w-full"
                 disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                {loading ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    {isLogin ? 'Signing in...' : 'Creating account...'}
-                  </div>
-                ) : (
-                  isLogin ? 'Sign In' : 'Create Account'
-                )}
-              </button>
-            </div>
-          </form>
+                {loading ? 'Signing in...' : 'Sign In'}
+              </Button>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
+              <div className="text-center space-y-4">
+                <div className="text-sm text-muted-foreground">
+                  Don't have an account?{' '}
+                  <Link to="/register" className="text-primary hover:text-primary/80 font-medium">
+                    Sign up here
+                  </Link>
+                </div>
+                
+                <div className="text-sm text-muted-foreground">
+                  <Link to="/forgot-password" className="text-primary hover:text-primary/80">
+                    Forgot your password?
+                  </Link>
+                </div>
+
+                <div className="text-xs text-muted-foreground">
+                  Demo credentials: customer@homecare.com / customer123
+                </div>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
-                  {isLogin ? "Don't have an account?" : 'Already have an account?'}
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6 text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsLogin(!isLogin);
-                  setFormData({ email: '', password: '', name: '', phone: '', address: '' });
-                }}
-                className="text-blue-600 hover:text-blue-500 font-medium"
-              >
-                {isLogin ? 'Create a new account' : 'Sign in to existing account'}
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-6 text-center">
-            <Link
-              to="/"
-              className="text-sm text-gray-600 hover:text-gray-500"
-            >
-              ← Back to Home
-            </Link>
-          </div>
-
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-md">
-            <h3 className="text-sm font-medium text-blue-800 mb-2">Demo Credentials</h3>
-            <p className="text-sm text-blue-700">
-              <strong>John Doe:</strong> john.doe@example.com / SecureP@ss2024!<br />
-              <strong>Mary Smith:</strong> mary.smith@example.com / StrongP@ssw0rd#2024<br />
-              <strong>Robert Johnson:</strong> robert.johnson@example.com / C0mplexP@ss!2024
-            </p>
-          </div>
-        </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

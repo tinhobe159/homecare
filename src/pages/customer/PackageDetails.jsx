@@ -4,6 +4,9 @@ import { packagesAPI, servicesAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 import { ArrowLeft, Clock, DollarSign, Check, Calendar, Package } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 const PackageDetails = () => {
   const { id } = useParams();
@@ -87,17 +90,16 @@ const PackageDetails = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
         <div className="mb-6">
-          <Link
-            to="/packages"
-            className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to Packages</span>
-          </Link>
+          <Button variant="ghost" asChild>
+            <Link to="/packages" className="inline-flex items-center space-x-2">
+              <ArrowLeft className="h-4 w-4" />
+              <span>Back to Packages</span>
+            </Link>
+          </Button>
         </div>
 
         {/* Package Header */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-8">
+        <Card className="mb-8 overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8">
             <div className="flex justify-between items-start">
               <div>
@@ -120,100 +122,113 @@ const PackageDetails = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Services Included */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Services Included ({services.length})
-          </h2>
-          
-          <div className="grid gap-6">
-            {services.map((service) => (
-                              <div key={service.id} className="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors duration-200">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{service.name}</h3>
-                    <p className="text-sm text-gray-500 font-medium">{service.code}</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1 text-gray-600">
-                      <Clock className="h-4 w-4" />
-                      <span>{service.duration} min</span>
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Services Included ({services.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-6">
+              {services.map((service) => (
+                <Card key={service.id} className="hover:border-blue-300 transition-colors duration-200">
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-lg font-semibold mb-1">{service.name}</h3>
+                        <p className="text-sm text-muted-foreground font-medium">{service.code}</p>
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-1 text-muted-foreground">
+                          <Clock className="h-4 w-4" />
+                          <span>{service.duration} min</span>
+                        </div>
+                        <div className="flex items-center space-x-1 text-muted-foreground">
+                          <DollarSign className="h-4 w-4" />
+                          <span>${service.hourly_rate}</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-1 text-gray-600">
-                      <DollarSign className="h-4 w-4" />
-                      <span>${service.hourly_rate}</span>
+                    <p className="text-muted-foreground">{service.description}</p>
+                    <div className="mt-3 flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-600" />
+                      <span className="text-sm text-green-600 font-medium">Included in package</span>
                     </div>
-                  </div>
-                </div>
-                <p className="text-gray-600">{service.description}</p>
-                <div className="mt-3 flex items-center space-x-2">
-                  <Check className="h-4 w-4 text-green-600" />
-                  <span className="text-sm text-green-600 font-medium">Included in package</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Package Summary */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Package Summary</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <div className="text-2xl font-bold text-blue-600 mb-1">{services.length}</div>
-              <div className="text-gray-600">Services Included</div>
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Package Summary</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
+                <CardContent className="text-center p-4">
+                  <div className="text-2xl font-bold text-blue-600 mb-1">{services.length}</div>
+                  <div className="text-muted-foreground">Services Included</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="text-center p-4">
+                  <div className="text-2xl font-bold text-green-600 mb-1">{totalDuration}</div>
+                  <div className="text-muted-foreground">Total Minutes</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="text-center p-4">
+                  <div className="text-2xl font-bold text-purple-600 mb-1">${packageData.total_cost}</div>
+                  <div className="text-muted-foreground">Session Cost</div>
+                </CardContent>
+              </Card>
             </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <div className="text-2xl font-bold text-green-600 mb-1">{totalDuration}</div>
-              <div className="text-gray-600">Total Minutes</div>
-            </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
-              <div className="text-2xl font-bold text-purple-600 mb-1">${packageData.total_cost}</div>
-              <div className="text-gray-600">Session Cost</div>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Action Buttons */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-          <div className="text-center">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Ready to Book This Package?</h3>
-            <p className="text-gray-600 mb-6">
-              Schedule your consultation or book this package directly with one of our certified caregivers.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to={`/book?package=${packageData.id}`}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2"
-              >
-                <Calendar className="h-5 w-5" />
-                <span>Book This Package</span>
-              </Link>
-              <Link
-                to="/caregivers"
-                className="border border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg font-semibold transition-colors duration-200"
-              >
-                View Caregivers
-              </Link>
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center">
+              <h3 className="text-xl font-bold mb-4">Ready to Book This Package?</h3>
+              <p className="text-muted-foreground mb-6">
+                Schedule your consultation or book this package directly with one of our certified caregivers.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild size="lg">
+                  <Link to={`/book?package=${packageData.id}`}>
+                    <Calendar className="h-5 w-5 mr-2" />
+                    <span>Book This Package</span>
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild size="lg">
+                  <Link to="/caregivers">
+                    View Caregivers
+                  </Link>
+                </Button>
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Contact Section */}
-        <div className="mt-8 text-center bg-gray-100 rounded-xl p-6">
-          <p className="text-gray-600 mb-4">
-            Have questions about this package or need customization?
-          </p>
-          <a
-            href="tel:555-123-4567"
-            className="text-blue-600 hover:text-blue-700 font-medium"
-          >
-            Call us at (555) 123-4567
-          </a>
-        </div>
+        <Card className="mt-8">
+          <CardContent className="p-6 text-center">
+            <p className="text-muted-foreground mb-4">
+              Have questions about this package or need customization?
+            </p>
+            <Button variant="link" asChild>
+              <a href="tel:555-123-4567">
+                Call us at (555) 123-4567
+              </a>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -1,221 +1,385 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock, Plus } from 'lucide-react';
+import { 
+  Calendar, 
+  Search, 
+  Clock,
+  User,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Plus,
+  Edit
+} from 'lucide-react';
 import { caregiversAPI, caregiverAvailabilityAPI } from '../../services/api';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const CaregiverAvailability = () => {
-  const { id } = useParams();
-  const [caregiver, setCaregiver] = useState(null);
+  const [caregivers, setCaregivers] = useState([]);
   const [availability, setAvailability] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCaregiver, setSelectedCaregiver] = useState(null);
+  const [formData, setFormData] = useState({
+    day_of_week: '',
+    start_time: '',
+    end_time: '',
+    is_available: true
+  });
 
   useEffect(() => {
     fetchData();
-  }, [id]);
+  }, []);
 
   const fetchData = async () => {
     try {
-      const [caregiverResponse, availabilityResponse] = await Promise.all([
-        caregiversAPI.getById(id),
-        caregiverAvailabilityAPI.getByCaregiverId(id)
+      const [caregiversResponse, availabilityResponse] = await Promise.all([
+        caregiversAPI.getAll(),
+        caregiverAvailabilityAPI.getAll()
       ]);
-      
-      setCaregiver(caregiverResponse.data);
+      setCaregivers(caregiversResponse.data);
       setAvailability(availabilityResponse.data);
     } catch (error) {
-      console.error('Error fetching caregiver availability:', error);
-      toast.error('Failed to load caregiver availability');
+      console.error('Error fetching data:', error);
+      toast.error('Failed to load availability data');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      if (selectedCaregiver) {
+        await caregiverAvailabilityAPI.update(selectedCaregiver.id, formData);
+        toast.success('Availability updated successfully');
+      } else {
+        await caregiverAvailabilityAPI.create(formData);
+        toast.success('Availability created successfully');
+      }
+      
+      setShowModal(false);
+      setSelectedCaregiver(null);
+      setFormData({ 
+        day_of_week: '', 
+        start_time: '', 
+        end_time: '', 
+        is_available: true 
+      });
+      fetchData();
+    } catch (error) {
+      console.error('Error saving availability:', error);
+      toast.error('Failed to save availability');
+    }
+  };
+
+  const handleEdit = (caregiver) => {
+    setSelectedCaregiver(caregiver);
+    setFormData({
+      day_of_week: caregiver.day_of_week || '',
+      start_time: caregiver.start_time || '',
+      end_time: caregiver.end_time || '',
+      is_available: caregiver.is_available !== false
+    });
+    setShowModal(true);
+  };
+
+  const getAvailabilityForCaregiver = (caregiverId) => {
+    return availability.filter(avail => avail.caregiver_id === caregiverId);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'available': return 'default';
+      case 'busy': return 'secondary';
+      case 'offline': return 'outline';
+      default: return 'outline';
+    }
+  };
+
+  const getDayColor = (day) => {
+    switch (day?.toLowerCase()) {
+      case 'monday': return 'default';
+      case 'tuesday': return 'secondary';
+      case 'wednesday': return 'outline';
+      case 'thursday': return 'default';
+      case 'friday': return 'secondary';
+      case 'saturday': return 'outline';
+      case 'sunday': return 'default';
+      default: return 'outline';
+    }
+  };
+
+  const filteredCaregivers = caregivers.filter(caregiver => {
+    const fullName = `${caregiver.first_name} ${caregiver.last_name}`.toLowerCase();
+    const matchesSearch = fullName.includes((searchTerm || '').toLowerCase()) ||
+                         (caregiver.email || '').toLowerCase().includes((searchTerm || '').toLowerCase());
+    const matchesFilter = filterStatus === 'all' || caregiver.availability === filterStatus;
+    return matchesSearch && matchesFilter;
+  });
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex items-center justify-center py-12">
         <LoadingSpinner />
       </div>
     );
   }
 
-  if (!caregiver) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Caregiver Not Found</h1>
-          <Link to="/admin/caregivers" className="text-blue-600 hover:text-blue-700 font-medium">
-            ← Back to Caregivers
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const formatTime = (timeString) => {
-    if (!timeString || typeof timeString !== 'string') {
-      return 'N/A';
-    }
-    const [hours, minutes] = timeString.split(':');
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const displayHour = hour % 12 || 12;
-    return `${displayHour}:${minutes} ${ampm}`;
-  };
-
-  const calculateDuration = (startTime, endTime) => {
-    if (!startTime || !endTime) {
-      return 0;
-    }
-    const start = new Date(`2000-01-01T${startTime}`);
-    const end = new Date(`2000-01-01T${endTime}`);
-    let duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-    if (duration < 0) {
-      duration += 24; // Handle times spanning midnight
-    }
-    return duration;
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <Link
-            to="/admin/caregivers"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Caregivers
-          </Link>
+    <div className="space-y-6">
+      {/* Header */}
+      <Card>
+        <CardHeader>
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Availability for {caregiver.first_name} {caregiver.last_name}
-              </h1>
-              <p className="text-gray-600">Manage caregiver availability schedule</p>
+              <CardTitle className="text-2xl font-bold flex items-center">
+                <Calendar className="h-6 w-6 mr-2" />
+                Caregiver Availability
+              </CardTitle>
+              <CardDescription>Manage caregiver schedules and availability</CardDescription>
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
-              <Plus className="h-4 w-4" />
-              <span>Add Availability</span>
-            </button>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-primary">{caregivers.length}</div>
+              <div className="text-sm text-muted-foreground">Total Caregivers</div>
+            </div>
           </div>
-        </div>
+        </CardHeader>
+      </Card>
 
-        {/* Caregiver Info Card */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-          <div className="flex items-center space-x-4">
-            <img
-              className="h-16 w-16 rounded-full object-cover"
-              src={caregiver.profilePicture}
-              alt={`${caregiver.first_name} ${caregiver.last_name}`}
-            />
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900">
-                {caregiver.first_name} {caregiver.last_name}
-              </h2>
-              <p className="text-gray-600">Background Check: {caregiver.backgroundCheckStatus}</p>
+      {/* Filters and Search */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                type="text"
+                placeholder="Search caregivers..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger>
+                <SelectValue placeholder="All Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="available">Available</SelectItem>
+                <SelectItem value="busy">Busy</SelectItem>
+                <SelectItem value="offline">Offline</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="text-right">
+              <span className="text-sm text-muted-foreground">
+                {filteredCaregivers.length} of {caregivers.length} caregivers
+              </span>
             </div>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        {/* Availability Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Availability Schedule ({availability.length} slots)</h3>
+      {/* Caregivers Table */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Caregiver</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Availability</TableHead>
+                  <TableHead>Hours</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCaregivers.map((caregiver) => {
+                  const caregiverAvailability = getAvailabilityForCaregiver(caregiver.id);
+                  
+                  return (
+                    <TableRow key={caregiver.id}>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <User className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-medium">
+                              {caregiver.first_name} {caregiver.last_name}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {caregiver.email}
+                            </div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={getStatusColor(caregiver.availability)}>
+                          {caregiver.availability}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          {caregiverAvailability.length > 0 ? (
+                            caregiverAvailability.slice(0, 3).map((avail, index) => (
+                              <div key={index} className="flex items-center space-x-2">
+                                <Badge variant={getDayColor(avail.day_of_week)} className="text-xs">
+                                  {avail.day_of_week}
+                                </Badge>
+                                <span className="text-xs text-muted-foreground">
+                                  {avail.start_time} - {avail.end_time}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <span className="text-xs text-muted-foreground">No availability set</span>
+                          )}
+                          {caregiverAvailability.length > 3 && (
+                            <span className="text-xs text-muted-foreground">
+                              +{caregiverAvailability.length - 3} more days
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">
+                          <div className="font-medium">
+                            {caregiverAvailability.filter(avail => avail.is_available).length} days
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {caregiverAvailability.reduce((total, avail) => {
+                              if (avail.is_available) {
+                                const start = new Date(`2000-01-01T${avail.start_time}`);
+                                const end = new Date(`2000-01-01T${avail.end_time}`);
+                                return total + (end - start) / (1000 * 60 * 60);
+                              }
+                              return total;
+                            }, 0).toFixed(1)} hours/week
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEdit(caregiver)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </div>
-          
-          {availability.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Start Time
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      End Time
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Duration
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {availability.map((slot) => {
-                    const duration = calculateDuration(slot.start_time, slot.end_time);
-                    
-                    return (
-                      <tr key={slot.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-sm font-medium text-gray-900">
-                              {new Date(slot.date).toLocaleDateString()}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <Clock className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-sm text-gray-900">
-                              {formatTime(slot.start_time)}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <Clock className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-sm text-gray-900">
-                              {formatTime(slot.end_time)}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {duration.toFixed(1)} hours
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            slot.is_available 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-red-100 text-red-800'
-                          }`}>
-                            {slot.is_available ? 'Available' : 'Unavailable'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                          <button className="text-indigo-600 hover:text-indigo-900">
-                            Edit
-                          </button>
-                          <button className="text-red-600 hover:text-red-900">
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+        </CardContent>
+      </Card>
+
+      {/* Modal */}
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>
+              {selectedCaregiver ? 'Edit Availability' : 'Add Availability'}
+            </DialogTitle>
+            <DialogDescription>
+              {selectedCaregiver ? 'Update caregiver availability' : 'Set caregiver availability'}
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="day_of_week">Day of Week</Label>
+                <Select name="day_of_week" value={formData.day_of_week} onValueChange={(value) => setFormData(prev => ({ ...prev, day_of_week: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Monday">Monday</SelectItem>
+                    <SelectItem value="Tuesday">Tuesday</SelectItem>
+                    <SelectItem value="Wednesday">Wednesday</SelectItem>
+                    <SelectItem value="Thursday">Thursday</SelectItem>
+                    <SelectItem value="Friday">Friday</SelectItem>
+                    <SelectItem value="Saturday">Saturday</SelectItem>
+                    <SelectItem value="Sunday">Sunday</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="is_available">Available</Label>
+                <Select name="is_available" value={formData.is_available.toString()} onValueChange={(value) => setFormData(prev => ({ ...prev, is_available: value === 'true' }))}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="true">Available</SelectItem>
+                    <SelectItem value="false">Not Available</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          ) : (
-            <div className="text-center py-12">
-              <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-xl text-gray-500 mb-2">No availability set</p>
-              <p className="text-gray-400">Add availability slots for this caregiver.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="start_time">Start Time</Label>
+                <Input
+                  type="time"
+                  name="start_time"
+                  value={formData.start_time}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <Label htmlFor="end_time">End Time</Label>
+                <Input
+                  type="time"
+                  name="end_time"
+                  value={formData.end_time}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
-          )}
-        </div>
-      </div>
+
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {selectedCaregiver ? 'Update' : 'Create'}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

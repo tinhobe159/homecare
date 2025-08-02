@@ -4,6 +4,9 @@ import { caregiversAPI, skillsAPI } from '../../services/api';
 import CaregiverCard from '../../components/common/CaregiverCard';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 const CaregiversPage = () => {
   const [selectedSkill, setSelectedSkill] = useState('all');
@@ -68,38 +71,33 @@ const CaregiversPage = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-          <div className="flex items-center space-x-4 mb-4">
-            <Filter className="h-5 w-5 text-gray-500" />
-            <h2 className="text-lg font-semibold text-gray-900">Filter by Skill</h2>
-          </div>
-          
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setSelectedSkill('all')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                selectedSkill === 'all'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              All Caregivers
-            </button>
-            {skills.map((skill) => (
-              <button
-                key={skill.id}
-                onClick={() => setSelectedSkill(skill.id)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedSkill === skill.id
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Filter className="h-5 w-5" />
+              <span>Filter by Skill</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={selectedSkill === 'all' ? 'default' : 'outline'}
+                onClick={() => setSelectedSkill('all')}
               >
-                {skill.name}
-              </button>
-            ))}
-          </div>
-        </div>
+                All Caregivers
+              </Button>
+              {skills.map((skill) => (
+                <Button
+                  key={skill.id}
+                  variant={selectedSkill === skill.id ? 'default' : 'outline'}
+                  onClick={() => setSelectedSkill(skill.id)}
+                >
+                  {skill.name}
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Caregivers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -110,11 +108,13 @@ const CaregiversPage = () => {
 
         {/* Empty State */}
         {filteredCaregivers.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-xl text-gray-500">
-              No caregivers found with this skill.
-            </p>
-          </div>
+          <Card className="text-center py-16">
+            <CardContent>
+              <p className="text-xl text-muted-foreground">
+                No caregivers found with this skill.
+              </p>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>

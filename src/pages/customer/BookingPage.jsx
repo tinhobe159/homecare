@@ -1,64 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard, Repeat, CalendarDays } from 'lucide-react';
-import { packagesAPI, userRequestsAPI, caregiversAPI, scheduledPackagesAPI } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Calendar, 
+  Clock, 
+  User, 
+  Package, 
+  DollarSign, 
+  MapPin,
+  ArrowLeft,
+  CheckCircle,
+  AlertCircle,
+  Star
+} from 'lucide-react';
+import { packagesAPI, caregiversAPI, appointmentsAPI } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-import RecurrenceBuilder from '../../components/common/RecurrenceBuilder';
-import CalendarPreview from '../../components/common/CalendarPreview';
-import { useAuth } from '../../contexts/AuthContext';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 const BookingPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { currentUser, isAdmin } = useAuth();
+  const { user } = useAuth();
   const [packages, setPackages] = useState([]);
   const [caregivers, setCaregivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  
-  // Form state
   const [formData, setFormData] = useState({
-    bookingType: 'one-time', // 'one-time' or 'scheduled'
-    selectedPackage: location.state?.packageId || new URLSearchParams(location.search).get('package') || '',
-    customerName: '',
-    customerEmail: '',
-    customerPhone: '',
-    address: '',
-    preferredDate: '',
-    preferredTime: '',
-    duration: '',
-    specialInstructions: '',
-    emergencyContact: '',
-    emergencyPhone: '',
-    selectedCaregiver: ''
+    package_id: '',
+    caregiver_id: '',
+    appointment_datetime_start: '',
+    appointment_datetime_end: '',
+    special_instructions: '',
+    contact_preference: 'phone'
   });
-
-  // Scheduled package state
-  const [scheduledData, setScheduledData] = useState({
-    rrule: '',
-    startDatetime: '',
-    exceptions: []
-  });
-
-  const [showRecurrenceBuilder, setShowRecurrenceBuilder] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  // Auto-fill customer information when user is logged in
-  useEffect(() => {
-    if (currentUser && !isAdmin) {
-      setFormData(prev => ({
-        ...prev,
-        customerName: currentUser.name || `${currentUser.first_name} ${currentUser.last_name}` || '',
-        customerEmail: currentUser.email || '',
-        customerPhone: currentUser.phone || currentUser.phone_number || '',
-        address: currentUser.address || ''
-      }));
-    }
-  }, [currentUser]);
 
   const fetchData = async () => {
     try {
@@ -69,8 +53,8 @@ const BookingPage = () => {
       setPackages(packagesResponse.data);
       setCaregivers(caregiversResponse.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      toast.error('Failed to load data');
+      console.error('Error fetching booking data:', error);
+      toast.error('Failed to load booking options');
     } finally {
       setLoading(false);
     }
@@ -84,129 +68,68 @@ const BookingPage = () => {
     }));
   };
 
-  const handleBookingTypeChange = (type) => {
+  const handleSelectChange = (name, value) => {
     setFormData(prev => ({
       ...prev,
-      bookingType: type
-    }));
-    
-    if (type === 'scheduled') {
-      setShowRecurrenceBuilder(true);
-    }
-  };
-
-  const handleRecurrenceChange = (rrule) => {
-    console.log('RecurrenceBuilder called handleRecurrenceChange with rrule:', rrule);
-    setScheduledData(prev => ({
-      ...prev,
-      rrule
-    }));
-  };
-
-  const handleExceptionChange = (exceptions) => {
-    setScheduledData(prev => ({
-      ...prev,
-      exceptions
+      [name]: value
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validation
-    if (!formData.selectedPackage) {
-      toast.error('Please select a package');
+    if (!formData.package_id || !formData.appointment_datetime_start) {
+      toast.error('Please select a package and appointment time');
       return;
-    }
-    
-    if (!formData.customerName || !formData.customerEmail || !formData.customerPhone) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
-
-    if (formData.bookingType === 'scheduled') {
-      console.log('Scheduled package validation:', {
-        rrule: scheduledData.rrule,
-        startDatetime: scheduledData.startDatetime,
-        hasRrule: !!scheduledData.rrule,
-        hasStartDatetime: !!scheduledData.startDatetime
-      });
-      
-      if (!scheduledData.startDatetime) {
-        toast.error('Please select a start date and time for your scheduled package');
-        return;
-      }
-      
-      if (!scheduledData.rrule) {
-        return;
-      }
-    } else {
-      if (!formData.preferredDate || !formData.preferredTime) {
-        toast.error('Please select date and time for one-time booking');
-        return;
-      }
     }
 
     setSubmitting(true);
-    
+
     try {
-      if (formData.bookingType === 'scheduled') {
-        // Create scheduled package
-        const scheduledPackageData = {
-          customer_id: currentUser?.id || null,
-          package_id: parseInt(formData.selectedPackage),
-          caregiver_id: formData.selectedCaregiver ? parseInt(formData.selectedCaregiver) : null,
-          start_datetime: scheduledData.startDatetime,
-          rrule: scheduledData.rrule,
-          end_date: null,
-          status: 'active',
-          exceptions: scheduledData.exceptions,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        };
-
-        console.log('Creating scheduled package with data:', scheduledPackageData);
-        await scheduledPackagesAPI.create(scheduledPackageData);
-        toast.success('Scheduled package created successfully!');
-      } else {
-        // Create one-time request
-        const requestData = {
-          customer_id: currentUser?.id || null,
-          package_id: parseInt(formData.selectedPackage),
-          status: 'new',
-          preferred_contact_method: 'email',
-          notes: `Customer: ${formData.customerName}
-Email: ${formData.customerEmail}
-Phone: ${formData.customerPhone}
-Address: ${formData.address}
-Preferred Date: ${formData.preferredDate}
-Preferred Time: ${formData.preferredTime}
-Duration: ${formData.duration} hours
-Special Instructions: ${formData.specialInstructions}
-Emergency Contact: ${formData.emergencyContact}
-Emergency Phone: ${formData.emergencyPhone}
-Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
-          created_at: new Date().toISOString()
-        };
-
-        await userRequestsAPI.create(requestData);
-        toast.success('Request submitted successfully! We will contact you soon.');
-      }
+      const selectedPackage = packages.find(pkg => pkg.id === parseInt(formData.package_id));
       
-      navigate('/');
+      // Calculate end time if not provided
+      let endTime = formData.appointment_datetime_end;
+      if (!endTime && selectedPackage) {
+        const startTime = new Date(formData.appointment_datetime_start);
+        const endTimeDate = new Date(startTime.getTime() + (selectedPackage.duration_hours * 60 * 60 * 1000));
+        endTime = endTimeDate.toISOString();
+      }
+
+      const appointmentData = {
+        customer_id: user?.id,
+        package_id: parseInt(formData.package_id),
+        caregiver_id: formData.caregiver_id ? parseInt(formData.caregiver_id) : null,
+        appointment_datetime_start: formData.appointment_datetime_start,
+        appointment_datetime_end: endTime,
+        status: 'pending',
+        special_instructions: formData.special_instructions,
+        total_cost: selectedPackage?.total_cost || 0,
+        contact_preference: formData.contact_preference
+      };
+
+      await appointmentsAPI.create(appointmentData);
+      toast.success('Booking request submitted successfully!');
+      navigate('/profile');
     } catch (error) {
-      console.error('Error creating request:', error);
-      toast.error('Failed to submit request. Please try again.');
+      console.error('Error creating booking:', error);
+      toast.error('Failed to submit booking request');
     } finally {
       setSubmitting(false);
     }
   };
 
-  const selectedPackage = packages.find(pkg => pkg.id === parseInt(formData.selectedPackage));
+  const getSelectedPackage = () => {
+    return packages.find(pkg => pkg.id === parseInt(formData.package_id));
+  };
+
+  const getSelectedCaregiver = () => {
+    return caregivers.find(caregiver => caregiver.id === parseInt(formData.caregiver_id));
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen">
         <LoadingSpinner />
       </div>
     );
@@ -214,499 +137,275 @@ Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {/* Header */}
-          <div className="bg-blue-600 text-white px-6 py-8">
-            <h1 className="text-3xl font-bold mb-2">Request Care Package</h1>
-            <p className="text-blue-100">Submit your care request and we'll get back to you</p>
-          </div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+          <h1 className="text-3xl font-bold text-gray-900">Book Care Service</h1>
+          <p className="text-gray-600 mt-2">Schedule your personalized care service</p>
+        </div>
 
-          <form onSubmit={handleSubmit} className="p-6 space-y-8">
-            {/* Booking Type Selection */}
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Calendar className="h-5 w-5 mr-2" />
-                Booking Type
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div
-                  className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${
-                    formData.bookingType === 'one-time'
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => handleBookingTypeChange('one-time')}
-                >
-                  <div className="flex items-center space-x-3 mb-3">
-                    <Calendar className="h-6 w-6 text-blue-600" />
-                    <h3 className="text-lg font-semibold">One-time Appointment</h3>
-                  </div>
-                  <p className="text-gray-600">
-                    Book a single appointment for a specific date and time. Perfect for occasional care needs.
-                  </p>
-                </div>
-                
-                <div
-                  className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${
-                    formData.bookingType === 'scheduled'
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => handleBookingTypeChange('scheduled')}
-                >
-                  <div className="flex items-center space-x-3 mb-3">
-                    <Repeat className="h-6 w-6 text-blue-600" />
-                    <h3 className="text-lg font-semibold">Scheduled Package</h3>
-                  </div>
-                  <p className="text-gray-600">
-                    Set up recurring appointments with flexible scheduling. Ideal for ongoing care needs.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Package Selection */}
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Package Selection */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
                 <Package className="h-5 w-5 mr-2" />
                 Select Care Package
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {packages.map((pkg) => (
-                  <div
-                    key={pkg.id}
-                    className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                      parseInt(formData.selectedPackage) === pkg.id
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                    onClick={() => setFormData(prev => ({ ...prev, selectedPackage: pkg.id.toString() }))}
+              </CardTitle>
+              <CardDescription>
+                Choose the care package that best fits your needs
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="package_id">Care Package *</Label>
+                  <Select 
+                    value={formData.package_id} 
+                    onValueChange={(value) => handleSelectChange('package_id', value)}
                   >
-                    <h3 className="font-semibold text-gray-900">{pkg.name}</h3>
-                    <p className="text-2xl font-bold text-blue-600">${pkg.total_cost}</p>
-                    <p className="text-sm text-gray-600">{pkg.duration_hours} hours</p>
-                    <p className="text-sm text-gray-500 mt-2">{pkg.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Customer Information */}
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <User className="h-5 w-5 mr-2" />
-                Customer Information
-                {currentUser && !isAdmin && (
-                  <span className="ml-2 text-sm text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                    Auto-filled from your profile
-                  </span>
-                )}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="customerName"
-                    value={formData.customerName}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="customerEmail"
-                    value={formData.customerEmail}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone Number *
-                  </label>
-                  <input
-                    type="tel"
-                    name="customerPhone"
-                    value={formData.customerPhone}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Service address"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Appointment Details - One-time */}
-            {formData.bookingType === 'one-time' && (
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                  <Calendar className="h-5 w-5 mr-2" />
-                  Appointment Details
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Preferred Date *
-                    </label>
-                    <input
-                      type="date"
-                      name="preferredDate"
-                      value={formData.preferredDate}
-                      onChange={handleInputChange}
-                      min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Preferred Time *
-                    </label>
-                    <input
-                      type="time"
-                      name="preferredTime"
-                      value={formData.preferredTime}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Duration (hours)
-                    </label>
-                    <input
-                      type="number"
-                      name="duration"
-                      value={formData.duration}
-                      onChange={handleInputChange}
-                      min="1"
-                      max="24"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder={selectedPackage?.duration_hours || "Hours"}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Schedule Configuration - Scheduled */}
-            {formData.bookingType === 'scheduled' && (
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                  <Repeat className="h-5 w-5 mr-2" />
-                  Schedule Configuration
-                </h2>
-                
-                {/* Start Date and Time */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Start Date *
-                    </label>
-                    <input
-                      type="date"
-                      value={scheduledData.startDatetime.split('T')[0] || ''}
-                      onChange={(e) => {
-                        const time = scheduledData.startDatetime.split('T')[1] || '09:00';
-                        setScheduledData(prev => ({
-                          ...prev,
-                          startDatetime: `${e.target.value}T${time}`
-                        }));
-                      }}
-                      min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Start Time *
-                    </label>
-                    <input
-                      type="time"
-                      value={scheduledData.startDatetime.split('T')[1] || '09:00'}
-                      onChange={(e) => {
-                        const date = scheduledData.startDatetime.split('T')[0] || new Date().toISOString().split('T')[0];
-                        setScheduledData(prev => ({
-                          ...prev,
-                          startDatetime: `${date}T${e.target.value}`
-                        }));
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                </div>
-
-                {/* Recurrence Builder */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">Recurrence Pattern</h3>
-                    <button
-                      type="button"
-                      onClick={() => setShowRecurrenceBuilder(!showRecurrenceBuilder)}
-                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                    >
-                      {showRecurrenceBuilder ? 'Hide Builder' : 'Show Builder'}
-                    </button>
-                  </div>
-                  
-                  {showRecurrenceBuilder && (
-                    <RecurrenceBuilder
-                      onRecurrenceChange={handleRecurrenceChange}
-                      initialValue={scheduledData.rrule}
-                    />
-                  )}
-                  
-                  {scheduledData.rrule && !showRecurrenceBuilder && (
-                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                      <p className="text-blue-800 font-medium">Current Pattern:</p>
-                      <p className="text-blue-700">{scheduledData.rrule}</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Calendar Preview */}
-                {scheduledData.rrule && scheduledData.startDatetime && (
-                  <CalendarPreview
-                    rrule={scheduledData.rrule}
-                    startDate={scheduledData.startDatetime}
-                    exceptions={scheduledData.exceptions}
-                    onExceptionChange={handleExceptionChange}
-                  />
-                )}
-              </div>
-            )}
-
-            {/* Caregiver Selection */}
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <User className="h-5 w-5 mr-2" />
-                Caregiver Selection (Optional)
-              </h2>
-              <div className="mb-4">
-                <p className="text-sm text-gray-600 mb-4">
-                  You can optionally select a specific caregiver for your appointment. If you don't select one, we'll assign the best available caregiver for your needs.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {/* No preference option */}
-                  <div
-                    className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
-                      formData.selectedCaregiver === ''
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                    onClick={() => setFormData(prev => ({
-                      ...prev,
-                      selectedCaregiver: ''
-                    }))}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                          <User className="h-6 w-6 text-gray-500" />
-                        </div>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-gray-900">
-                          No Preference
-                        </h3>
-                        <p className="text-xs text-gray-500">
-                          Let us assign the best caregiver
-                        </p>
-                        <p className="text-xs text-gray-600 mt-1">
-                          We'll match you with the most suitable caregiver based on your needs and availability.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {caregivers.map((caregiver) => (
-                    <div
-                      key={caregiver.id}
-                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
-                        formData.selectedCaregiver === caregiver.id.toString()
-                          ? 'border-blue-500 bg-blue-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                      onClick={() => setFormData(prev => ({
-                        ...prev,
-                        selectedCaregiver: prev.selectedCaregiver === caregiver.id.toString() ? '' : caregiver.id.toString()
-                      }))}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div className="flex-shrink-0">
-                          <img
-                            src={caregiver.profilePicture}
-                            alt={`${caregiver.first_name} ${caregiver.last_name}`}
-                            className="w-12 h-12 rounded-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-sm font-medium text-gray-900">
-                            {caregiver.first_name} {caregiver.last_name}
-                          </h3>
-                          <p className="text-xs text-gray-500">
-                            {caregiver.yearsOfExperience} years experience
-                          </p>
-                          <div className="flex items-center mt-1">
-                            <span className="text-xs text-yellow-600">★</span>
-                            <span className="text-xs text-gray-600 ml-1">
-                              {caregiver.rating} ({caregiver.totalReviews} reviews)
-                            </span>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a care package" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {packages.map((pkg) => (
+                        <SelectItem key={pkg.id} value={pkg.id.toString()}>
+                          <div className="flex items-center justify-between w-full">
+                            <span>{pkg.name}</span>
+                            <Badge variant="secondary">${pkg.total_cost}</Badge>
                           </div>
-                          <p className="text-xs text-blue-600 font-medium mt-1">
-                            ${caregiver.hourlyRate}/hr
-                          </p>
-                        </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {getSelectedPackage() && (
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h4 className="font-medium text-gray-900 mb-2">{getSelectedPackage().name}</h4>
+                    <p className="text-sm text-gray-600 mb-3">{getSelectedPackage().description}</p>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="flex items-center">
+                        <Clock className="h-4 w-4 text-muted-foreground mr-2" />
+                        <span>{getSelectedPackage().duration_hours} hours</span>
                       </div>
-                      {caregiver.bio && (
-                        <p className="text-xs text-gray-600 mt-2 line-clamp-2">
-                          {caregiver.bio}
-                        </p>
-                      )}
+                      <div className="flex items-center">
+                        <DollarSign className="h-4 w-4 text-muted-foreground mr-2" />
+                        <span>${getSelectedPackage().total_cost}</span>
+                      </div>
                     </div>
-                  ))}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Caregiver Selection */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <User className="h-5 w-5 mr-2" />
+                Choose Caregiver (Optional)
+              </CardTitle>
+              <CardDescription>
+                Select a preferred caregiver or let us assign one for you
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="caregiver_id">Preferred Caregiver</Label>
+                  <Select 
+                    value={formData.caregiver_id} 
+                    onValueChange={(value) => handleSelectChange('caregiver_id', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Let us assign a caregiver" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Let us assign a caregiver</SelectItem>
+                      {caregivers.map((caregiver) => (
+                        <SelectItem key={caregiver.id} value={caregiver.id.toString()}>
+                          <div className="flex items-center justify-between w-full">
+                            <span>{caregiver.first_name} {caregiver.last_name}</span>
+                            <Badge variant="outline">${caregiver.hourly_rate}/hr</Badge>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-                {caregivers.length === 0 && (
-                  <p className="text-sm text-gray-500 text-center py-4">
-                    No caregivers available at the moment.
+
+                {getSelectedCaregiver() && (
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h4 className="font-medium text-gray-900 mb-2">
+                      {getSelectedCaregiver().first_name} {getSelectedCaregiver().last_name}
+                    </h4>
+                    <p className="text-sm text-gray-600 mb-3">{getSelectedCaregiver().bio}</p>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 text-yellow-500 fill-current mr-2" />
+                        <span>{getSelectedCaregiver().rating || 'New'} rating</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="h-4 w-4 text-muted-foreground mr-2" />
+                        <span>{getSelectedCaregiver().experience_years || 0} years exp.</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Appointment Details */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Calendar className="h-5 w-5 mr-2" />
+                Appointment Details
+              </CardTitle>
+              <CardDescription>
+                Schedule your care service appointment
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="appointment_datetime_start">Start Date & Time *</Label>
+                  <Input
+                    type="datetime-local"
+                    name="appointment_datetime_start"
+                    value={formData.appointment_datetime_start}
+                    onChange={handleInputChange}
+                    required
+                    min={new Date().toISOString().slice(0, 16)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="appointment_datetime_end">End Date & Time</Label>
+                  <Input
+                    type="datetime-local"
+                    name="appointment_datetime_end"
+                    value={formData.appointment_datetime_end}
+                    onChange={handleInputChange}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Leave empty to auto-calculate based on package duration
                   </p>
-                )}
+                </div>
               </div>
-            </div>
+            </CardContent>
+          </Card>
 
-            {/* Emergency Contact */}
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Phone className="h-5 w-5 mr-2" />
-                Emergency Contact
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Special Instructions */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <AlertCircle className="h-5 w-5 mr-2" />
+                Special Instructions
+              </CardTitle>
+              <CardDescription>
+                Any specific requirements or notes for your care service
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Emergency Contact Name
-                  </label>
-                  <input
-                    type="text"
-                    name="emergencyContact"
-                    value={formData.emergencyContact}
+                  <Label htmlFor="special_instructions">Instructions</Label>
+                  <Textarea
+                    name="special_instructions"
+                    value={formData.special_instructions}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="4"
+                    placeholder="Any special requirements, allergies, preferences, or notes for the caregiver..."
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Emergency Contact Phone
-                  </label>
-                  <input
-                    type="tel"
-                    name="emergencyPhone"
-                    value={formData.emergencyPhone}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  <Label htmlFor="contact_preference">Preferred Contact Method</Label>
+                  <Select 
+                    value={formData.contact_preference} 
+                    onValueChange={(value) => handleSelectChange('contact_preference', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="phone">Phone Call</SelectItem>
+                      <SelectItem value="email">Email</SelectItem>
+                      <SelectItem value="text">Text Message</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
-            </div>
+            </CardContent>
+          </Card>
 
-            {/* Special Instructions */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Special Instructions or Requirements
-              </label>
-              <textarea
-                name="specialInstructions"
-                value={formData.specialInstructions}
-                onChange={handleInputChange}
-                rows="4"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Any special requirements, medical conditions, or preferences..."
-              />
-            </div>
-
-            {/* Summary */}
-            {selectedPackage && (
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Booking Summary</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p><span className="font-medium">Package:</span> {selectedPackage.name}</p>
-                    <p><span className="font-medium">Cost:</span> ${selectedPackage.total_cost}</p>
-                    <p><span className="font-medium">Duration:</span> {selectedPackage.duration_hours} hours</p>
-                    <p><span className="font-medium">Type:</span> {formData.bookingType === 'one-time' ? 'One-time' : 'Scheduled'}</p>
-                  </div>
-                  <div>
-                    {formData.bookingType === 'one-time' ? (
-                      <>
-                        <p><span className="font-medium">Date:</span> {formData.preferredDate}</p>
-                        <p><span className="font-medium">Time:</span> {formData.preferredTime}</p>
-                      </>
-                    ) : (
-                      <>
-                        <p><span className="font-medium">Start Date:</span> {scheduledData.startDatetime.split('T')[0]}</p>
-                        <p><span className="font-medium">Start Time:</span> {scheduledData.startDatetime.split('T')[1]}</p>
-                      </>
-                    )}
-                    <p><span className="font-medium">Customer:</span> {formData.customerName}</p>
+          {/* Summary */}
+          {getSelectedPackage() && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <CheckCircle className="h-5 w-5 mr-2" />
+                  Booking Summary
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-medium text-gray-900">Selected Package</h4>
+                      <p className="text-sm text-gray-600">{getSelectedPackage().name}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-900">Duration</h4>
+                      <p className="text-sm text-gray-600">{getSelectedPackage().duration_hours} hours</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-900">Total Cost</h4>
+                      <p className="text-lg font-bold text-primary">${getSelectedPackage().total_cost}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-900">Caregiver</h4>
+                      <p className="text-sm text-gray-600">
+                        {getSelectedCaregiver() 
+                          ? `${getSelectedCaregiver().first_name} ${getSelectedCaregiver().last_name}`
+                          : 'Will be assigned'
+                        }
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              </CardContent>
+            </Card>
+          )}
 
-            {/* Submit Button */}
-            <div className="flex justify-end space-x-4">
-              <button
-                type="button"
-                onClick={() => navigate('/packages')}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                Back to Packages
-              </button>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center"
-              >
-                {submitting ? (
-                  <>
-                    <LoadingSpinner size="sm" />
-                    <span className="ml-2">Submitting...</span>
-                  </>
-                ) : (
-                  <>
-                    <CreditCard className="h-4 w-4 mr-2" />
-                    {formData.bookingType === 'scheduled' ? 'Create Scheduled Package' : 'Submit Request'}
-                  </>
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* Submit Button */}
+          <div className="flex justify-end space-x-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate(-1)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={submitting || !formData.package_id || !formData.appointment_datetime_start}
+              className="min-w-[150px]"
+            >
+              {submitting ? 'Submitting...' : 'Book Appointment'}
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

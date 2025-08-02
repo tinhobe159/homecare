@@ -14,11 +14,20 @@ import {
   MapPin,
   Package,
   DollarSign,
-  Plus
+  Plus,
+  X
 } from 'lucide-react';
 import { appointmentsAPI, packagesAPI, customersAPI, userRequestsAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 const AdminAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -227,65 +236,67 @@ const AdminAppointments = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-              <Calendar className="h-6 w-6 mr-2" />
-              Appointment Management
-            </h1>
-            <p className="text-gray-600 mt-1">Manage and track all appointments</p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="text-right">
-              <div className="text-2xl font-bold text-blue-600">{appointments.length}</div>
-              <div className="text-sm text-gray-500">Total Appointments</div>
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle className="text-2xl font-bold flex items-center">
+                <Calendar className="h-6 w-6 mr-2" />
+                Appointment Management
+              </CardTitle>
+              <CardDescription>Manage and track all appointments</CardDescription>
             </div>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2 transition-colors duration-200"
-            >
-              <Plus className="h-4 w-4" />
-              <span>Create Appointment</span>
-            </button>
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <div className="text-2xl font-bold text-primary">{appointments.length}</div>
+                <div className="text-sm text-muted-foreground">Total Appointments</div>
+              </div>
+              <Button
+                onClick={() => setShowCreateModal(true)}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Create Appointment
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
-  
+        </CardHeader>
+      </Card>
+
       {/* Filters and Search */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-[50%] transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <input
-              type="text"
-              placeholder="Search appointments..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+      <Card>
+        <CardContent className="pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                type="text"
+                placeholder="Search appointments..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger>
+                <SelectValue placeholder="All Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="Pending">Pending</SelectItem>
+                <SelectItem value="Confirmed">Confirmed</SelectItem>
+                <SelectItem value="Completed">Completed</SelectItem>
+                <SelectItem value="Cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="text-right">
+              <span className="text-sm text-muted-foreground">
+                {filteredAppointments.length} of {appointments.length} appointments
+              </span>
+            </div>
           </div>
-          <div>
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">All Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Confirmed">Confirmed</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-          </div>
-          <div className="text-right">
-            <span className="text-sm text-gray-600">
-              {filteredAppointments.length} of {appointments.length} appointments
-            </span>
-          </div>
-        </div>
-      </div>
-  
+        </CardContent>
+      </Card>
+
       {/* Appointments List */}
       <div className="space-y-4">
         {filteredAppointments.map((appointment) => {
@@ -293,135 +304,137 @@ const AdminAppointments = () => {
           const pkg = getPackageById(appointment.package_id);
           
           return (
-            <div key={appointment.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-              <div className="p-6">
+            <Card key={appointment.id}>
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
-                      <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                        <Calendar className="h-6 w-6 text-blue-600" />
+                      <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Calendar className="h-6 w-6 text-primary" />
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold">
                         Appointment #{appointment.id}
                       </h3>
-                      <p className="text-sm text-gray-500">
-                        {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at {' '}
+                      <p className="text-sm text-muted-foreground">
+                        {new Date(appointment.appointment_datetime_start).toLocaleDateString()} at{' '}
                         {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getStatusColor(appointment.status)}`}>
+                    <Badge variant={appointment.status === 'Confirmed' ? 'default' : 
+                                   appointment.status === 'Pending' ? 'secondary' : 
+                                   appointment.status === 'Cancelled' ? 'destructive' : 'outline'}>
                       {appointment.status}
-                    </span>
+                    </Badge>
                     <div className="flex space-x-1">
-                      <button
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={() => handleViewDetails(appointment)}
-                        className="text-blue-600 hover:text-blue-900 p-1"
-                        aria-label="View details"
                       >
                         <Eye className="h-4 w-4" />
-                      </button>
+                      </Button>
                       {appointment.status === 'Pending' && (
                         <>
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => handleStatusUpdate(appointment.id, 'Confirmed')}
-                            className="text-green-600 hover:text-green-900 p-1"
-                            aria-label="Confirm appointment"
                           >
-                            <CheckCircle className="h-4 w-4" />
-                          </button>
-                          <button
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => handleStatusUpdate(appointment.id, 'Cancelled')}
-                            className="text-red-600 hover:text-red-900 p-1"
-                            aria-label="Cancel appointment"
                           >
-                            <XCircle className="h-4 w-4" />
-                          </button>
+                            <XCircle className="h-4 w-4 text-red-600" />
+                          </Button>
                         </>
                       )}
                       {appointment.status === 'Confirmed' && (
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={() => handleStatusUpdate(appointment.id, 'Completed')}
-                          className="text-blue-600 hover:text-blue-900 p-1"
-                          aria-label="Mark as completed"
                         >
-                          <CheckCircle className="h-4 w-4" />
-                        </button>
+                          <CheckCircle className="h-4 w-4 text-blue-600" />
+                        </Button>
                       )}
                     </div>
                   </div>
                 </div>
-  
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Customer Info */}
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                    <h4 className="font-medium mb-2 flex items-center">
                       <User className="h-4 w-4 mr-2" />
                       Customer
                     </h4>
                     <div className="space-y-1 text-sm">
                       <p className="font-medium">{customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown'}</p>
-                      <p className="text-gray-600 flex items-center">
+                      <p className="text-muted-foreground flex items-center">
                         <Mail className="h-3 w-3 mr-1" />
                         {customer?.email || appointment.customer_email}
                       </p>
-                      <p className="text-gray-600 flex items-center">
+                      <p className="text-muted-foreground flex items-center">
                         <Phone className="h-3 w-3 mr-1" />
                         {customer?.phone || appointment.customer_phone}
                       </p>
                       {appointment.address && (
-                        <p className="text-gray-600 flex items-center">
+                        <p className="text-muted-foreground flex items-center">
                           <MapPin className="h-3 w-3 mr-1" />
                           {appointment.address}
                         </p>
                       )}
                     </div>
                   </div>
-  
+
                   {/* Package Info */}
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                    <h4 className="font-medium mb-2 flex items-center">
                       <Package className="h-4 w-4 mr-2" />
                       Package
                     </h4>
                     <div className="space-y-1 text-sm">
                       <p className="font-medium">{pkg?.name || 'Unknown Package'}</p>
-                      <p className="text-gray-600">{pkg?.description || 'No description'}</p>
-                      <p className="text-blue-600 font-semibold flex items-center">
+                      <p className="text-muted-foreground">{pkg?.description || 'No description'}</p>
+                      <p className="text-primary font-semibold flex items-center">
                         <DollarSign className="h-3 w-3 mr-1" />
                         ${pkg?.total_cost || appointment.total_cost || 0}
                       </p>
-                      <p className="text-gray-600 flex items-center">
+                      <p className="text-muted-foreground flex items-center">
                         <Clock className="h-3 w-3 mr-1" />
                         {pkg?.duration_hours || appointment.duration || 0} hours
                       </p>
                     </div>
                   </div>
-  
+
                   {/* Appointment Details */}
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                    <h4 className="font-medium mb-2 flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
                       Details
                     </h4>
                     <div className="space-y-1 text-sm">
-                      <p className="text-gray-600">
+                      <p className="text-muted-foreground">
                         <span className="font-medium">Date:</span> {' '}
                         {new Date(appointment.appointment_datetime_start).toLocaleDateString()}
                       </p>
-                      <p className="text-gray-600">
+                      <p className="text-muted-foreground">
                         <span className="font-medium">Time:</span> {' '}
                         {new Date(appointment.appointment_datetime_start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {' '}
                         {new Date(appointment.appointment_datetime_end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
-                      <p className="text-gray-600">
+                      <p className="text-muted-foreground">
                         <span className="font-medium">Duration:</span> {' '}
                         {appointment.duration_minutes || pkg?.duration_hours * 60 || 0} minutes
                       </p>
-                      <p className="text-gray-600">
+                      <p className="text-muted-foreground">
                         <span className="font-medium">Created:</span> {' '}
                         {new Date(appointment.created_at).toLocaleDateString()}
                       </p>
@@ -440,294 +453,232 @@ const AdminAppointments = () => {
                     </div>
                   </div>
                 </div>
-  
+
                 {/* Special Instructions */}
                 {appointment.special_instructions && (
-                  <div className="mt-4 p-3 bg-gray-50 rounded-md">
-                    <h5 className="font-medium text-gray-900 mb-1">Special Instructions:</h5>
-                    <p className="text-sm text-gray-600">{appointment.special_instructions}</p>
+                  <div className="mt-4 p-3 bg-muted rounded-md">
+                    <h5 className="font-medium mb-1">Special Instructions:</h5>
+                    <p className="text-sm text-muted-foreground">{appointment.special_instructions}</p>
                   </div>
                 )}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           );
         })}
       </div>
-  
+
       {/* Create Appointment Modal */}
-      {showCreateModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
-            <div className="mt-3">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">
-                  Create New Appointment
-                </h3>
-                <button
-                  onClick={() => setShowCreateModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                  aria-label="Close modal"
-                >
-                  <XCircle className="h-6 w-6" />
-                </button>
+      <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>Create New Appointment</DialogTitle>
+            <DialogDescription>Add a new appointment to the system</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleCreateAppointment} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Customer Selection */}
+              <div>
+                <Label htmlFor="customer_id">Customer *</Label>
+                <Select name="customer_id" value={createFormData.customer_id} onValueChange={(value) => setCreateFormData(prev => ({ ...prev, customer_id: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Customer" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {customers.map(customer => (
+                      <SelectItem key={customer.id} value={customer.id.toString()}>
+                        {customer.first_name} {customer.last_name} - {customer.email}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              
-              <form onSubmit={handleCreateAppointment} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Customer Selection */}
-                  <div>
-                    <label htmlFor="customer_id" className="block text-sm font-medium text-gray-700 mb-2">
-                      Customer *
-                    </label>
-                    <select
-                      id="customer_id"
-                      name="customer_id"
-                      value={createFormData.customer_id}
-                      onChange={handleCreateInputChange}
-                      required
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">Select Customer</option>
-                      {customers.map(customer => (
-                        <option key={customer.id} value={customer.id}>
-                          {customer.first_name} {customer.last_name} - {customer.email}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-  
-                  {/* Caregiver Selection */}
-                  <div>
-                    <label htmlFor="caregiver_id" className="block text-sm font-medium text-gray-700 mb-2">
-                      Caregiver *
-                    </label>
-                    <select
-                      id="caregiver_id"
-                      name="caregiver_id"
-                      value={createFormData.caregiver_id}
-                      onChange={handleCreateInputChange}
-                      required
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">Select Caregiver</option>
-                      {caregivers.map(caregiver => (
-                        <option key={caregiver.id} value={caregiver.id}>
-                          {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourlyRate}/hr
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-  
-                  {/* Package Selection */}
-                  <div>
-                    <label htmlFor="package_id" className="block text-sm font-medium text-gray-700 mb-2">
-                      Package *
-                    </label>
-                    <select
-                      id="package_id"
-                      name="package_id"
-                      value={createFormData.package_id}
-                      onChange={(e) => {
-                        handleCreateInputChange(e);
-                        handlePackageChange(e.target.value);
-                      }}
-                      required
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">Select Package</option>
-                      {packages.map(pkg => (
-                        <option key={pkg.id} value={pkg.id}>
-                          {pkg.name} - ${pkg.total_cost} ({pkg.duration_hours}h)
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-  
-                  {/* Status */}
-                  <div>
-                    <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
-                      Status
-                    </label>
-                    <select
-                      id="status"
-                      name="status"
-                      value={createFormData.status}
-                      onChange={handleCreateInputChange}
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Confirmed">Confirmed</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
-                  </div>
-  
-                  {/* Start Date & Time */}
-                  <div>
-                    <label htmlFor="appointment_datetime_start" className="block text-sm font-medium text-gray-700 mb-2">
-                      Start Date & Time *
-                    </label>
-                    <input
-                      id="appointment_datetime_start"
-                      type="datetime-local"
-                      name="appointment_datetime_start"
-                      value={createFormData.appointment_datetime_start}
-                      onChange={handleCreateInputChange}
-                      required
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-  
-                  {/* End Date & Time */}
-                  <div>
-                    <label htmlFor="appointment_datetime_end" className="block text-sm font-medium text-gray-700 mb-2">
-                      End Date & Time
-                    </label>
-                    <input
-                      id="appointment_datetime_end"
-                      type="datetime-local"
-                      name="appointment_datetime_end"
-                      value={createFormData.appointment_datetime_end}
-                      onChange={handleCreateInputChange}
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">Leave empty to auto-calculate based on duration</p>
-                  </div>
-  
-                  {/* Duration */}
-                  <div>
-                    <label htmlFor="duration_minutes" className="block text-sm font-medium text-gray-700 mb-2">
-                      Duration (minutes)
-                    </label>
-                    <input
-                      id="duration_minutes"
-                      type="number"
-                      name="duration_minutes"
-                      value={createFormData.duration_minutes}
-                      onChange={handleCreateInputChange}
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Auto-filled from package"
-                    />
-                  </div>
-  
-                  {/* Total Cost */}
-                  <div>
-                    <label htmlFor="total_cost" className="block text-sm font-medium text-gray-700 mb-2">
-                      Total Cost ($)
-                    </label>
-                    <input
-                      id="total_cost"
-                      type="number"
-                      name="total_cost"
-                      value={createFormData.total_cost}
-                      onChange={handleCreateInputChange}
-                      step="0.01"
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Auto-filled from package"
-                    />
-                  </div>
-                </div>
-  
-                {/* Booking Notes */}
-                <div>
-                  <label htmlFor="booking_notes" className="block text-sm font-medium text-gray-700 mb-2">
-                    Booking Notes
-                  </label>
-                  <textarea
-                    id="booking_notes"
-                    name="booking_notes"
-                    value={createFormData.booking_notes}
-                    onChange={handleCreateInputChange}
-                    rows="3"
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Add any special instructions or notes for this appointment..."
-                  />
-                </div>
-  
-                <div className="flex justify-end space-x-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={() => setShowCreateModal(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                  >
-                    Create Appointment
-                  </button>
-                </div>
-              </form>
+
+              {/* Caregiver Selection */}
+              <div>
+                <Label htmlFor="caregiver_id">Caregiver *</Label>
+                <Select name="caregiver_id" value={createFormData.caregiver_id} onValueChange={(value) => setCreateFormData(prev => ({ ...prev, caregiver_id: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Caregiver" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {caregivers.map(caregiver => (
+                      <SelectItem key={caregiver.id} value={caregiver.id.toString()}>
+                        {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourlyRate}/hr
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Package Selection */}
+              <div>
+                <Label htmlFor="package_id">Package *</Label>
+                <Select 
+                  name="package_id" 
+                  value={createFormData.package_id} 
+                  onValueChange={(value) => {
+                    setCreateFormData(prev => ({ ...prev, package_id: value }));
+                    handlePackageChange(value);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Package" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {packages.map(pkg => (
+                      <SelectItem key={pkg.id} value={pkg.id.toString()}>
+                        {pkg.name} - ${pkg.total_cost} ({pkg.duration_hours}h)
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Status */}
+              <div>
+                <Label htmlFor="status">Status</Label>
+                <Select name="status" value={createFormData.status} onValueChange={(value) => setCreateFormData(prev => ({ ...prev, status: value }))}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Pending">Pending</SelectItem>
+                    <SelectItem value="Confirmed">Confirmed</SelectItem>
+                    <SelectItem value="Completed">Completed</SelectItem>
+                    <SelectItem value="Cancelled">Cancelled</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Start Date & Time */}
+              <div>
+                <Label htmlFor="appointment_datetime_start">Start Date & Time *</Label>
+                <Input
+                  type="datetime-local"
+                  name="appointment_datetime_start"
+                  value={createFormData.appointment_datetime_start}
+                  onChange={handleCreateInputChange}
+                  required
+                />
+              </div>
+
+              {/* End Date & Time */}
+              <div>
+                <Label htmlFor="appointment_datetime_end">End Date & Time</Label>
+                <Input
+                  type="datetime-local"
+                  name="appointment_datetime_end"
+                  value={createFormData.appointment_datetime_end}
+                  onChange={handleCreateInputChange}
+                />
+                <p className="text-xs text-muted-foreground mt-1">Leave empty to auto-calculate based on duration</p>
+              </div>
+
+              {/* Duration */}
+              <div>
+                <Label htmlFor="duration_minutes">Duration (minutes)</Label>
+                <Input
+                  type="number"
+                  name="duration_minutes"
+                  value={createFormData.duration_minutes}
+                  onChange={handleCreateInputChange}
+                  placeholder="Auto-filled from package"
+                />
+              </div>
+
+              {/* Total Cost */}
+              <div>
+                <Label htmlFor="total_cost">Total Cost ($)</Label>
+                <Input
+                  type="number"
+                  name="total_cost"
+                  value={createFormData.total_cost}
+                  onChange={handleCreateInputChange}
+                  step="0.01"
+                  placeholder="Auto-filled from package"
+                />
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-  
+
+            {/* Booking Notes */}
+            <div>
+              <Label htmlFor="booking_notes">Booking Notes</Label>
+              <Textarea
+                name="booking_notes"
+                value={createFormData.booking_notes}
+                onChange={handleCreateInputChange}
+                rows="3"
+                placeholder="Add any special instructions or notes for this appointment..."
+              />
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowCreateModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                Create Appointment
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       {/* Edit Appointment Modal */}
-      {showModal && selectedAppointment && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
-            <div className="mt-3">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
-                Appointment Details - #{selectedAppointment.id}
-              </h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="edit-status" className="block text-sm font-medium text-gray-700">
-                    Status
-                  </label>
-                  <select
-                    id="edit-status"
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="edit-notes" className="block text-sm font-medium text-gray-700">
-                    Notes
-                  </label>
-                  <textarea
-                    id="edit-notes"
-                    name="notes"
-                    value={formData.notes}
-                    onChange={handleInputChange}
-                    rows="4"
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Add any notes about this appointment..."
-                  />
-                </div>
-  
-                <div className="flex justify-end space-x-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                  >
-                    Update Appointment
-                  </button>
-                </div>
-              </form>
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Appointment Details - #{selectedAppointment?.id}</DialogTitle>
+            <DialogDescription>Update appointment information</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="edit-status">Status</Label>
+              <Select name="status" value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Pending">Pending</SelectItem>
+                  <SelectItem value="Confirmed">Confirmed</SelectItem>
+                  <SelectItem value="Completed">Completed</SelectItem>
+                  <SelectItem value="Cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </div>
-        </div>
-      )}
+            
+            <div>
+              <Label htmlFor="edit-notes">Notes</Label>
+              <Textarea
+                name="notes"
+                value={formData.notes}
+                onChange={handleInputChange}
+                rows="4"
+                placeholder="Add any notes about this appointment..."
+              />
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowModal(false)}
+              >
+                Close
+              </Button>
+              <Button type="submit">
+                Update Appointment
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
+
 export default AdminAppointments;

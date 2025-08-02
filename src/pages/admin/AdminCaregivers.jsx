@@ -5,53 +5,60 @@ import {
   Plus, 
   Edit, 
   Trash2, 
-  Calendar,
-  Star,
+  Eye, 
   Phone,
   Mail,
   MapPin,
+  Star,
   Clock,
-  Award
+  DollarSign,
+  UserCheck
 } from 'lucide-react';
-import { caregiversAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
+import { caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const AdminCaregivers = () => {
   const [caregivers, setCaregivers] = useState([]);
-  const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [showModal, setShowModal] = useState(false);
   const [editingCaregiver, setEditingCaregiver] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
-    phone: '',
-    address: '',
-    status: 'active',
+    phone_number: '',
     hourly_rate: '',
-    experience_years: '',
+    specializations: [],
+    availability: 'available',
+    status: 'active',
     bio: '',
-    selectedSkills: []
+    experience_years: '',
+    certifications: []
   });
 
   useEffect(() => {
-    fetchData();
+    fetchCaregivers();
   }, []);
 
-  const fetchData = async () => {
+  const fetchCaregivers = async () => {
     try {
-      const [caregiversResponse, skillsResponse] = await Promise.all([
-        caregiversAPI.getAll(),
-        skillsAPI.getAll()
-      ]);
-      setCaregivers(caregiversResponse.data);
-      setSkills(skillsResponse.data);
+      const response = await caregiversAPI.getAll();
+      setCaregivers(response.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      toast.error('Failed to load data');
+      console.error('Error fetching caregivers:', error);
+      toast.error('Failed to load caregivers');
     } finally {
       setLoading(false);
     }
@@ -65,62 +72,34 @@ const AdminCaregivers = () => {
     }));
   };
 
-  const handleSkillToggle = (skillId) => {
-    setFormData(prev => ({
-      ...prev,
-      selectedSkills: (prev.selectedSkills || []).includes(skillId)
-        ? (prev.selectedSkills || []).filter(id => id !== skillId)
-        : [...(prev.selectedSkills || []), skillId]
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
-      const caregiverData = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        status: formData.status,
-        hourly_rate: parseFloat(formData.hourly_rate),
-        experience_years: parseInt(formData.experience_years),
-        bio: formData.bio,
-        created_at: new Date().toISOString()
-      };
-
       if (editingCaregiver) {
-        await caregiversAPI.update(editingCaregiver.id, caregiverData);
+        await caregiversAPI.update(editingCaregiver.id, formData);
         toast.success('Caregiver updated successfully');
       } else {
-        const response = await caregiversAPI.create(caregiverData);
-        const newCaregiverId = response.data.id;
-        
-        // Add skills for the new caregiver
-        for (const skillId of formData.selectedSkills) {
-          await caregiverSkillsAPI.create({
-            caregiver_id: newCaregiverId,
-            skill_id: skillId
-          });
-        }
+        await caregiversAPI.create(formData);
         toast.success('Caregiver created successfully');
       }
       
       setShowModal(false);
       setEditingCaregiver(null);
       setFormData({ 
-        name: '', 
+        first_name: '', 
+        last_name: '', 
         email: '', 
-        phone: '', 
-        address: '', 
-        status: 'active',
+        phone_number: '', 
         hourly_rate: '',
-        experience_years: '',
+        specializations: [],
+        availability: 'available',
+        status: 'active',
         bio: '',
-        selectedSkills: []
+        experience_years: '',
+        certifications: []
       });
-      fetchData();
+      fetchCaregivers();
     } catch (error) {
       console.error('Error saving caregiver:', error);
       toast.error('Failed to save caregiver');
@@ -130,15 +109,17 @@ const AdminCaregivers = () => {
   const handleEdit = (caregiver) => {
     setEditingCaregiver(caregiver);
     setFormData({
-      name: caregiver.name,
-      email: caregiver.email,
-      phone: caregiver.phone,
-      address: caregiver.address,
-      status: caregiver.status,
-      hourly_rate: caregiver.hourly_rate?.toString() || '',
-      experience_years: caregiver.experience_years?.toString() || '',
+      first_name: caregiver.first_name || '',
+      last_name: caregiver.last_name || '',
+      email: caregiver.email || '',
+      phone_number: caregiver.phone_number || '',
+      hourly_rate: caregiver.hourly_rate || '',
+      specializations: caregiver.specializations || [],
+      availability: caregiver.availability || 'available',
+      status: caregiver.status || 'active',
       bio: caregiver.bio || '',
-      selectedSkills: [] // Will need to fetch caregiver skills
+      experience_years: caregiver.experience_years || '',
+      certifications: caregiver.certifications || []
     });
     setShowModal(true);
   };
@@ -148,7 +129,7 @@ const AdminCaregivers = () => {
       try {
         await caregiversAPI.delete(caregiverId);
         toast.success('Caregiver deleted successfully');
-        fetchData();
+        fetchCaregivers();
       } catch (error) {
         console.error('Error deleting caregiver:', error);
         toast.error('Failed to delete caregiver');
@@ -156,322 +137,417 @@ const AdminCaregivers = () => {
     }
   };
 
+  const getCaregiverName = (caregiver) => {
+    if (caregiver.first_name && caregiver.last_name) {
+      return `${caregiver.first_name} ${caregiver.last_name}`;
+    } else if (caregiver.first_name) {
+      return caregiver.first_name;
+    } else if (caregiver.last_name) {
+      return caregiver.last_name;
+    } else {
+      return 'Unknown Caregiver';
+    }
+  };
+
+  const getCaregiverInitial = (caregiver) => {
+    if (caregiver.first_name) {
+      return caregiver.first_name.charAt(0).toUpperCase();
+    }
+    return getCaregiverName(caregiver).charAt(0).toUpperCase();
+  };
+
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'active': return 'default';
+      case 'inactive': return 'secondary';
+      case 'pending': return 'outline';
+      case 'suspended': return 'destructive';
+      default: return 'outline';
+    }
+  };
+
+  const getAvailabilityColor = (availability) => {
+    switch (availability?.toLowerCase()) {
+      case 'available': return 'default';
+      case 'busy': return 'secondary';
+      case 'offline': return 'outline';
+      default: return 'outline';
+    }
+  };
+
   const filteredCaregivers = caregivers.filter(caregiver => {
-    const matchesSearch = (caregiver.name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+    const fullName = getCaregiverName(caregiver).toLowerCase();
+    const matchesSearch = fullName.includes((searchTerm || '').toLowerCase()) ||
                          (caregiver.email || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         (caregiver.phone || '').includes(searchTerm || '');
+                         (caregiver.phone_number || '').includes(searchTerm || '');
     const matchesFilter = filterStatus === 'all' || caregiver.status === filterStatus;
     return matchesSearch && matchesFilter;
   });
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center py-12">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div className="space-y-6">
+      {/* Header */}
+      <Card>
+        <CardHeader>
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                <Users className="h-6 w-6 mr-2" />
+              <CardTitle className="text-2xl font-bold flex items-center">
+                <UserCheck className="h-6 w-6 mr-2" />
                 Caregiver Management
-              </h1>
-              <p className="text-gray-600 mt-1">Manage your caregiver team</p>
+              </CardTitle>
+              <CardDescription>Manage your caregiver team</CardDescription>
             </div>
-            <button
+            <Button
               onClick={() => {
                 setEditingCaregiver(null);
                 setFormData({ 
-                  name: '', 
+                  first_name: '', 
+                  last_name: '', 
                   email: '', 
-                  phone: '', 
-                  address: '', 
-                  status: 'active',
+                  phone_number: '', 
                   hourly_rate: '',
-                  experience_years: '',
+                  specializations: [],
+                  availability: 'available',
+                  status: 'active',
                   bio: '',
-                  selectedSkills: []
+                  experience_years: '',
+                  certifications: []
                 });
                 setShowModal(true);
               }}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
             >
               <Plus className="h-4 w-4 mr-2" />
               Add Caregiver
-            </button>
+            </Button>
           </div>
-        </div>
+        </CardHeader>
+      </Card>
 
-        {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+      {/* Filters and Search */}
+      <Card>
+        <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <input
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
                 type="text"
                 placeholder="Search caregivers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="pl-10"
               />
             </div>
-            <div>
-              <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="on_leave">On Leave</option>
-              </select>
-            </div>
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger>
+                <SelectValue placeholder="All Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="suspended">Suspended</SelectItem>
+              </SelectContent>
+            </Select>
             <div className="text-right">
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-muted-foreground">
                 {filteredCaregivers.length} of {caregivers.length} caregivers
               </span>
             </div>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        {/* Caregivers Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCaregivers.map((caregiver) => (
-            <div key={caregiver.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-              <div className="p-6">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center">
-                    <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <span className="text-lg font-medium text-blue-600">
-                        {(caregiver.name || '').charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="ml-3">
-                      <h3 className="text-lg font-semibold text-gray-900">{caregiver.name}</h3>
-                      <p className="text-sm text-gray-500">ID: {caregiver.id}</p>
+      {/* Caregivers Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredCaregivers.map((caregiver) => (
+          <Card key={caregiver.id} className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="flex justify-between items-start">
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src={caregiver.profile_image} />
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {getCaregiverInitial(caregiver)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <CardTitle className="text-lg">{getCaregiverName(caregiver)}</CardTitle>
+                    <div className="flex space-x-2 mt-1">
+                      <Badge variant={getStatusColor(caregiver.status)}>
+                        {caregiver.status}
+                      </Badge>
+                      <Badge variant={getAvailabilityColor(caregiver.availability)}>
+                        {caregiver.availability}
+                      </Badge>
                     </div>
                   </div>
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    caregiver.status === 'active' ? 'bg-green-100 text-green-800' :
-                    caregiver.status === 'inactive' ? 'bg-red-100 text-red-800' :
-                    'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {caregiver.status}
-                  </span>
                 </div>
-
-                {/* Contact Info */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Mail className="h-4 w-4 mr-2" />
+                <div className="flex space-x-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleEdit(caregiver)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleDelete(caregiver.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center text-muted-foreground">
+                    <Mail className="h-3 w-3 mr-2" />
                     {caregiver.email}
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Phone className="h-4 w-4 mr-2" />
-                    {caregiver.phone}
+                  <div className="flex items-center text-muted-foreground">
+                    <Phone className="h-3 w-3 mr-2" />
+                    {caregiver.phone_number}
                   </div>
-                  {caregiver.address && (
-                    <div className="flex items-center text-sm text-gray-600">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      {caregiver.address}
+                  {caregiver.location && (
+                    <div className="flex items-center text-muted-foreground">
+                      <MapPin className="h-3 w-3 mr-2" />
+                      {caregiver.location}
                     </div>
                   )}
                 </div>
 
-                {/* Stats */}
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-blue-600">
-                      ${caregiver.hourly_rate || 0}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center p-3 bg-muted rounded-lg">
+                    <div className="text-lg font-bold text-primary">
+                      ${caregiver.hourly_rate}/hr
                     </div>
-                    <div className="text-xs text-gray-500">Hourly Rate</div>
+                    <div className="text-xs text-muted-foreground">Hourly Rate</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-green-600">
-                      {caregiver.experience_years || 0}
+                  <div className="text-center p-3 bg-muted rounded-lg">
+                    <div className="text-lg font-bold text-primary">
+                      {caregiver.experience_years || 0}y
                     </div>
-                    <div className="text-xs text-gray-500">Years Experience</div>
+                    <div className="text-xs text-muted-foreground">Experience</div>
                   </div>
                 </div>
 
-                {/* Bio */}
                 {caregiver.bio && (
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-600 line-clamp-2">{caregiver.bio}</p>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {caregiver.bio}
+                  </p>
+                )}
+
+                {caregiver.specializations && caregiver.specializations.length > 0 && (
+                  <div>
+                    <span className="text-sm text-muted-foreground">Specializations:</span>
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {caregiver.specializations.slice(0, 3).map((spec, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {spec}
+                        </Badge>
+                      ))}
+                      {caregiver.specializations.length > 3 && (
+                        <Badge variant="secondary" className="text-xs">
+                          +{caregiver.specializations.length - 3} more
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                 )}
 
-                {/* Actions */}
-                <div className="flex justify-end space-x-2">
-                  <button
-                    onClick={() => handleEdit(caregiver)}
-                    className="text-blue-600 hover:text-blue-900 p-1"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(caregiver.id)}
-                    className="text-red-600 hover:text-red-900 p-1"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Rating:</span>
+                  <div className="flex items-center">
+                    <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                    <span className="ml-1">{caregiver.rating || 'N/A'}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-        {/* Modal */}
-        {showModal && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
-              <div className="mt-3">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  {editingCaregiver ? 'Edit Caregiver' : 'Add New Caregiver'}
-                </h3>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Name</label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Email</label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Phone</label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Status</label>
-                      <select
-                        name="status"
-                        value={formData.status}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="on_leave">On Leave</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Hourly Rate ($)</label>
-                      <input
-                        type="number"
-                        name="hourly_rate"
-                        value={formData.hourly_rate}
-                        onChange={handleInputChange}
-                        min="0"
-                        step="0.01"
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Experience (Years)</label>
-                      <input
-                        type="number"
-                        name="experience_years"
-                        value={formData.experience_years}
-                        onChange={handleInputChange}
-                        min="0"
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Address</label>
-                    <textarea
-                      name="address"
-                      value={formData.address}
-                      onChange={handleInputChange}
-                      rows="2"
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Bio</label>
-                    <textarea
-                      name="bio"
-                      value={formData.bio}
-                      onChange={handleInputChange}
-                      rows="3"
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Brief description of experience and specialties..."
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Skills</label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      {skills.map((skill) => (
-                                              <label key={skill.id} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={(formData.selectedSkills || []).includes(skill.id)}
-                          onChange={() => handleSkillToggle(skill.id)}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                          <span className="ml-2 text-sm text-gray-700">{skill.name}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end space-x-3 pt-4">
-                    <button
-                      type="button"
-                      onClick={() => setShowModal(false)}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                    >
-                      {editingCaregiver ? 'Update' : 'Create'}
-                    </button>
-                  </div>
-                </form>
+      {/* Modal */}
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>
+              {editingCaregiver ? 'Edit Caregiver' : 'Add New Caregiver'}
+            </DialogTitle>
+            <DialogDescription>
+              {editingCaregiver ? 'Update caregiver information' : 'Add a new caregiver to your team'}
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="first_name">First Name *</Label>
+                <Input
+                  type="text"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="last_name">Last Name *</Label>
+                <Input
+                  type="text"
+                  name="last_name"
+                  value={formData.last_name}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
             </div>
-          </div>
-        )}
-      </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="phone_number">Phone Number *</Label>
+                <Input
+                  type="tel"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="hourly_rate">Hourly Rate ($) *</Label>
+                <Input
+                  type="number"
+                  name="hourly_rate"
+                  value={formData.hourly_rate}
+                  onChange={handleInputChange}
+                  step="0.01"
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="experience_years">Experience (years)</Label>
+                <Input
+                  type="number"
+                  name="experience_years"
+                  value={formData.experience_years}
+                  onChange={handleInputChange}
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="status">Status</Label>
+                <Select name="status" value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="suspended">Suspended</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="availability">Availability</Label>
+                <Select name="availability" value={formData.availability} onValueChange={(value) => setFormData(prev => ({ ...prev, availability: value }))}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="available">Available</SelectItem>
+                    <SelectItem value="busy">Busy</SelectItem>
+                    <SelectItem value="offline">Offline</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="bio">Bio</Label>
+              <Textarea
+                name="bio"
+                value={formData.bio}
+                onChange={handleInputChange}
+                rows="3"
+                placeholder="Tell us about the caregiver's experience and background..."
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="specializations">Specializations</Label>
+              <Input
+                type="text"
+                name="specializations"
+                value={formData.specializations.join(', ')}
+                onChange={(e) => setFormData(prev => ({ 
+                  ...prev, 
+                  specializations: e.target.value.split(',').map(s => s.trim()).filter(s => s) 
+                }))}
+                placeholder="Elderly care, Dementia care, Medication management..."
+              />
+              <p className="text-xs text-muted-foreground mt-1">Separate with commas</p>
+            </div>
+
+            <div>
+              <Label htmlFor="certifications">Certifications</Label>
+              <Input
+                type="text"
+                name="certifications"
+                value={formData.certifications.join(', ')}
+                onChange={(e) => setFormData(prev => ({ 
+                  ...prev, 
+                  certifications: e.target.value.split(',').map(s => s.trim()).filter(s => s) 
+                }))}
+                placeholder="CPR, First Aid, Nursing License..."
+              />
+              <p className="text-xs text-muted-foreground mt-1">Separate with commas</p>
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {editingCaregiver ? 'Update' : 'Create'}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
