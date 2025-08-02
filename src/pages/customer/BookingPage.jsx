@@ -99,7 +99,7 @@ const BookingPage = () => {
       const appointmentData = {
         customer_id: user?.id,
         package_id: parseInt(formData.package_id),
-        caregiver_id: formData.caregiver_id ? parseInt(formData.caregiver_id) : null,
+        caregiver_id: (formData.caregiver_id && formData.caregiver_id !== 'auto') ? parseInt(formData.caregiver_id) : null,
         appointment_datetime_start: formData.appointment_datetime_start,
         appointment_datetime_end: endTime,
         status: 'pending',
@@ -124,6 +124,9 @@ const BookingPage = () => {
   };
 
   const getSelectedCaregiver = () => {
+    if (!formData.caregiver_id || formData.caregiver_id === 'auto') {
+      return null;
+    }
     return caregivers.find(caregiver => caregiver.id === parseInt(formData.caregiver_id));
   };
 
@@ -231,7 +234,7 @@ const BookingPage = () => {
                       <SelectValue placeholder="Let us assign a caregiver" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Let us assign a caregiver</SelectItem>
+                      <SelectItem value="auto">Let us assign a caregiver</SelectItem>
                       {caregivers.map((caregiver) => (
                         <SelectItem key={caregiver.id} value={caregiver.id.toString()}>
                           <div className="flex items-center justify-between w-full">
