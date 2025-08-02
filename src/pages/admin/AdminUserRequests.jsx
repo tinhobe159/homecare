@@ -41,7 +41,7 @@ const AdminUserRequests = () => {
   const [formData, setFormData] = useState({
     status: '',
     admin_notes: '',
-    assigned_caregiver_id: ''
+    assigned_caregiver_id: 'none'
   });
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const AdminUserRequests = () => {
     setFormData({
       status: request.status,
       admin_notes: request.admin_notes || '',
-      assigned_caregiver_id: request.assigned_caregiver_id || ''
+      assigned_caregiver_id: request.assigned_caregiver_id || 'none'
     });
     setShowModal(true);
   };
@@ -115,6 +115,9 @@ const AdminUserRequests = () => {
   };
 
   const getCaregiverById = (caregiverId) => {
+    if (!caregiverId || caregiverId === 'none') {
+      return null;
+    }
     return caregivers.find(caregiver => caregiver.id === caregiverId);
   };
 
@@ -365,7 +368,7 @@ const AdminUserRequests = () => {
                   <SelectValue placeholder="Select caregiver" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">No assignment</SelectItem>
+                                        <SelectItem value="none">No assignment</SelectItem>
                   {caregivers.map(caregiver => (
                     <SelectItem key={caregiver.id} value={caregiver.id.toString()}>
                       {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourly_rate}/hr

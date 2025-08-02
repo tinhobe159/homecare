@@ -33,7 +33,7 @@ const BookingPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     package_id: '',
-    caregiver_id: '',
+    caregiver_id: 'auto',
     appointment_datetime_start: '',
     appointment_datetime_end: '',
     special_instructions: '',

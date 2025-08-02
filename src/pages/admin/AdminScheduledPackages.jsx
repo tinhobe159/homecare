@@ -41,7 +41,7 @@ const AdminScheduledPackages = () => {
   const [formData, setFormData] = useState({
     status: '',
     notes: '',
-    assigned_caregiver_id: ''
+    assigned_caregiver_id: 'none'
   });
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const AdminScheduledPackages = () => {
     setFormData({
       status: schedule.status,
       notes: schedule.notes || '',
-      assigned_caregiver_id: schedule.assigned_caregiver_id || ''
+      assigned_caregiver_id: schedule.assigned_caregiver_id || 'none'
     });
     setShowModal(true);
   };
@@ -121,6 +121,9 @@ const AdminScheduledPackages = () => {
   };
 
   const getCaregiverById = (caregiverId) => {
+    if (!caregiverId || caregiverId === 'none') {
+      return null;
+    }
     return caregivers.find(caregiver => caregiver.id === caregiverId);
   };
 
@@ -418,7 +421,7 @@ const AdminScheduledPackages = () => {
                   <SelectValue placeholder="Select caregiver" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">No assignment</SelectItem>
+                                        <SelectItem value="none">No assignment</SelectItem>
                   {caregivers.map(caregiver => (
                     <SelectItem key={caregiver.id} value={caregiver.id.toString()}>
                       {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourly_rate}/hr
