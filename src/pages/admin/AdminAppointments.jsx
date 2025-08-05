@@ -668,61 +668,191 @@ const AdminAppointments = () => {
       {/* Edit Appointment Modal */}
       {showModal && selectedAppointment && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+          <div className="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
             <div className="mt-3">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
-                Appointment Details - #{selectedAppointment.id}
-              </h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="edit-status" className="block text-sm font-medium text-gray-700">
-                    Status
-                  </label>
-                  <select
-                    id="edit-status"
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-medium text-gray-900">
+                  Appointment Details - #{selectedAppointment.id}
+                </h3>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                  aria-label="Close modal"
+                >
+                  <XCircle className="h-6 w-6" />
+                </button>
+              </div>
+
+              {/* Detailed Appointment Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* Customer Information */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                    <User className="h-5 w-5 mr-2" />
+                    Customer Information
+                  </h4>
+                  {(() => {
+                    const customer = getCustomerById(selectedAppointment.customer_id);
+                    return (
+                      <div className="space-y-2 text-sm">
+                        <p><span className="font-medium">Name:</span> {customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown'}</p>
+                        <p><span className="font-medium">Email:</span> {customer?.email || selectedAppointment.customer_email}</p>
+                        <p><span className="font-medium">Phone:</span> {customer?.phone || selectedAppointment.customer_phone}</p>
+                        {selectedAppointment.address && (
+                          <p><span className="font-medium">Address:</span> {selectedAppointment.address}</p>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
-                
-                <div>
-                  <label htmlFor="edit-notes" className="block text-sm font-medium text-gray-700">
-                    Notes
-                  </label>
-                  <textarea
-                    id="edit-notes"
-                    name="notes"
-                    value={formData.notes}
-                    onChange={handleInputChange}
-                    rows="4"
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Add any notes about this appointment..."
-                  />
+
+                {/* Package Information */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                    <Package className="h-5 w-5 mr-2" />
+                    Package Information
+                  </h4>
+                  {(() => {
+                    const pkg = getPackageById(selectedAppointment.package_id);
+                    return (
+                      <div className="space-y-2 text-sm">
+                        <p><span className="font-medium">Package:</span> {pkg?.name || 'Unknown Package'}</p>
+                        <p><span className="font-medium">Description:</span> {pkg?.description || 'No description'}</p>
+                        <p><span className="font-medium">Cost:</span> ${pkg?.total_cost || selectedAppointment.total_cost || 0}</p>
+                        <p><span className="font-medium">Duration:</span> {pkg?.duration_hours || selectedAppointment.duration || 0} hours</p>
+                      </div>
+                    );
+                  })()}
                 </div>
-  
-                <div className="flex justify-end space-x-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                  >
-                    Update Appointment
-                  </button>
+
+                {/* Appointment Details */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                    <Calendar className="h-5 w-5 mr-2" />
+                    Appointment Details
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <p><span className="font-medium">Date:</span> {new Date(selectedAppointment.appointment_datetime_start).toLocaleDateString()}</p>
+                    <p><span className="font-medium">Start Time:</span> {new Date(selectedAppointment.appointment_datetime_start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                    <p><span className="font-medium">End Time:</span> {new Date(selectedAppointment.appointment_datetime_end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                    <p><span className="font-medium">Duration:</span> {selectedAppointment.duration_minutes || 0} minutes</p>
+                    <p><span className="font-medium">Created:</span> {new Date(selectedAppointment.created_at).toLocaleDateString()}</p>
+                    <p><span className="font-medium">Status:</span> 
+                      <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(selectedAppointment.status)}`}>
+                        {selectedAppointment.status}
+                      </span>
+                    </p>
+                  </div>
                 </div>
-              </form>
+
+                {/* Caregiver Information */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                    <User className="h-5 w-5 mr-2" />
+                    Caregiver Information
+                  </h4>
+                  {(() => {
+                    const caregiver = getCaregiverById(selectedAppointment.caregiver_id);
+                    return (
+                      <div className="space-y-2 text-sm">
+                        {caregiver ? (
+                          <>
+                            <p><span className="font-medium">Name:</span> {caregiver.first_name} {caregiver.last_name}</p>
+                            <p><span className="font-medium">Email:</span> {caregiver.email}</p>
+                            <p><span className="font-medium">Phone:</span> {caregiver.phone}</p>
+                            <p><span className="font-medium">Hourly Rate:</span> ${caregiver.hourlyRate}/hr</p>
+                          </>
+                        ) : (
+                          <p className="text-gray-500">No caregiver assigned</p>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* Special Instructions */}
+              {selectedAppointment.special_instructions && (
+                <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-2">Special Instructions:</h4>
+                  <p className="text-sm text-gray-700">{selectedAppointment.special_instructions}</p>
+                </div>
+              )}
+
+              {/* User Request Information */}
+              {selectedAppointment.user_request_id && (
+                <div className="bg-yellow-50 p-4 rounded-lg mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-2">User Request Information:</h4>
+                  {(() => {
+                    const userRequest = getUserRequestById(selectedAppointment.user_request_id);
+                    return (
+                      <div className="space-y-2 text-sm">
+                        <p><span className="font-medium">Request ID:</span> #{selectedAppointment.user_request_id}</p>
+                        {userRequest?.notes && (
+                          <p><span className="font-medium">Notes:</span> {userRequest.notes}</p>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+
+              {/* Edit Form */}
+              <div className="border-t pt-6">
+                <h4 className="font-semibold text-gray-900 mb-4">Update Appointment</h4>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="edit-status" className="block text-sm font-medium text-gray-700">
+                        Status
+                      </label>
+                      <select
+                        id="edit-status"
+                        name="status"
+                        value={formData.status}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="edit-notes" className="block text-sm font-medium text-gray-700">
+                        Notes
+                      </label>
+                      <textarea
+                        id="edit-notes"
+                        name="notes"
+                        value={formData.notes}
+                        onChange={handleInputChange}
+                        rows="3"
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Add any notes about this appointment..."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    >
+                      Update Appointment
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>

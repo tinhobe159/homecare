@@ -155,7 +155,20 @@ const AdminScheduledPackages = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await scheduledPackagesAPI.update(id, { status: newStatus });
+      // Use specialized methods for status changes to avoid data corruption
+      switch (newStatus) {
+        case 'paused':
+          await scheduledPackagesAPI.pause(id);
+          break;
+        case 'active':
+          await scheduledPackagesAPI.resume(id);
+          break;
+        case 'cancelled':
+          await scheduledPackagesAPI.cancel(id);
+          break;
+        default:
+          await scheduledPackagesAPI.update(id, { status: newStatus });
+      }
       toast.success(`Scheduled package ${newStatus} successfully`);
       fetchData();
     } catch (error) {
@@ -369,6 +382,24 @@ const AdminScheduledPackages = () => {
                               title="Resume"
                             >
                               <Play className="w-4 h-4" />
+                            </button>
+                          )}
+                          {pkg.status === 'cancelled' && (
+                            <button
+                              onClick={() => handleStatusChange(pkg.id, 'active')}
+                              className="text-green-600 hover:text-green-900"
+                              title="Reactivate"
+                            >
+                              <Play className="w-4 h-4" />
+                            </button>
+                          )}
+                          {(pkg.status === 'active' || pkg.status === 'paused') && (
+                            <button
+                              onClick={() => handleStatusChange(pkg.id, 'cancelled')}
+                              className="text-red-600 hover:text-red-900"
+                              title="Cancel"
+                            >
+                              <X className="w-4 h-4" />
                             </button>
                           )}
                           <button
