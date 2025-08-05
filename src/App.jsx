@@ -42,7 +42,7 @@ const AppContent = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {!isAdminPage && <Navbar />}
-      <main className="flex-grow">
+      <main className={isAdminPage ? "flex-1" : "flex-grow"}>
         <Routes>
           {/* Customer Routes */}
           <Route path="/" element={<Homepage />} />
