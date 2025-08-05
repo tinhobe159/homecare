@@ -40,7 +40,7 @@ const AppContent = () => {
   const isAdminPage = location.pathname.startsWith('/admin') && location.pathname !== '/admin/login';
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className={`${isAdminPage ? 'h-screen' : 'min-h-screen'} flex flex-col bg-gray-50`}>
       {!isAdminPage && <Navbar />}
       <main className={isAdminPage ? "flex-1" : "flex-grow"}>
         <Routes>

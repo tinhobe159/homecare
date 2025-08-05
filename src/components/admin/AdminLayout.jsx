@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { 
   Home, Users, Calendar, Package, Settings, 
@@ -15,6 +15,23 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  // Close sidebar on window resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -35,7 +52,7 @@ const AdminLayout = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen bg-gray-50 flex overflow-hidden">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -45,12 +62,12 @@ const AdminLayout = () => {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:relative lg:transform-none ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+          <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 flex-shrink-0">
             <Link to="/admin" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <Heart className="h-5 w-5 text-white" />
@@ -66,7 +83,7 @@ const AdminLayout = () => {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto min-h-0">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -88,7 +105,7 @@ const AdminLayout = () => {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-200 flex-shrink-0">
             <button
               onClick={handleLogout}
               className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors duration-200"
@@ -101,14 +118,14 @@ const AdminLayout = () => {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
-        <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+        <div className="bg-white shadow-sm border-b border-gray-200 flex-shrink-0 z-30">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 min-w-0">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex-shrink-0"
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -118,7 +135,7 @@ const AdminLayout = () => {
               </h1>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 flex-shrink-0">
               <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-600">
                 <span>Welcome, Admin</span>
               </div>
@@ -127,7 +144,7 @@ const AdminLayout = () => {
         </div>
 
         {/* Page content */}
-        <main className="p-4 sm:p-6">
+        <main className="flex-1 p-4 sm:p-6 overflow-auto min-h-0">
           <Outlet />
         </main>
       </div>
@@ -135,4 +152,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout; 
+export default AdminLayout;
