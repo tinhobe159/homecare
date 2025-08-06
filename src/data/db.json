@@ -3,388 +3,607 @@
     {
       "id": 1,
       "email": "admin@homecare.com",
-      "user_type": "Admin",
-      "is_active": true
+      "password": "AdminP@ss2024!@#",
+      "phone_number": null,
+      "first_name": "Emma",
+      "last_name": "White",
+      "avatar_url": null,
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": null,
+      "created_at": null,
+      "updated_at": null
     },
     {
       "id": 2,
-      "email": "customer1@homecare.com",
-      "user_type": "Customer",
-      "is_active": true
+      "email": "daniel.harris@homecare.com",
+      "password": "SuperAdmin2024!@#",
+      "phone_number": null,
+      "first_name": "Daniel",
+      "last_name": "Harris",
+      "avatar_url": null,
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": null,
+      "created_at": null,
+      "updated_at": null
     },
     {
       "id": 3,
-      "email": "caregiver1@homecare.com",
-      "user_type": "Caregiver",
-      "is_active": true
-    },
-    {
-      "id": 4,
-      "email": "customer2@homecare.com",
-      "user_type": "Customer",
-      "is_active": true
-    },
-    {
-      "id": 5,
-      "email": "caregiver2@homecare.com",
-      "user_type": "Caregiver",
-      "is_active": true
-    }
-  ],
-  "customers": [
-    {
-      "id": 1,
-      "first_name": "John",
-      "last_name": "Doe",
       "email": "john.doe@example.com",
       "password": "SecureP@ss2024!",
-      "date_of_birth": "1950-03-15",
       "phone_number": "555-0101",
-      "emergency_contact_name": "Jane Doe",
-      "emergency_contact_phone": "555-0102",
+      "first_name": "John",
+      "last_name": "Doe",
+      "avatar_url": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-08-01T10:45:00Z",
       "created_at": "2025-01-15T10:00:00Z",
-      "last_active": "2025-08-01T10:45:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop"
-    },
-    {
-      "id": 2,
-      "first_name": "Mary",
-      "last_name": "Smith",
-      "email": "mary.smith@example.com",
-      "password": "StrongP@ssw0rd#2024",
-      "date_of_birth": "1945-07-22",
-      "phone_number": "555-0103",
-      "emergency_contact_name": "Tom Smith",
-      "emergency_contact_phone": "555-0104",
-      "created_at": "2025-02-20T14:30:00Z",
-      "last_active": "2025-08-02T12:00:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop"
-    },
-    {
-      "id": 3,
-      "first_name": "Robert",
-      "last_name": "Johnson",
-      "email": "robert.johnson@example.com",
-      "password": "C0mplexP@ss!2024",
-      "date_of_birth": "1960-11-10",
-      "phone_number": "555-0105",
-      "emergency_contact_name": "Lisa Johnson",
-      "emergency_contact_phone": "555-0106",
-      "created_at": "2025-03-10T09:15:00Z",
-      "last_active": "2025-08-03T10:30:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop"
+      "updated_at": "2025-08-01T10:45:00Z"
     },
     {
       "id": 4,
-      "first_name": "Susan",
-      "last_name": "Brown",
-      "email": "susan.brown@example.com",
-      "password": "S@feP@ssw0rd$2024",
-      "date_of_birth": "1955-04-18",
-      "phone_number": "555-0107",
-      "emergency_contact_name": "Mike Brown",
-      "emergency_contact_phone": "555-0108",
-      "created_at": "2025-04-05T16:45:00Z",
-      "last_active": "2025-08-04T12:45:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=200&h=200&fit=crop"
+      "email": "mary.smith@example.com",
+      "password": "StrongP@ssw0rd#2024",
+      "phone_number": "555-0103",
+      "first_name": "Mary",
+      "last_name": "Smith",
+      "avatar_url": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-08-02T12:00:00Z",
+      "created_at": "2025-02-20T14:30:00Z",
+      "updated_at": "2025-08-02T12:00:00Z"
     },
     {
       "id": 5,
-      "first_name": "James",
-      "last_name": "Wilson",
-      "email": "james.wilson@example.com",
-      "password": "P@ssw0rd2024!@#",
-      "date_of_birth": "1948-09-05",
-      "phone_number": "555-0109",
-      "emergency_contact_name": "Emma Wilson",
-      "emergency_contact_phone": "555-0110",
-      "created_at": "2025-05-12T11:20:00Z",
-      "last_active": "2025-07-15T09:00:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop"
+      "email": "robert.johnson@example.com",
+      "password": "C0mplexP@ss!2024",
+      "phone_number": "555-0105",
+      "first_name": "Robert",
+      "last_name": "Johnson",
+      "avatar_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-08-03T10:30:00Z",
+      "created_at": "2025-03-10T09:15:00Z",
+      "updated_at": "2025-08-03T10:30:00Z"
     },
     {
       "id": 6,
-      "first_name": "Patricia",
-      "last_name": "Davis",
-      "email": "patricia.davis@example.com",
-      "password": "Str0ngP@ss!2024",
-      "date_of_birth": "1952-06-30",
-      "phone_number": "555-0111",
-      "emergency_contact_name": "Robert Davis",
-      "emergency_contact_phone": "555-0112",
-      "created_at": "2025-07-28T13:10:00Z",
-      "last_active": "2025-07-28T13:10:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop"
+      "email": "susan.brown@example.com",
+      "password": "S@feP@ssw0rd$2024",
+      "phone_number": "555-0107",
+      "first_name": "Susan",
+      "last_name": "Brown",
+      "avatar_url": "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-08-04T12:45:00Z",
+      "created_at": "2025-04-05T16:45:00Z",
+      "updated_at": "2025-08-04T12:45:00Z"
     },
     {
       "id": 7,
-      "first_name": "Michael",
-      "last_name": "Miller",
-      "email": "michael.miller@example.com",
-      "password": "C0mplexP@ss!2024",
-      "date_of_birth": "1947-12-03",
-      "phone_number": "555-0113",
-      "emergency_contact_name": "Jennifer Miller",
-      "emergency_contact_phone": "555-0114",
-      "created_at": "2025-07-29T15:30:00Z",
-      "last_active": "2025-07-29T15:30:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop"
+      "email": "james.wilson@example.com",
+      "password": "P@ssw0rd2024!@#",
+      "phone_number": "555-0109",
+      "first_name": "James",
+      "last_name": "Wilson",
+      "avatar_url": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-07-15T09:00:00Z",
+      "created_at": "2025-05-12T11:20:00Z",
+      "updated_at": "2025-07-15T09:00:00Z"
     },
     {
       "id": 8,
-      "first_name": "Elizabeth",
-      "last_name": "Taylor",
-      "email": "elizabeth.taylor@example.com",
-      "password": "S@feP@ssw0rd$2024",
-      "date_of_birth": "1953-08-17",
-      "phone_number": "555-0115",
-      "emergency_contact_name": "William Taylor",
-      "emergency_contact_phone": "555-0116",
-      "created_at": "2025-06-10T09:45:00Z",
-      "last_active": "2025-08-05T14:20:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop"
+      "email": "patricia.davis@example.com",
+      "password": "Str0ngP@ss!2024",
+      "phone_number": "555-0111",
+      "first_name": "Patricia",
+      "last_name": "Davis",
+      "avatar_url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-07-28T13:10:00Z",
+      "created_at": "2025-07-28T13:10:00Z",
+      "updated_at": "2025-07-28T13:10:00Z"
     },
     {
       "id": 9,
-      "first_name": "David",
-      "last_name": "Anderson",
+      "email": "michael.miller@example.com",
+      "password": "C0mplexP@ss!2024",
+      "phone_number": "555-0113",
+      "first_name": "Michael",
+      "last_name": "Miller",
+      "avatar_url": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-07-29T15:30:00Z",
+      "created_at": "2025-07-29T15:30:00Z",
+      "updated_at": "2025-07-29T15:30:00Z"
+    },
+    {
+      "id": 10,
+      "email": "elizabeth.taylor@example.com",
+      "password": "S@feP@ssw0rd$2024",
+      "phone_number": "555-0115",
+      "first_name": "Elizabeth",
+      "last_name": "Taylor",
+      "avatar_url": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-08-05T14:20:00Z",
+      "created_at": "2025-06-10T09:45:00Z",
+      "updated_at": "2025-08-05T14:20:00Z"
+    },
+    {
+      "id": 11,
       "email": "david.anderson@example.com",
       "password": "P@ssw0rd2024!@#",
-      "date_of_birth": "1949-05-25",
       "phone_number": "555-0117",
+      "first_name": "David",
+      "last_name": "Anderson",
+      "avatar_url": "https://images.unsplash.com/photo-1542178243-bc20204b769f?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-08-06T10:15:00Z",
+      "created_at": "2025-05-22T11:10:00Z",
+      "updated_at": "2025-08-06T10:15:00Z"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "name": "admin",
+      "description": "Administrator",
+      "permissions": "{}",
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "name": "caregiver",
+      "description": "Caregiver",
+      "permissions": "{}",
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "name": "customer",
+      "description": "Customer",
+      "permissions": "{}",
+      "is_active": true
+    },
+    {
+      "id": 4,
+      "name": "family_member",
+      "description": "Family Member",
+      "permissions": "{}",
+      "is_active": true
+    }
+  ],
+  "user_roles": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "role_id": 1,
+      "assigned_at": null,
+      "assigned_by": null,
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "role_id": 1,
+      "assigned_at": null,
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "user_id": 3,
+      "role_id": 3,
+      "assigned_at": "2025-01-15T10:00:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 4,
+      "user_id": 4,
+      "role_id": 3,
+      "assigned_at": "2025-02-20T14:30:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 5,
+      "user_id": 5,
+      "role_id": 3,
+      "assigned_at": "2025-03-10T09:15:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 6,
+      "user_id": 6,
+      "role_id": 3,
+      "assigned_at": "2025-04-05T16:45:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 7,
+      "user_id": 7,
+      "role_id": 3,
+      "assigned_at": "2025-05-12T11:20:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 8,
+      "user_id": 8,
+      "role_id": 3,
+      "assigned_at": "2025-07-28T13:10:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 9,
+      "user_id": 9,
+      "role_id": 3,
+      "assigned_at": "2025-07-29T15:30:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 10,
+      "user_id": 10,
+      "role_id": 3,
+      "assigned_at": "2025-06-10T09:45:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 11,
+      "user_id": 11,
+      "role_id": 3,
+      "assigned_at": "2025-05-22T11:10:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    }
+  ],
+  "departments": [
+    { "id": 1, "name": "Operations", "code": "OPS" },
+    { "id": 2, "name": "Customer Service", "code": "CS" }
+  ],
+  "customer_profiles": [
+    {
+      "id": 1,
+      "user_id": 3,
+      "date_of_birth": "1950-03-15",
+      "emergency_contact_name": "Jane Doe",
+      "emergency_contact_phone": "555-0102",
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
+    },
+    {
+      "id": 2,
+      "user_id": 4,
+      "date_of_birth": "1945-07-22",
+      "emergency_contact_name": "Tom Smith",
+      "emergency_contact_phone": "555-0104",
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
+    },
+    {
+      "id": 3,
+      "user_id": 5,
+      "date_of_birth": "1960-11-10",
+      "emergency_contact_name": "Lisa Johnson",
+      "emergency_contact_phone": "555-0106",
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
+    },
+    {
+      "id": 4,
+      "user_id": 6,
+      "date_of_birth": "1955-04-18",
+      "emergency_contact_name": "Mike Brown",
+      "emergency_contact_phone": "555-0108",
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
+    },
+    {
+      "id": 5,
+      "user_id": 7,
+      "date_of_birth": "1948-09-05",
+      "emergency_contact_name": "Emma Wilson",
+      "emergency_contact_phone": "555-0110",
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
+    },
+    {
+      "id": 6,
+      "user_id": 8,
+      "date_of_birth": "1952-06-30",
+      "emergency_contact_name": "Robert Davis",
+      "emergency_contact_phone": "555-0112",
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
+    },
+    {
+      "id": 7,
+      "user_id": 9,
+      "date_of_birth": "1947-12-03",
+      "emergency_contact_name": "Jennifer Miller",
+      "emergency_contact_phone": "555-0114",
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
+    },
+    {
+      "id": 8,
+      "user_id": 10,
+      "date_of_birth": "1953-08-17",
+      "emergency_contact_name": "William Taylor",
+      "emergency_contact_phone": "555-0116",
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
+    },
+    {
+      "id": 9,
+      "user_id": 11,
+      "date_of_birth": "1949-05-25",
       "emergency_contact_name": "Sarah Anderson",
       "emergency_contact_phone": "555-0118",
-      "created_at": "2025-05-22T11:10:00Z",
-      "last_active": "2025-08-06T10:15:00Z",
-      "avatarUrl": "https://images.unsplash.com/photo-1542178243-bc20204b769f?w=200&h=200&fit=crop"
+      "insurance_provider": null,
+      "insurance_policy_number": null,
+      "special_instructions": null
     }
+  ],
+  "caregiver_profiles": [
+    {
+      "id": 1,
+      "user_id": 12,
+      "license_number": null,
+      "license_expiry": null,
+      "background_check_status": "verified",
+      "background_check_date": null,
+      "years_experience": 8,
+      "hourly_rate": 25,
+      "bio": "Experienced caregiver with 8 years of experience specializing in dementia care and medication management. Passionate about providing compassionate care to seniors.",
+      "rating": 4.8,
+      "total_reviews": 127,
+      "availability_type": null
+    },
+    {
+      "id": 2,
+      "user_id": 13,
+      "license_number": null,
+      "license_expiry": null,
+      "background_check_status": "verified",
+      "background_check_date": null,
+      "years_experience": 5,
+      "hourly_rate": 22,
+      "bio": "Certified nursing assistant with 5 years of experience in home care. Specializes in mobility assistance and personal care services.",
+      "rating": 4.6,
+      "total_reviews": 89,
+      "availability_type": null
+    },
+    {
+      "id": 3,
+      "user_id": 14,
+      "license_number": null,
+      "license_expiry": null,
+      "background_check_status": "verified",
+      "background_check_date": null,
+      "years_experience": 10,
+      "hourly_rate": 30,
+      "bio": "Licensed practical nurse with 10 years of experience. Expert in wound care, medication administration, and chronic disease management.",
+      "rating": 4.9,
+      "total_reviews": 203,
+      "availability_type": null
+    },
+    {
+      "id": 4,
+      "user_id": 15,
+      "license_number": null,
+      "license_expiry": null,
+      "background_check_status": "verified",
+      "background_check_date": null,
+      "years_experience": 6,
+      "hourly_rate": 28,
+      "bio": "Physical therapy assistant with 6 years of experience. Specializes in rehabilitation exercises and mobility training for seniors.",
+      "rating": 4.7,
+      "total_reviews": 156,
+      "availability_type": null
+    },
+    {
+      "id": 5,
+      "user_id": 16,
+      "license_number": null,
+      "license_expiry": null,
+      "background_check_status": "verified",
+      "background_check_date": null,
+      "years_experience": 7,
+      "hourly_rate": 24,
+      "bio": "Certified home health aide with 7 years of experience. Provides comprehensive personal care and companionship services.",
+      "rating": 4.5,
+      "total_reviews": 94,
+      "availability_type": null
+    },
+    {
+      "id": 6,
+      "user_id": 17,
+      "license_number": null,
+      "license_expiry": null,
+      "background_check_status": "verified",
+      "background_check_date": null,
+      "years_experience": 12,
+      "hourly_rate": 35,
+      "bio": "Registered nurse with 12 years of experience in geriatric care. Expert in medication management and health monitoring.",
+      "rating": 4.9,
+      "total_reviews": 178,
+      "availability_type": null
+    },
+    {
+      "id": 7,
+      "user_id": 18,
+      "license_number": null,
+      "license_expiry": null,
+      "background_check_status": "verified",
+      "background_check_date": null,
+      "years_experience": 6,
+      "hourly_rate": 27,
+      "bio": "Bilingual caregiver with 6 years of experience. Specializes in Alzheimer's care and end-of-life support.",
+      "rating": 4.7,
+      "total_reviews": 112,
+      "availability_type": null
+    },
+    {
+      "id": 8,
+      "user_id": 19,
+      "license_number": null,
+      "license_expiry": null,
+      "background_check_status": "verified",
+      "background_check_date": null,
+      "years_experience": 9,
+      "hourly_rate": 32,
+      "bio": "Certified occupational therapy assistant with 9 years of experience. Focuses on improving daily living skills for seniors.",
+      "rating": 4.8,
+      "total_reviews": 145,
+      "availability_type": null
+    }
+  ],
+  "administrator_profiles": [
+    { "id": 1, "user_id": 1, "department": 1 },
+    { "id": 2, "user_id": 2, "department": 2 }
   ],
   "allergies": [
     {
       "id": 1,
-      "customer_id": 1,
+      "user_id": 3,
       "allergy": "Penicillin"
     },
     {
       "id": 2,
-      "customer_id": 3,
+      "user_id": 5,
       "allergy": "Shellfish"
     },
     {
       "id": 3,
-      "customer_id": 5,
+      "user_id": 7,
       "allergy": "Nuts"
     },
     {
       "id": 4,
-      "customer_id": 7,
+      "user_id": 9,
       "allergy": "Latex"
     },
     {
       "id": 5,
-      "customer_id": 8,
+      "user_id": 10,
       "allergy": "Sulfa"
     }
   ],
   "medications": [
     {
       "id": 1,
-      "customer_id": 1,
+      "user_id": 3,
       "medication": "Aspirin"
     },
     {
       "id": 2,
-      "customer_id": 2,
+      "user_id": 4,
       "medication": "Metformin"
     },
     {
       "id": 3,
-      "customer_id": 4,
+      "user_id": 6,
       "medication": "Lisinopril"
     },
     {
       "id": 4,
-      "customer_id": 6,
+      "user_id": 8,
       "medication": "Metoprolol"
     },
     {
       "id": 5,
-      "customer_id": 7,
+      "user_id": 9,
       "medication": "Warfarin"
     },
     {
       "id": 6,
-      "customer_id": 8,
+      "user_id": 10,
       "medication": "Atorvastatin"
     },
     {
       "id": 7,
-      "customer_id": 9,
+      "user_id": 11,
       "medication": "Levothyroxine"
     }
   ],
   "medical_conditions": [
     {
       "id": 1,
-      "customer_id": 1,
+      "user_id": 3,
       "condition": "Hypertension"
     },
     {
       "id": 2,
-      "customer_id": 2,
+      "user_id": 4,
       "condition": "Diabetes"
     },
     {
       "id": 3,
-      "customer_id": 3,
+      "user_id": 5,
       "condition": "Arthritis"
     },
     {
       "id": 4,
-      "customer_id": 4,
+      "user_id": 6,
       "condition": "Hypertension"
     },
     {
       "id": 5,
-      "customer_id": 6,
+      "user_id": 8,
       "condition": "Heart Disease"
     },
     {
       "id": 6,
-      "customer_id": 7,
+      "user_id": 9,
       "condition": "Blood Clot Disorder"
     },
     {
       "id": 7,
-      "customer_id": 8,
+      "user_id": 10,
       "condition": "High Cholesterol"
     },
     {
       "id": 8,
-      "customer_id": 9,
+      "user_id": 11,
       "condition": "Hypothyroidism"
-    }
-  ],
-  "caregivers": [
-    {
-      "id": 1,
-      "first_name": "Sarah",
-      "last_name": "Johnson",
-      "profilePicture": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
-      "bio": "Experienced caregiver with 8 years of experience specializing in dementia care and medication management. Passionate about providing compassionate care to seniors.",
-      "yearsOfExperience": 8,
-      "backgroundCheckStatus": "verified",
-      "skillIds": ["1", "2", "3"],
-      "hourlyRate": 25,
-      "rating": 4.8,
-      "totalReviews": 127
-    },
-    {
-      "id": 2,
-      "first_name": "Michael",
-      "last_name": "Chen",
-      "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-      "bio": "Certified nursing assistant with 5 years of experience in home care. Specializes in mobility assistance and personal care services.",
-      "yearsOfExperience": 5,
-      "backgroundCheckStatus": "verified",
-      "skillIds": ["1", "4", "5"],
-      "hourlyRate": 22,
-      "rating": 4.6,
-      "totalReviews": 89
-    },
-    {
-      "id": 3,
-      "first_name": "Emily",
-      "last_name": "Rodriguez",
-      "profilePicture": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
-      "bio": "Licensed practical nurse with 10 years of experience. Expert in wound care, medication administration, and chronic disease management.",
-      "yearsOfExperience": 10,
-      "backgroundCheckStatus": "verified",
-      "skillIds": ["2", "3", "6"],
-      "hourlyRate": 30,
-      "rating": 4.9,
-      "totalReviews": 203
-    },
-    {
-      "id": 4,
-      "first_name": "David",
-      "last_name": "Thompson",
-      "profilePicture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-      "bio": "Physical therapy assistant with 6 years of experience. Specializes in rehabilitation exercises and mobility training for seniors.",
-      "yearsOfExperience": 6,
-      "backgroundCheckStatus": "verified",
-      "skillIds": ["4", "5", "7"],
-      "hourlyRate": 28,
-      "rating": 4.7,
-      "totalReviews": 156
-    },
-    {
-      "id": 5,
-      "first_name": "Lisa",
-      "last_name": "Williams",
-      "profilePicture": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-      "bio": "Certified home health aide with 7 years of experience. Provides comprehensive personal care and companionship services.",
-      "yearsOfExperience": 7,
-      "backgroundCheckStatus": "verified",
-      "skillIds": ["1", "2", "8"],
-      "hourlyRate": 24,
-      "rating": 4.5,
-      "totalReviews": 94
-    },
-    {
-      "id": 6,
-      "first_name": "James",
-      "last_name": "Brown",
-      "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
-      "bio": "Registered nurse with 12 years of experience in geriatric care. Expert in medication management and health monitoring.",
-      "yearsOfExperience": 12,
-      "backgroundCheckStatus": "verified",
-      "skillIds": ["2", "3", "6", "9"],
-      "hourlyRate": 35,
-      "rating": 4.9,
-      "totalReviews": 178
-    },
-    {
-      "id": 7,
-      "first_name": "Maria",
-      "last_name": "Garcia",
-      "profilePicture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
-      "bio": "Bilingual caregiver with 6 years of experience. Specializes in Alzheimer's care and end-of-life support.",
-      "yearsOfExperience": 6,
-      "backgroundCheckStatus": "verified",
-      "skillIds": ["3", "8", "9"],
-      "hourlyRate": 27,
-      "rating": 4.7,
-      "totalReviews": 112
-    },
-    {
-      "id": 8,
-      "first_name": "Thomas",
-      "last_name": "Lee",
-      "profilePicture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face",
-      "bio": "Certified occupational therapy assistant with 9 years of experience. Focuses on improving daily living skills for seniors.",
-      "yearsOfExperience": 9,
-      "backgroundCheckStatus": "verified",
-      "skillIds": ["4", "7", "9"],
-      "hourlyRate": 32,
-      "rating": 4.8,
-      "totalReviews": 145
-    }
-  ],
-  "administrators": [
-    {
-      "id": 1,
-      "first_name": "Emma",
-      "last_name": "White",
-      "email": "admin@homecare.com",
-      "password": "AdminP@ss2024!@#"
-    },
-    {
-      "id": 2,
-      "first_name": "Daniel",
-      "last_name": "Harris",
-      "email": "daniel.harris@homecare.com",
-      "password": "SuperAdmin2024!@#"
     }
   ],
   "packages": [
@@ -587,8 +806,8 @@
   "appointments": [
     {
       "id": 1,
-      "customer_id": 1,
-      "caregiver_id": 1,
+      "user_id": 3,
+      "caregiver_id": 12,
       "package_id": 1,
       "user_request_id": 1,
       "appointment_datetime_start": "2025-08-01T09:00:00Z",
@@ -605,8 +824,8 @@
     },
     {
       "id": 2,
-      "customer_id": 2,
-      "caregiver_id": 2,
+      "user_id": 4,
+      "caregiver_id": 13,
       "package_id": 2,
       "appointment_datetime_start": "2025-08-02T10:00:00Z",
       "appointment_datetime_end": "2025-08-02T12:00:00Z",
@@ -619,8 +838,8 @@
     },
     {
       "id": 3,
-      "customer_id": 3,
-      "caregiver_id": 3,
+      "user_id": 5,
+      "caregiver_id": 14,
       "package_id": 3,
       "appointment_datetime_start": "2025-08-03T08:00:00Z",
       "appointment_datetime_end": "2025-08-03T10:30:00Z",
@@ -633,8 +852,8 @@
     },
     {
       "id": 4,
-      "customer_id": 4,
-      "caregiver_id": 4,
+      "user_id": 6,
+      "caregiver_id": 15,
       "package_id": 1,
       "appointment_datetime_start": "2025-08-04T11:00:00Z",
       "appointment_datetime_end": "2025-08-04T12:45:00Z",
@@ -650,8 +869,8 @@
     },
     {
       "id": 5,
-      "customer_id": 5,
-      "caregiver_id": 1,
+      "user_id": 7,
+      "caregiver_id": 12,
       "package_id": 2,
       "appointment_datetime_start": "2025-08-05T09:00:00Z",
       "appointment_datetime_end": "2025-08-05T11:00:00Z",
@@ -664,8 +883,8 @@
     },
     {
       "id": 6,
-      "customer_id": 1,
-      "caregiver_id": 2,
+      "user_id": 3,
+      "caregiver_id": 13,
       "package_id": 3,
       "appointment_datetime_start": "2025-08-06T10:00:00Z",
       "appointment_datetime_end": "2025-08-06T12:30:00Z",
@@ -678,8 +897,8 @@
     },
     {
       "id": 7,
-      "customer_id": 2,
-      "caregiver_id": 3,
+      "user_id": 4,
+      "caregiver_id": 14,
       "package_id": 1,
       "appointment_datetime_start": "2025-08-07T08:00:00Z",
       "appointment_datetime_end": "2025-08-07T09:45:00Z",
@@ -692,8 +911,8 @@
     },
     {
       "id": 8,
-      "customer_id": 3,
-      "caregiver_id": 4,
+      "user_id": 5,
+      "caregiver_id": 15,
       "package_id": 2,
       "appointment_datetime_start": "2025-08-08T11:00:00Z",
       "appointment_datetime_end": "2025-08-08T13:00:00Z",
@@ -706,8 +925,8 @@
     },
     {
       "id": 9,
-      "customer_id": 4,
-      "caregiver_id": 1,
+      "user_id": 6,
+      "caregiver_id": 12,
       "package_id": 3,
       "appointment_datetime_start": "2025-08-09T09:00:00Z",
       "appointment_datetime_end": "2025-08-09T11:30:00Z",
@@ -723,8 +942,8 @@
     },
     {
       "id": 10,
-      "customer_id": 5,
-      "caregiver_id": 2,
+      "user_id": 7,
+      "caregiver_id": 13,
       "package_id": 1,
       "appointment_datetime_start": "2025-08-10T10:00:00Z",
       "appointment_datetime_end": "2025-08-10T11:45:00Z",
@@ -737,8 +956,8 @@
     },
     {
       "id": 11,
-      "customer_id": 6,
-      "caregiver_id": 5,
+      "user_id": 8,
+      "caregiver_id": 16,
       "package_id": 4,
       "appointment_datetime_start": "2025-08-11T13:00:00Z",
       "appointment_datetime_end": "2025-08-11T15:30:00Z",
@@ -751,8 +970,8 @@
     },
     {
       "id": 12,
-      "customer_id": 7,
-      "caregiver_id": 6,
+      "user_id": 9,
+      "caregiver_id": 17,
       "package_id": 5,
       "appointment_datetime_start": "2025-08-12T14:00:00Z",
       "appointment_datetime_end": "2025-08-12T16:30:00Z",
@@ -767,9 +986,9 @@
   "scheduledPackages": [
     {
       "id": 1,
-      "customer_id": 1,
+      "user_id": 3,
       "package_id": 1,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "start_datetime": "2025-08-01T09:00:00Z",
       "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;COUNT=12",
       "end_date": null,
@@ -780,9 +999,9 @@
     },
     {
       "id": 2,
-      "customer_id": 2,
+      "user_id": 4,
       "package_id": 2,
-      "caregiver_id": 2,
+      "caregiver_id": 13,
       "start_datetime": "2025-08-02T10:00:00Z",
       "rrule": "FREQ=DAILY;INTERVAL=1;COUNT=30",
       "end_date": null,
@@ -793,9 +1012,9 @@
     },
     {
       "id": 3,
-      "customer_id": 3,
+      "user_id": 5,
       "package_id": 3,
-      "caregiver_id": 3,
+      "caregiver_id": 14,
       "start_datetime": "2025-08-03T08:00:00Z",
       "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=TU;COUNT=8",
       "end_date": null,
@@ -806,9 +1025,9 @@
     },
     {
       "id": 4,
-      "customer_id": 4,
+      "user_id": 6,
       "package_id": 1,
-      "caregiver_id": 4,
+      "caregiver_id": 15,
       "start_datetime": "2025-08-04T11:00:00Z",
       "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;COUNT=6",
       "end_date": null,
@@ -819,9 +1038,9 @@
     },
     {
       "id": 5,
-      "customer_id": 5,
+      "user_id": 7,
       "package_id": 4,
-      "caregiver_id": 5,
+      "caregiver_id": 16,
       "start_datetime": "2025-08-05T13:00:00Z",
       "rrule": "FREQ=WEEKLY;BYDAY=MO,WE,FR;COUNT=20",
       "end_date": null,
@@ -834,7 +1053,7 @@
   "caregiverAvailability": [
     {
       "id": 1,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "date": "2025-08-01",
       "start_time": "08:00:00",
       "end_time": "12:00:00",
@@ -842,7 +1061,7 @@
     },
     {
       "id": 2,
-      "caregiver_id": 2,
+      "caregiver_id": 13,
       "date": "2025-08-02",
       "start_time": "09:00:00",
       "end_time": "13:00:00",
@@ -850,7 +1069,7 @@
     },
     {
       "id": 3,
-      "caregiver_id": 3,
+      "caregiver_id": 14,
       "date": "2025-08-03",
       "start_time": "07:00:00",
       "end_time": "11:00:00",
@@ -858,7 +1077,7 @@
     },
     {
       "id": 4,
-      "caregiver_id": 4,
+      "caregiver_id": 15,
       "date": "2025-08-04",
       "start_time": "10:00:00",
       "end_time": "14:00:00",
@@ -866,7 +1085,7 @@
     },
     {
       "id": 5,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "date": "2025-08-05",
       "start_time": "08:00:00",
       "end_time": "12:00:00",
@@ -874,7 +1093,7 @@
     },
     {
       "id": 6,
-      "caregiver_id": 5,
+      "caregiver_id": 16,
       "date": "2025-08-06",
       "start_time": "09:00:00",
       "end_time": "15:00:00",
@@ -882,7 +1101,7 @@
     },
     {
       "id": 7,
-      "caregiver_id": 6,
+      "caregiver_id": 17,
       "date": "2025-08-07",
       "start_time": "08:00:00",
       "end_time": "16:00:00",
@@ -890,7 +1109,7 @@
     },
     {
       "id": 8,
-      "caregiver_id": 7,
+      "caregiver_id": 18,
       "date": "2025-08-08",
       "start_time": "10:00:00",
       "end_time": "18:00:00",
@@ -952,127 +1171,127 @@
   "caregiverSkills": [
     {
       "id": 1,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "skill_id": 1
     },
     {
       "id": 2,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "skill_id": 2
     },
     {
       "id": 3,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "skill_id": 3
     },
     {
       "id": 4,
-      "caregiver_id": 2,
+      "caregiver_id": 13,
       "skill_id": 1
     },
     {
       "id": 5,
-      "caregiver_id": 2,
+      "caregiver_id": 13,
       "skill_id": 4
     },
     {
       "id": 6,
-      "caregiver_id": 2,
+      "caregiver_id": 13,
       "skill_id": 5
     },
     {
       "id": 7,
-      "caregiver_id": 3,
+      "caregiver_id": 14,
       "skill_id": 2
     },
     {
       "id": 8,
-      "caregiver_id": 3,
+      "caregiver_id": 14,
       "skill_id": 3
     },
     {
       "id": 9,
-      "caregiver_id": 3,
+      "caregiver_id": 14,
       "skill_id": 6
     },
     {
       "id": 10,
-      "caregiver_id": 4,
+      "caregiver_id": 15,
       "skill_id": 4
     },
     {
       "id": 11,
-      "caregiver_id": 4,
+      "caregiver_id": 15,
       "skill_id": 5
     },
     {
       "id": 12,
-      "caregiver_id": 4,
+      "caregiver_id": 15,
       "skill_id": 7
     },
     {
       "id": 13,
-      "caregiver_id": 5,
+      "caregiver_id": 16,
       "skill_id": 1
     },
     {
       "id": 14,
-      "caregiver_id": 5,
+      "caregiver_id": 16,
       "skill_id": 2
     },
     {
       "id": 15,
-      "caregiver_id": 5,
+      "caregiver_id": 16,
       "skill_id": 8
     },
     {
       "id": 16,
-      "caregiver_id": 6,
+      "caregiver_id": 17,
       "skill_id": 2
     },
     {
       "id": 17,
-      "caregiver_id": 6,
+      "caregiver_id": 17,
       "skill_id": 3
     },
     {
       "id": 18,
-      "caregiver_id": 6,
+      "caregiver_id": 17,
       "skill_id": 6
     },
     {
       "id": 19,
-      "caregiver_id": 6,
+      "caregiver_id": 17,
       "skill_id": 9
     },
     {
       "id": 20,
-      "caregiver_id": 7,
+      "caregiver_id": 18,
       "skill_id": 3
     },
     {
       "id": 21,
-      "caregiver_id": 7,
+      "caregiver_id": 18,
       "skill_id": 8
     },
     {
       "id": 22,
-      "caregiver_id": 7,
+      "caregiver_id": 18,
       "skill_id": 9
     },
     {
       "id": 23,
-      "caregiver_id": 8,
+      "caregiver_id": 19,
       "skill_id": 4
     },
     {
       "id": 24,
-      "caregiver_id": 8,
+      "caregiver_id": 19,
       "skill_id": 7
     },
     {
       "id": 25,
-      "caregiver_id": 8,
+      "caregiver_id": 19,
       "skill_id": 9
     }
   ],
@@ -1080,7 +1299,7 @@
     {
       "id": 1,
       "appointment_id": 1,
-      "customer_id": 1,
+      "user_id": 3,
       "amount": 38.0,
       "payment_date": "2025-07-31T00:00:00Z",
       "payment_method": "Credit Card",
@@ -1089,7 +1308,7 @@
     {
       "id": 2,
       "appointment_id": 2,
-      "customer_id": 2,
+      "user_id": 4,
       "amount": 45.0,
       "payment_date": null,
       "payment_method": "Pending",
@@ -1098,7 +1317,7 @@
     {
       "id": 3,
       "appointment_id": 3,
-      "customer_id": 3,
+      "user_id": 5,
       "amount": 60.0,
       "payment_date": "2025-08-02T00:00:00Z",
       "payment_method": "Credit Card",
@@ -1107,7 +1326,7 @@
     {
       "id": 4,
       "appointment_id": 4,
-      "customer_id": 4,
+      "user_id": 6,
       "amount": 38.0,
       "payment_date": "2025-08-03T00:00:00Z",
       "payment_method": "Credit Card",
@@ -1116,7 +1335,7 @@
     {
       "id": 5,
       "appointment_id": 5,
-      "customer_id": 5,
+      "user_id": 7,
       "amount": 45.0,
       "payment_date": null,
       "payment_method": "Pending",
@@ -1125,7 +1344,7 @@
     {
       "id": 6,
       "appointment_id": 6,
-      "customer_id": 1,
+      "user_id": 3,
       "amount": 60.0,
       "payment_date": "2025-08-05T00:00:00Z",
       "payment_method": "Credit Card",
@@ -1134,7 +1353,7 @@
     {
       "id": 7,
       "appointment_id": 7,
-      "customer_id": 2,
+      "user_id": 4,
       "amount": 38.0,
       "payment_date": null,
       "payment_method": "Pending",
@@ -1143,7 +1362,7 @@
     {
       "id": 8,
       "appointment_id": 8,
-      "customer_id": 3,
+      "user_id": 5,
       "amount": 45.0,
       "payment_date": "2025-08-07T00:00:00Z",
       "payment_method": "Credit Card",
@@ -1152,7 +1371,7 @@
     {
       "id": 9,
       "appointment_id": 9,
-      "customer_id": 4,
+      "user_id": 6,
       "amount": 60.0,
       "payment_date": "2025-08-09T00:00:00Z",
       "payment_method": "Credit Card",
@@ -1161,7 +1380,7 @@
     {
       "id": 10,
       "appointment_id": 10,
-      "customer_id": 5,
+      "user_id": 7,
       "amount": 38.0,
       "payment_date": null,
       "payment_method": "Pending",
@@ -1171,7 +1390,7 @@
   "addresses": [
     {
       "id": 1,
-      "customer_id": 1,
+      "user_id": 3,
       "street_address": "123 Main St",
       "city": "Springfield",
       "state_province": "IL",
@@ -1181,7 +1400,7 @@
     },
     {
       "id": 2,
-      "customer_id": 2,
+      "user_id": 4,
       "street_address": "456 Elm St",
       "city": "Springfield",
       "state_province": "IL",
@@ -1191,7 +1410,7 @@
     },
     {
       "id": 3,
-      "customer_id": 3,
+      "user_id": 5,
       "street_address": "789 Oak St",
       "city": "Springfield",
       "state_province": "IL",
@@ -1201,7 +1420,7 @@
     },
     {
       "id": 4,
-      "customer_id": 4,
+      "user_id": 6,
       "street_address": "101 Pine St",
       "city": "Springfield",
       "state_province": "IL",
@@ -1211,7 +1430,7 @@
     },
     {
       "id": 5,
-      "customer_id": 5,
+      "user_id": 7,
       "street_address": "202 Maple St",
       "city": "Springfield",
       "state_province": "IL",
@@ -1221,7 +1440,7 @@
     },
     {
       "id": 6,
-      "customer_id": 6,
+      "user_id": 8,
       "street_address": "303 Cedar St",
       "city": "Springfield",
       "state_province": "IL",
@@ -1231,7 +1450,7 @@
     },
     {
       "id": 7,
-      "customer_id": 7,
+      "user_id": 9,
       "street_address": "404 Birch St",
       "city": "Springfield",
       "state_province": "IL",
@@ -1241,7 +1460,7 @@
     },
     {
       "id": 8,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "street_address": "505 Spruce St",
       "city": "Springfield",
       "state_province": "IL",
@@ -1254,7 +1473,7 @@
     {
       "id": 1,
       "appointment_id": 1,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "check_in_time": "2025-08-01T09:00:00Z",
       "check_out_time": "2025-08-01T10:45:00Z",
       "status": "Completed",
@@ -1264,7 +1483,7 @@
     {
       "id": 2,
       "appointment_id": 2,
-      "caregiver_id": 2,
+      "caregiver_id": 13,
       "check_in_time": null,
       "check_out_time": null,
       "status": "Pending",
@@ -1274,7 +1493,7 @@
     {
       "id": 3,
       "appointment_id": 3,
-      "caregiver_id": 3,
+      "caregiver_id": 14,
       "check_in_time": "2025-08-03T08:00:00Z",
       "check_out_time": "2025-08-03T10:30:00Z",
       "status": "Completed",
@@ -1284,7 +1503,7 @@
     {
       "id": 4,
       "appointment_id": 4,
-      "caregiver_id": 4,
+      "caregiver_id": 15,
       "check_in_time": "2025-08-04T11:00:00Z",
       "check_out_time": "2025-08-04T12:45:00Z",
       "status": "Completed",
@@ -1294,7 +1513,7 @@
     {
       "id": 5,
       "appointment_id": 5,
-      "caregiver_id": 1,
+      "caregiver_id": 12,
       "check_in_time": null,
       "check_out_time": null,
       "status": "Cancelled",
@@ -1304,7 +1523,7 @@
     {
       "id": 6,
       "appointment_id": 6,
-      "caregiver_id": 2,
+      "caregiver_id": 13,
       "check_in_time": "2025-08-06T10:00:00Z",
       "check_out_time": "2025-08-06T12:30:00Z",
       "status": "Completed",
@@ -1314,7 +1533,7 @@
     {
       "id": 7,
       "appointment_id": 7,
-      "caregiver_id": 3,
+      "caregiver_id": 14,
       "check_in_time": null,
       "check_out_time": null,
       "status": "Pending",
@@ -1324,7 +1543,7 @@
     {
       "id": 8,
       "appointment_id": 8,
-      "caregiver_id": 4,
+      "caregiver_id": 15,
       "check_in_time": "2025-08-08T11:00:00Z",
       "check_out_time": "2025-08-08T13:00:00Z",
       "status": "Completed",
@@ -1445,7 +1664,7 @@
   "userRequests": [
     {
       "id": 1,
-      "customer_id": 1,
+      "user_id": 3,
       "package_id": 1,
       "status": "converted",
       "preferred_contact_method": "phone",
@@ -1455,7 +1674,7 @@
     },
     {
       "id": 2,
-      "customer_id": 2,
+      "user_id": 4,
       "package_id": 2,
       "status": "contacted",
       "preferred_contact_method": "email",
@@ -1465,7 +1684,7 @@
     },
     {
       "id": 3,
-      "customer_id": 3,
+      "user_id": 5,
       "package_id": null,
       "status": "new",
       "preferred_contact_method": "phone",
@@ -1475,7 +1694,7 @@
     },
     {
       "id": 4,
-      "customer_id": 4,
+      "user_id": 6,
       "package_id": 3,
       "status": "rejected",
       "preferred_contact_method": "email",
@@ -1485,7 +1704,7 @@
     },
     {
       "id": 5,
-      "customer_id": 5,
+      "user_id": 7,
       "package_id": 1,
       "status": "new",
       "preferred_contact_method": "phone",
@@ -1495,7 +1714,7 @@
     },
     {
       "id": 6,
-      "customer_id": 6,
+      "user_id": 8,
       "package_id": null,
       "status": "new",
       "preferred_contact_method": "email",
@@ -1505,7 +1724,7 @@
     },
     {
       "id": 7,
-      "customer_id": 7,
+      "user_id": 9,
       "package_id": 5,
       "status": "contacted",
       "preferred_contact_method": "phone",
@@ -1515,7 +1734,7 @@
     },
     {
       "id": 8,
-      "customer_id": 8,
+      "user_id": 10,
       "package_id": null,
       "status": "new",
       "preferred_contact_method": "email",
@@ -1528,7 +1747,7 @@
     {
       "id": 1,
       "appointment_id": 1,
-      "customer_id": 1,
+      "user_id": 3,
       "rating": 5,
       "comment": "Excellent service, caregiver was very attentive and caring.",
       "created_at": "2025-08-01T15:00:00Z"
@@ -1536,7 +1755,7 @@
     {
       "id": 2,
       "appointment_id": 4,
-      "customer_id": 4,
+      "user_id": 6,
       "rating": 4,
       "comment": "Good service, but caregiver could have been more punctual.",
       "created_at": "2025-08-04T16:30:00Z"
@@ -1544,7 +1763,7 @@
     {
       "id": 3,
       "appointment_id": 9,
-      "customer_id": 4,
+      "user_id": 6,
       "rating": 5,
       "comment": "Great caregiver, very professional and knowledgeable.",
       "created_at": "2025-08-09T14:00:00Z"
@@ -1552,7 +1771,7 @@
     {
       "id": 4,
       "appointment_id": 3,
-      "customer_id": 3,
+      "user_id": 5,
       "rating": 3,
       "comment": "Service was okay, but caregiver seemed rushed.",
       "created_at": "2025-08-03T17:00:00Z"
@@ -1560,7 +1779,7 @@
     {
       "id": 5,
       "appointment_id": 6,
-      "customer_id": 1,
+      "user_id": 3,
       "rating": 4,
       "comment": "Good care provided, would recommend.",
       "created_at": "2025-08-06T13:00:00Z"
@@ -1568,10 +1787,146 @@
     {
       "id": 6,
       "appointment_id": 8,
-      "customer_id": 3,
+      "user_id": 5,
       "rating": 5,
       "comment": "Caregiver was wonderful with my father, very patient and kind.",
       "created_at": "2025-08-08T18:00:00Z"
+    }
+  ],
+  "health_records": [
+    {
+      "id": 1,
+      "customer_id": 3,
+      "record_type": "vital_signs",
+      "recorded_by": 12,
+      "data": { "blood_pressure": "120/80", "pulse": 72 },
+      "recorded_at": "2025-08-10T09:00:00Z",
+      "verified_at": "2025-08-10T10:00:00Z",
+      "verified_by": 1
+    }
+  ],
+  "emergency_contacts": [
+    {
+      "id": 1,
+      "customer_id": 3,
+      "contact_type": "primary",
+      "name": "Jane Doe",
+      "relationship": "Spouse",
+      "phone_primary": "555-0102",
+      "phone_secondary": "555-0199",
+      "email": "jane.doe@example.com",
+      "address": "123 Main St, Springfield, IL 62701, USA",
+      "is_primary": true,
+      "can_make_decisions": true
+    },
+    {
+      "id": 2,
+      "customer_id": 3,
+      "contact_type": "family",
+      "name": "Tom Doe",
+      "relationship": "Son",
+      "phone_primary": "555-0123",
+      "phone_secondary": null,
+      "email": "tom.doe@example.com",
+      "address": "456 Elm St, Springfield, IL 62702, USA",
+      "is_primary": false,
+      "can_make_decisions": false
+    },
+    {
+      "id": 3,
+      "customer_id": 4,
+      "contact_type": "medical",
+      "name": "Dr. Smith",
+      "relationship": "Primary Care Physician",
+      "phone_primary": "555-0200",
+      "phone_secondary": null,
+      "email": "dr.smith@clinic.com",
+      "address": "789 Oak St, Springfield, IL 62703, USA",
+      "is_primary": false,
+      "can_make_decisions": true
+    }
+  ],
+  "invoices": [
+    {
+      "id": 1,
+      "customer_id": 3,
+      "invoice_number": "INV-2025-0001",
+      "billing_period_start": "2025-08-01",
+      "billing_period_end": "2025-08-31",
+      "subtotal": 100.0,
+      "tax_amount": 10.0,
+      "total_amount": 110.0,
+      "status": "sent",
+      "due_date": "2025-09-10",
+      "issued_at": "2025-08-31T12:00:00Z",
+      "paid_at": null
+    }
+  ],
+  "invoice_line_items": [
+    {
+      "id": 1,
+      "invoice_id": 1,
+      "appointment_id": 1,
+      "service_name": "Bathing Assistance",
+      "quantity": 2,
+      "unit_rate": 20.0,
+      "total_amount": 40.0,
+      "description": "Morning and evening care"
+    }
+  ],
+  "insurance_claims": [
+    {
+      "id": 1,
+      "customer_id": 3,
+      "insurance_provider": "Aetna",
+      "claim_number": "CLM-2025-0001",
+      "service_date": "2025-08-10",
+      "amount_claimed": 110.0,
+      "amount_approved": 100.0,
+      "status": "processed",
+      "submitted_at": "2025-08-11T10:00:00Z",
+      "processed_at": "2025-08-15T10:00:00Z"
+    }
+  ],
+  "caregiver_availability": [
+    {
+      "id": 1,
+      "caregiver_id": 12,
+      "availability_type": "regular",
+      "day_of_week": "Monday",
+      "specific_date": null,
+      "start_time": "08:00:00",
+      "end_time": "12:00:00",
+      "max_appointments": 3,
+      "notes": "Prefers morning shifts",
+      "is_active": true,
+      "created_at": "2025-08-01T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "caregiver_id": 12,
+      "availability_type": "exception",
+      "day_of_week": null,
+      "specific_date": "2025-08-15",
+      "start_time": "00:00:00",
+      "end_time": "23:59:59",
+      "max_appointments": 0,
+      "notes": "On leave",
+      "is_active": false,
+      "created_at": "2025-08-10T08:00:00Z"
+    }
+  ],
+  "time_off_requests": [
+    {
+      "id": 1,
+      "caregiver_id": 12,
+      "start_date": "2025-08-15",
+      "end_date": "2025-08-16",
+      "reason": "Medical leave",
+      "status": "approved",
+      "requested_at": "2025-08-10T09:00:00Z",
+      "reviewed_by": 1,
+      "reviewed_at": "2025-08-11T10:00:00Z"
     }
   ]
 }

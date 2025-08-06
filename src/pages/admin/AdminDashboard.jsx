@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Users, Package, Calendar, Heart, 
-  TrendingUp, DollarSign, Clock, CheckCircle,
-  UserPlus, UserMinus, Activity, Star,
-  BarChart3, PieChart, LineChart
+  Users, 
+  TrendingUp, 
+  TrendingDown, 
+  DollarSign, 
+  Star,
+  Calendar,
+  Clock,
+  Activity
 } from 'lucide-react';
 import { 
-  customersAPI, caregiversAPI, packagesAPI, servicesAPI, 
-  appointmentsAPI, paymentsAPI 
+  appointmentsAPI, paymentsAPI, usersAPI
 } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -48,6 +51,7 @@ const AdminDashboard = () => {
     }
   });
   const [recentAppointments, setRecentAppointments] = useState([]);
+  const [recentPayments, setRecentPayments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -57,31 +61,24 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [
-        customersRes, caregiversRes, packagesRes, servicesRes,
-        appointmentsRes, paymentsRes
+        usersRes, appointmentsRes, paymentsRes
       ] = await Promise.all([
-        customersAPI.getAll(),
-        caregiversAPI.getAll(),
-        packagesAPI.getAll(),
-        servicesAPI.getAll(),
+        usersAPI.getAll(),
         appointmentsAPI.getAll(),
         paymentsAPI.getAll()
       ]);
 
-      const customers = customersRes.data;
+      const users = usersRes.data;
       const appointments = appointmentsRes.data;
       const payments = paymentsRes.data;
 
       // Calculate analytics
-      const analyticsData = calculateAnalytics(customers, appointments, payments);
+      const analyticsData = calculateAnalytics(users, appointments, payments);
       setAnalytics(analyticsData);
 
-      // Get recent appointments (last 5)
-      const sortedAppointments = appointments
-        .sort((a, b) => new Date(b.appointment_datetime_start) - new Date(a.appointment_datetime_start))
-        .slice(0, 5);
-      setRecentAppointments(sortedAppointments);
-
+      // Set other data
+      setRecentAppointments(appointments.slice(0, 5));
+      setRecentPayments(payments.slice(0, 5));
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       toast.error('Failed to load dashboard data');
@@ -90,26 +87,35 @@ const AdminDashboard = () => {
     }
   };
 
-  const calculateAnalytics = (customers, appointments, payments) => {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const calculateAnalytics = (users, appointments, payments) => {
+    const today = new Date();
     const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
     const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
-    const twoWeeksAgo = new Date(today.getTime() - 14 * 24 * 60 * 60 * 1000);
     const twoMonthsAgo = new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000);
 
     // New Users Analysis
-    const newUsersToday = customers.filter(c => new Date(c.created_at) >= today).length;
-    const newUsersThisWeek = customers.filter(c => new Date(c.created_at) >= weekAgo).length;
-    const newUsersThisMonth = customers.filter(c => new Date(c.created_at) >= monthAgo).length;
-    
-    const newUsersLastWeek = customers.filter(c => {
-      const created = new Date(c.created_at);
-      return created >= twoWeeksAgo && created < weekAgo;
+    const newUsersToday = users.filter(u => {
+      const created = new Date(u.created_at);
+      return created >= new Date(today.setHours(0, 0, 0, 0));
+    }).length;
+
+    const newUsersThisWeek = users.filter(u => {
+      const created = new Date(u.created_at);
+      return created >= weekAgo;
+    }).length;
+
+    const newUsersThisMonth = users.filter(u => {
+      const created = new Date(u.created_at);
+      return created >= monthAgo;
+    }).length;
+
+    const newUsersLastWeek = users.filter(u => {
+      const created = new Date(u.created_at);
+      return created >= new Date(weekAgo.getTime() - 7 * 24 * 60 * 60 * 1000) && created < weekAgo;
     }).length;
     
-    const newUsersLastMonth = customers.filter(c => {
-      const created = new Date(c.created_at);
+    const newUsersLastMonth = users.filter(u => {
+      const created = new Date(u.created_at);
       return created >= twoMonthsAgo && created < monthAgo;
     }).length;
 
@@ -117,10 +123,10 @@ const AdminDashboard = () => {
     const activeUserIds = new Set(
       appointments
         .filter(apt => new Date(apt.appointment_datetime_start) >= monthAgo)
-        .map(apt => apt.customer_id)
+        .map(apt => apt.user_id)
     );
     const activeUsersCount = activeUserIds.size;
-    const activeUsersPercentage = customers.length > 0 ? (activeUsersCount / customers.length) * 100 : 0;
+    const activeUsersPercentage = users.length > 0 ? (activeUsersCount / users.length) * 100 : 0;
 
     // Churn Analysis (users active before but not in last 30 days)
     const previouslyActiveUserIds = new Set(
@@ -129,7 +135,7 @@ const AdminDashboard = () => {
           const aptDate = new Date(apt.appointment_datetime_start);
           return aptDate >= twoMonthsAgo && aptDate < monthAgo;
         })
-        .map(apt => apt.customer_id)
+        .map(apt => apt.user_id)
     );
     
     const churnedUserIds = Array.from(previouslyActiveUserIds).filter(
@@ -139,11 +145,11 @@ const AdminDashboard = () => {
     const churnPercentage = previouslyActiveUserIds.size > 0 ? (churnCount / previouslyActiveUserIds.size) * 100 : 0;
 
     // Retention Analysis
-    const usersFrom90DaysAgo = customers.filter(c => new Date(c.created_at) <= new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000));
-    const usersFrom30DaysAgo = customers.filter(c => new Date(c.created_at) <= new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000));
+    const usersFrom90DaysAgo = users.filter(u => new Date(u.created_at) <= new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000));
+    const usersFrom30DaysAgo = users.filter(u => new Date(u.created_at) <= new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000));
     
-    const retained30Day = usersFrom30DaysAgo.filter(c => activeUserIds.has(c.id)).length;
-    const retained90Day = usersFrom90DaysAgo.filter(c => activeUserIds.has(c.id)).length;
+    const retained30Day = usersFrom30DaysAgo.filter(u => activeUserIds.has(u.id)).length;
+    const retained90Day = usersFrom90DaysAgo.filter(u => activeUserIds.has(u.id)).length;
     
     const retention30Day = usersFrom30DaysAgo.length > 0 ? (retained30Day / usersFrom30DaysAgo.length) * 100 : 0;
     const retention90Day = usersFrom90DaysAgo.length > 0 ? (retained90Day / usersFrom90DaysAgo.length) * 100 : 0;
@@ -152,7 +158,7 @@ const AdminDashboard = () => {
     const totalSessions = appointments.filter(apt => apt.status === 'Completed').length;
     const totalRevenue = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0);
     const revenuePerSession = totalSessions > 0 ? totalRevenue / totalSessions : 0;
-    const revenuePerUser = customers.length > 0 ? totalRevenue / customers.length : 0;
+    const revenuePerUser = users.length > 0 ? totalRevenue / users.length : 0;
 
     // Satisfaction Metrics (using feedback data from appointments)
     const feedbackRatings = appointments

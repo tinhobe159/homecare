@@ -16,15 +16,14 @@ import {
   DollarSign,
   Plus
 } from 'lucide-react';
-import { appointmentsAPI, packagesAPI, customersAPI, userRequestsAPI, caregiversAPI } from '../../services/api';
+import { appointmentsAPI, packagesAPI, usersAPI, userRequestsAPI, userRolesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const AdminAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [packages, setPackages] = useState([]);
-  const [customers, setCustomers] = useState([]);
-  const [caregivers, setCaregivers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [userRequests, setUserRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,8 +36,8 @@ const AdminAppointments = () => {
     notes: ''
   });
   const [createFormData, setCreateFormData] = useState({
-    customer_id: '',
-    caregiver_id: '',
+    user_id: '',
+    caregiver_user_id: '',
     package_id: '',
     appointment_datetime_start: '',
     appointment_datetime_end: '',
@@ -54,17 +53,15 @@ const AdminAppointments = () => {
 
   const fetchData = async () => {
     try {
-      const [appointmentsResponse, packagesResponse, customersResponse, caregiversResponse, userRequestsResponse] = await Promise.all([
+      const [appointmentsResponse, packagesResponse, usersResponse, userRequestsResponse] = await Promise.all([
         appointmentsAPI.getAll(),
         packagesAPI.getAll(),
-        customersAPI.getAll(),
-        caregiversAPI.getAll(),
+        usersAPI.getAll(),
         userRequestsAPI.getAll()
       ]);
       setAppointments(appointmentsResponse.data);
       setPackages(packagesResponse.data);
-      setCustomers(customersResponse.data);
-      setCaregivers(caregiversResponse.data);
+      setUsers(usersResponse.data);
       setUserRequests(userRequestsResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -112,8 +109,8 @@ const AdminAppointments = () => {
       toast.success('Appointment created successfully');
       setShowCreateModal(false);
       setCreateFormData({
-        customer_id: '',
-        caregiver_id: '',
+        user_id: '',
+        caregiver_user_id: '',
         package_id: '',
         appointment_datetime_start: '',
         appointment_datetime_end: '',
@@ -180,16 +177,12 @@ const AdminAppointments = () => {
     return packages.find(pkg => pkg.id === packageId);
   };
 
-  const getCustomerById = (customerId) => {
-    return customers.find(customer => customer.id === customerId);
-  };
-
-  const getCaregiverById = (caregiverId) => {
-    return caregivers.find(caregiver => caregiver.id === caregiverId);
+  const getUserById = (userId) => {
+    return users.find(user => user.id === userId);
   };
 
   const getUserRequestById = (requestId) => {
-    return userRequests.find(request => request.id === requestId);
+    return userRequests.find(req => req.id === requestId);
   };
 
   const getStatusColor = (status) => {
@@ -204,11 +197,12 @@ const AdminAppointments = () => {
   };
 
   const filteredAppointments = appointments.filter(appointment => {
-    const customer = getCustomerById(appointment.customer_id);
+    const customer = getUserById(appointment.user_id);
     const pkg = getPackageById(appointment.package_id);
     
     const matchesSearch = 
-      (customer?.name?.toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+      (customer?.first_name?.toLowerCase().includes((searchTerm || '').toLowerCase())) ||
+      (customer?.last_name?.toLowerCase().includes((searchTerm || '').toLowerCase())) ||
       (customer?.email?.toLowerCase().includes((searchTerm || '').toLowerCase())) ||
       (pkg?.name?.toLowerCase().includes((searchTerm || '').toLowerCase()));
     
@@ -289,7 +283,7 @@ const AdminAppointments = () => {
       {/* Appointments List */}
       <div className="space-y-4">
         {filteredAppointments.map((appointment) => {
-          const customer = getCustomerById(appointment.customer_id);
+          const customer = getUserById(appointment.user_id);
           const pkg = getPackageById(appointment.package_id);
           
           return (
@@ -476,21 +470,21 @@ const AdminAppointments = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Customer Selection */}
                   <div>
-                    <label htmlFor="customer_id" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="user_id" className="block text-sm font-medium text-gray-700 mb-2">
                       Customer *
                     </label>
                     <select
-                      id="customer_id"
-                      name="customer_id"
-                      value={createFormData.customer_id}
+                      id="user_id"
+                      name="user_id"
+                      value={createFormData.user_id}
                       onChange={handleCreateInputChange}
                       required
                       className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select Customer</option>
-                      {customers.map(customer => (
-                        <option key={customer.id} value={customer.id}>
-                          {customer.first_name} {customer.last_name} - {customer.email}
+                      {users.map(user => (
+                        <option key={user.id} value={user.id}>
+                          {user.first_name} {user.last_name} - {user.email}
                         </option>
                       ))}
                     </select>
@@ -498,21 +492,21 @@ const AdminAppointments = () => {
   
                   {/* Caregiver Selection */}
                   <div>
-                    <label htmlFor="caregiver_id" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="caregiver_user_id" className="block text-sm font-medium text-gray-700 mb-2">
                       Caregiver *
                     </label>
                     <select
-                      id="caregiver_id"
-                      name="caregiver_id"
-                      value={createFormData.caregiver_id}
+                      id="caregiver_user_id"
+                      name="caregiver_user_id"
+                      value={createFormData.caregiver_user_id}
                       onChange={handleCreateInputChange}
                       required
                       className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select Caregiver</option>
-                      {caregivers.map(caregiver => (
-                        <option key={caregiver.id} value={caregiver.id}>
-                          {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourlyRate}/hr
+                      {users.map(user => (
+                        <option key={user.id} value={user.id}>
+                          {user.first_name} {user.last_name} - ${user.hourlyRate}/hr
                         </option>
                       ))}
                     </select>
@@ -692,7 +686,7 @@ const AdminAppointments = () => {
                     Customer Information
                   </h4>
                   {(() => {
-                    const customer = getCustomerById(selectedAppointment.customer_id);
+                    const customer = getUserById(selectedAppointment.user_id);
                     return (
                       <div className="space-y-2 text-sm">
                         <p><span className="font-medium">Name:</span> {customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown'}</p>
@@ -752,7 +746,7 @@ const AdminAppointments = () => {
                     Caregiver Information
                   </h4>
                   {(() => {
-                    const caregiver = getCaregiverById(selectedAppointment.caregiver_id);
+                    const caregiver = getUserById(selectedAppointment.caregiver_user_id);
                     return (
                       <div className="space-y-2 text-sm">
                         {caregiver ? (

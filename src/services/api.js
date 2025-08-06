@@ -62,22 +62,69 @@ export const servicesAPI = {
   delete: (id) => api.delete(`/services/${id}`),
 };
 
-// Customers
-export const customersAPI = {
-  getAll: () => api.get('/customers'),
-  getById: (id) => api.get(`/customers/${id}`),
-  create: (data) => api.post('/customers', data),
-  update: (id, data) => api.put(`/customers/${id}`, data),
-  delete: (id) => api.delete(`/customers/${id}`),
+// Users (Unified System)
+export const usersAPI = {
+  getAll: () => api.get('/users'),
+  getById: (id) => api.get(`/users/${id}`),
+  create: (data) => api.post('/users', data),
+  update: (id, data) => api.put(`/users/${id}`, data),
+  delete: (id) => api.delete(`/users/${id}`),
+  getByRole: (role) => api.get(`/users?role=${role}`),
 };
 
-// Caregivers
+// User Roles
+export const userRolesAPI = {
+  getAll: () => api.get('/user_roles'),
+  getByUserId: (userId) => api.get(`/user_roles?user_id=${userId}`),
+  create: (data) => api.post('/user_roles', data),
+  update: (id, data) => api.put(`/user_roles/${id}`, data),
+  delete: (id) => api.delete(`/user_roles/${id}`),
+};
+
+// Customer Profiles (for backward compatibility)
+export const customersAPI = {
+  getAll: () => api.get('/users').then(response => {
+    // Filter users with customer role and join with customer_profiles
+    return api.get('/user_roles?role_id=3').then(rolesResponse => {
+      const customerUserIds = rolesResponse.data.map(role => role.user_id);
+      const customerUsers = response.data.filter(user => customerUserIds.includes(user.id));
+      return api.get('/customer_profiles').then(profilesResponse => {
+        return {
+          data: customerUsers.map(user => {
+            const profile = profilesResponse.data.find(p => p.user_id === user.id);
+            return { ...user, ...profile };
+          })
+        };
+      });
+    });
+  }),
+  getById: (id) => api.get(`/users/${id}`),
+  create: (data) => api.post('/users', data),
+  update: (id, data) => api.put(`/users/${id}`, data),
+  delete: (id) => api.delete(`/users/${id}`),
+};
+
+// Caregiver Profiles (for backward compatibility)
 export const caregiversAPI = {
-  getAll: () => api.get('/caregivers'),
-  getById: (id) => api.get(`/caregivers/${id}`),
-  create: (data) => api.post('/caregivers', data),
-  update: (id, data) => api.put(`/caregivers/${id}`, data),
-  delete: (id) => api.delete(`/caregivers/${id}`),
+  getAll: () => api.get('/users').then(response => {
+    // Filter users with caregiver role and join with caregiver_profiles
+    return api.get('/user_roles?role_id=2').then(rolesResponse => {
+      const caregiverUserIds = rolesResponse.data.map(role => role.user_id);
+      const caregiverUsers = response.data.filter(user => caregiverUserIds.includes(user.id));
+      return api.get('/caregiver_profiles').then(profilesResponse => {
+        return {
+          data: caregiverUsers.map(user => {
+            const profile = profilesResponse.data.find(p => p.user_id === user.id);
+            return { ...user, ...profile };
+          })
+        };
+      });
+    });
+  }),
+  getById: (id) => api.get(`/users/${id}`),
+  create: (data) => api.post('/users', data),
+  update: (id, data) => api.put(`/users/${id}`, data),
+  delete: (id) => api.delete(`/users/${id}`),
 };
 
 // Skills
@@ -92,7 +139,7 @@ export const skillsAPI = {
 // Caregiver Availability
 export const caregiverAvailabilityAPI = {
   getAll: () => api.get('/caregiverAvailability'),
-  getByCaregiverId: (caregiverId) => api.get(`/caregiverAvailability?caregiver_id=${caregiverId}`),
+  getByUserId: (userId) => api.get(`/caregiverAvailability?user_id=${userId}`),
   create: (data) => api.post('/caregiverAvailability', data),
   update: (id, data) => api.put(`/caregiverAvailability/${id}`, data),
   delete: (id) => api.delete(`/caregiverAvailability/${id}`),
@@ -102,7 +149,7 @@ export const caregiverAvailabilityAPI = {
 export const appointmentsAPI = {
   getAll: () => api.get('/appointments'),
   getById: (id) => api.get(`/appointments/${id}`),
-  getByCustomerId: (customerId) => api.get(`/appointments?customer_id=${customerId}`),
+  getByUserId: (userId) => api.get(`/appointments?user_id=${userId}`),
   create: (data) => api.post('/appointments', data),
   update: (id, data) => api.put(`/appointments/${id}`, data),
   delete: (id) => api.delete(`/appointments/${id}`),
@@ -112,7 +159,7 @@ export const appointmentsAPI = {
 export const scheduledPackagesAPI = {
   getAll: () => api.get('/scheduledPackages'),
   getById: (id) => api.get(`/scheduledPackages/${id}`),
-  getByCustomerId: (customerId) => api.get(`/scheduledPackages?customer_id=${customerId}`),
+  getByUserId: (userId) => api.get(`/scheduledPackages?user_id=${userId}`),
   create: (data) => api.post('/scheduledPackages', data),
   update: (id, data) => api.put(`/scheduledPackages/${id}`, data),
   delete: (id) => api.delete(`/scheduledPackages/${id}`),
@@ -127,16 +174,16 @@ export const scheduledPackagesAPI = {
 // Caregiver Skills
 export const caregiverSkillsAPI = {
   getAll: () => api.get('/caregiverSkills'),
-  getByCaregiverId: (caregiverId) => api.get(`/caregiverSkills?caregiver_id=${caregiverId}`),
+  getByUserId: (userId) => api.get(`/caregiverSkills?user_id=${userId}`),
   create: (data) => api.post('/caregiverSkills', data),
-  delete: (caregiverId, skillId) => api.delete(`/caregiverSkills?caregiver_id=${caregiverId}&skill_id=${skillId}`),
+  delete: (userId, skillId) => api.delete(`/caregiverSkills?user_id=${userId}&skill_id=${skillId}`),
 };
 
 // Payments
 export const paymentsAPI = {
   getAll: () => api.get('/payments'),
   getById: (id) => api.get(`/payments/${id}`),
-  getByCustomerId: (customerId) => api.get(`/payments?customer_id=${customerId}`),
+  getByUserId: (userId) => api.get(`/payments?user_id=${userId}`),
   create: (data) => api.post('/payments', data),
   update: (id, data) => api.put(`/payments/${id}`, data),
 };
@@ -148,15 +195,6 @@ export const addressesAPI = {
   create: (data) => api.post('/addresses', data),
   update: (id, data) => api.put(`/addresses/${id}`, data),
   delete: (id) => api.delete(`/addresses/${id}`),
-};
-
-// Users
-export const usersAPI = {
-  getAll: () => api.get('/users'),
-  getById: (id) => api.get(`/users/${id}`),
-  create: (data) => api.post('/users', data),
-  update: (id, data) => api.put(`/users/${id}`, data),
-  delete: (id) => api.delete(`/users/${id}`),
 };
 
 // EVV Records
@@ -178,7 +216,7 @@ export const auditLogsAPI = {
 export const userRequestsAPI = {
   getAll: () => api.get('/userRequests'),
   getById: (id) => api.get(`/userRequests/${id}`),
-  getByCustomerId: (customerId) => api.get(`/userRequests?customer_id=${customerId}`),
+  getByUserId: (userId) => api.get(`/userRequests?user_id=${userId}`),
   create: (data) => api.post('/userRequests', data),
   update: (id, data) => api.put(`/userRequests/${id}`, data),
   delete: (id) => api.delete(`/userRequests/${id}`),

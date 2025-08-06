@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Filter } from 'lucide-react';
-import { caregiversAPI, skillsAPI } from '../../services/api';
+import { usersAPI, userRolesAPI, skillsAPI } from '../../services/api';
 import CaregiverCard from '../../components/common/CaregiverCard';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -31,12 +31,22 @@ const CaregiversPage = () => {
 
   const fetchData = async () => {
     try {
-      const [caregiversResponse, skillsResponse] = await Promise.all([
-        caregiversAPI.getAll(),
+      const [usersResponse, userRolesResponse, skillsResponse] = await Promise.all([
+        usersAPI.getAll(),
+        userRolesAPI.getAll(),
         skillsAPI.getAll()
       ]);
       
-      setCaregivers(caregiversResponse.data);
+      // Filter users with caregiver role (role_id = 2)
+      const caregiverRoleIds = userRolesResponse.data
+        .filter(role => role.role_id === 2)
+        .map(role => role.user_id);
+      
+      const caregiverUsers = usersResponse.data.filter(user => 
+        caregiverRoleIds.includes(user.id)
+      );
+      
+      setCaregivers(caregiverUsers);
       setSkills(skillsResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);

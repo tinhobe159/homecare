@@ -13,7 +13,7 @@ import {
   Clock,
   Award
 } from 'lucide-react';
-import { caregiversAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
+import { usersAPI, userRolesAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -26,7 +26,8 @@ const AdminCaregivers = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingCaregiver, setEditingCaregiver] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     phone: '',
     address: '',
@@ -43,11 +44,22 @@ const AdminCaregivers = () => {
 
   const fetchData = async () => {
     try {
-      const [caregiversResponse, skillsResponse] = await Promise.all([
-        caregiversAPI.getAll(),
+      const [usersResponse, userRolesResponse, skillsResponse] = await Promise.all([
+        usersAPI.getAll(),
+        userRolesAPI.getAll(),
         skillsAPI.getAll()
       ]);
-      setCaregivers(caregiversResponse.data);
+      
+      // Filter users with caregiver role (role_id = 2)
+      const caregiverRoleIds = userRolesResponse.data
+        .filter(role => role.role_id === 2)
+        .map(role => role.user_id);
+      
+      const caregiverUsers = usersResponse.data.filter(user => 
+        caregiverRoleIds.includes(user.id)
+      );
+      
+      setCaregivers(caregiverUsers);
       setSkills(skillsResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -79,7 +91,8 @@ const AdminCaregivers = () => {
     
     try {
       const caregiverData = {
-        name: formData.name,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
         email: formData.email,
         phone: formData.phone,
         address: formData.address,
@@ -87,20 +100,27 @@ const AdminCaregivers = () => {
         hourly_rate: parseFloat(formData.hourly_rate),
         experience_years: parseInt(formData.experience_years),
         bio: formData.bio,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       };
 
       if (editingCaregiver) {
-        await caregiversAPI.update(editingCaregiver.id, caregiverData);
+        await usersAPI.update(editingCaregiver.id, caregiverData);
         toast.success('Caregiver updated successfully');
       } else {
-        const response = await caregiversAPI.create(caregiverData);
-        const newCaregiverId = response.data.id;
+        const userResponse = await usersAPI.create(caregiverData);
+        const newCaregiverId = userResponse.data.id;
+        
+        // Assign caregiver role
+        await userRolesAPI.create({
+          user_id: newCaregiverId,
+          role_id: 2 // Caregiver role
+        });
         
         // Add skills for the new caregiver
         for (const skillId of formData.selectedSkills) {
           await caregiverSkillsAPI.create({
-            caregiver_id: newCaregiverId,
+            user_id: newCaregiverId,
             skill_id: skillId
           });
         }
@@ -110,7 +130,8 @@ const AdminCaregivers = () => {
       setShowModal(false);
       setEditingCaregiver(null);
       setFormData({ 
-        name: '', 
+        first_name: '', 
+        last_name: '', 
         email: '', 
         phone: '', 
         address: '', 
@@ -130,11 +151,12 @@ const AdminCaregivers = () => {
   const handleEdit = (caregiver) => {
     setEditingCaregiver(caregiver);
     setFormData({
-      name: caregiver.name,
-      email: caregiver.email,
-      phone: caregiver.phone,
-      address: caregiver.address,
-      status: caregiver.status,
+      first_name: caregiver.first_name || '',
+      last_name: caregiver.last_name || '',
+      email: caregiver.email || '',
+      phone: caregiver.phone || '',
+      address: caregiver.address || '',
+      status: caregiver.status || 'active',
       hourly_rate: caregiver.hourly_rate?.toString() || '',
       experience_years: caregiver.experience_years?.toString() || '',
       bio: caregiver.bio || '',
@@ -146,7 +168,7 @@ const AdminCaregivers = () => {
   const handleDelete = async (caregiverId) => {
     if (window.confirm('Are you sure you want to delete this caregiver?')) {
       try {
-        await caregiversAPI.delete(caregiverId);
+        await usersAPI.delete(caregiverId);
         toast.success('Caregiver deleted successfully');
         fetchData();
       } catch (error) {
@@ -157,7 +179,8 @@ const AdminCaregivers = () => {
   };
 
   const filteredCaregivers = caregivers.filter(caregiver => {
-    const matchesSearch = (caregiver.name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+    const matchesSearch = (caregiver.first_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (caregiver.last_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
                          (caregiver.email || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
                          (caregiver.phone || '').includes(searchTerm || '');
     const matchesFilter = filterStatus === 'all' || caregiver.status === filterStatus;
@@ -189,7 +212,8 @@ const AdminCaregivers = () => {
               onClick={() => {
                 setEditingCaregiver(null);
                 setFormData({ 
-                  name: '', 
+                  first_name: '', 
+                  last_name: '', 
                   email: '', 
                   phone: '', 
                   address: '', 
@@ -252,11 +276,11 @@ const AdminCaregivers = () => {
                   <div className="flex items-center">
                     <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
                       <span className="text-lg font-medium text-blue-600">
-                        {(caregiver.name || '').charAt(0).toUpperCase()}
+                        {(caregiver.first_name || '').charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div className="ml-3">
-                      <h3 className="text-lg font-semibold text-gray-900">{caregiver.name}</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">{caregiver.first_name} {caregiver.last_name}</h3>
                       <p className="text-sm text-gray-500">ID: {caregiver.id}</p>
                     </div>
                   </div>
@@ -341,11 +365,22 @@ const AdminCaregivers = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Name</label>
+                      <label className="block text-sm font-medium text-gray-700">First Name</label>
                       <input
                         type="text"
-                        name="name"
-                        value={formData.name}
+                        name="first_name"
+                        value={formData.first_name}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                      <input
+                        type="text"
+                        name="last_name"
+                        value={formData.last_name}
                         onChange={handleInputChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required

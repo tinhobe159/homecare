@@ -12,7 +12,7 @@ import {
   MapPin,
   Calendar
 } from 'lucide-react';
-import { customersAPI } from '../../services/api';
+import { usersAPI, userRolesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -40,8 +40,21 @@ const AdminCustomers = () => {
 
   const fetchCustomers = async () => {
     try {
-      const response = await customersAPI.getAll();
-      setCustomers(response.data);
+      const [usersResponse, userRolesResponse] = await Promise.all([
+        usersAPI.getAll(),
+        userRolesAPI.getAll()
+      ]);
+      
+      // Filter users with customer role (role_id = 3)
+      const customerRoleIds = userRolesResponse.data
+        .filter(role => role.role_id === 3)
+        .map(role => role.user_id);
+      
+      const customerUsers = usersResponse.data.filter(user => 
+        customerRoleIds.includes(user.id)
+      );
+      
+      setCustomers(customerUsers);
     } catch (error) {
       console.error('Error fetching customers:', error);
       toast.error('Failed to load customers');
@@ -63,10 +76,18 @@ const AdminCustomers = () => {
     
     try {
       if (editingCustomer) {
-        await customersAPI.update(editingCustomer.id, formData);
+        await usersAPI.update(editingCustomer.id, formData);
         toast.success('Customer updated successfully');
       } else {
-        await customersAPI.create(formData);
+        const userResponse = await usersAPI.create(formData);
+        const newUserId = userResponse.data.id;
+        
+        // Assign customer role
+        await userRolesAPI.create({
+          user_id: newUserId,
+          role_id: 3 // Customer role
+        });
+        
         toast.success('Customer created successfully');
       }
       
@@ -107,7 +128,7 @@ const AdminCustomers = () => {
   const handleDelete = async (customerId) => {
     if (window.confirm('Are you sure you want to delete this customer?')) {
       try {
-        await customersAPI.delete(customerId);
+        await usersAPI.delete(customerId);
         toast.success('Customer deleted successfully');
         fetchCustomers();
       } catch (error) {

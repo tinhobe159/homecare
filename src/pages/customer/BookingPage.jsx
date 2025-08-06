@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard } from 'lucide-react';
-import { packagesAPI, userRequestsAPI, caregiversAPI } from '../../services/api';
+import { packagesAPI, userRequestsAPI, usersAPI, userRolesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { useAuth } from '../../contexts/AuthContext';
@@ -40,7 +40,7 @@ const BookingPage = () => {
     if (currentUser && !isAdmin) {
       setFormData(prev => ({
         ...prev,
-        customerName: currentUser.name || `${currentUser.first_name} ${currentUser.last_name}` || '',
+        customerName: `${currentUser.first_name} ${currentUser.last_name}` || '',
         customerEmail: currentUser.email || '',
         customerPhone: currentUser.phone || currentUser.phone_number || '',
         address: currentUser.address || ''
@@ -50,12 +50,24 @@ const BookingPage = () => {
 
   const fetchData = async () => {
     try {
-      const [packagesResponse, caregiversResponse] = await Promise.all([
+      const [packagesResponse, usersResponse, userRolesResponse] = await Promise.all([
         packagesAPI.getAll(),
-        caregiversAPI.getAll()
+        usersAPI.getAll(),
+        userRolesAPI.getAll()
       ]);
+      
       setPackages(packagesResponse.data);
-      setCaregivers(caregiversResponse.data);
+      
+      // Filter users with caregiver role (role_id = 2)
+      const caregiverRoleIds = userRolesResponse.data
+        .filter(role => role.role_id === 2)
+        .map(role => role.user_id);
+      
+      const caregiverUsers = usersResponse.data.filter(user => 
+        caregiverRoleIds.includes(user.id)
+      );
+      
+      setCaregivers(caregiverUsers);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load data');
@@ -71,8 +83,6 @@ const BookingPage = () => {
       [name]: value
     }));
   };
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,31 +108,19 @@ const BookingPage = () => {
     try {
       // Create one-time request only
       const requestData = {
-        customer_id: currentUser?.id || null,
+        user_id: currentUser?.id || null,
         package_id: parseInt(formData.selectedPackage),
         status: 'new',
         preferred_contact_method: 'email',
-        notes: `Customer: ${formData.customerName}
-Email: ${formData.customerEmail}
-Phone: ${formData.customerPhone}
-Address: ${formData.address}
-Preferred Date: ${formData.preferredDate}
-Preferred Time: ${formData.preferredTime}
-Duration: ${formData.duration} hours
-Special Instructions: ${formData.specialInstructions}
-Emergency Contact: ${formData.emergencyContact}
-Emergency Phone: ${formData.emergencyPhone}
-Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
-        created_at: new Date().toISOString()
+        notes: `Customer: ${formData.customerName} (${formData.customerEmail})\nPhone: ${formData.customerPhone}\nAddress: ${formData.address}\nPreferred Date: ${formData.preferredDate}\nPreferred Time: ${formData.preferredTime}\nDuration: ${formData.duration}\nSpecial Instructions: ${formData.specialInstructions}\nEmergency Contact: ${formData.emergencyContact} (${formData.emergencyPhone})`
       };
 
       await userRequestsAPI.create(requestData);
-      toast.success('Request submitted successfully! We will contact you soon.');
-      
+      toast.success('Booking request submitted successfully! We will contact you soon.');
       navigate('/');
     } catch (error) {
-      console.error('Error creating request:', error);
-      toast.error('Failed to submit request. Please try again.');
+      console.error('Error submitting request:', error);
+      toast.error('Failed to submit booking request');
     } finally {
       setSubmitting(false);
     }
@@ -263,7 +261,7 @@ Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
             </div>
 
             {/* Appointment Details - One-time */}
-            {formData.bookingType === 'one-time' && (
+            {selectedPackage && (
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                   <Calendar className="h-5 w-5 mr-2" />

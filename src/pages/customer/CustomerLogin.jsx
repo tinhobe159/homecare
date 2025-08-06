@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, User, Phone, Eye, EyeOff } from 'lucide-react';
 import { AuthContext } from '../../contexts/AuthContext';
-import { customersAPI } from '../../services/api';
+import { usersAPI, userRolesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 
 const CustomerLogin = () => {
@@ -16,7 +16,8 @@ const CustomerLogin = () => {
   const [formData, setFormData] = useState({
     email: 'john.doe@example.com',
     password: 'SecureP@ss2024!',
-    name: '',
+    first_name: '',
+    last_name: '',
     phone: '',
     address: ''
   });
@@ -36,9 +37,20 @@ const CustomerLogin = () => {
     try {
       if (isLogin) {
         // Login logic
-        const response = await customersAPI.getAll();
-        const customer = response.data.find(c => 
-          c.email === formData.email && c.password === formData.password
+        const [usersResponse, userRolesResponse] = await Promise.all([
+          usersAPI.getAll(),
+          userRolesAPI.getAll()
+        ]);
+        
+        // Find user with customer role (role_id = 3)
+        const customerRoleIds = userRolesResponse.data
+          .filter(role => role.role_id === 3)
+          .map(role => role.user_id);
+        
+        const customer = usersResponse.data.find(user => 
+          customerRoleIds.includes(user.id) &&
+          user.email === formData.email && 
+          user.password === formData.password
         );
         
         if (customer) {
@@ -50,20 +62,30 @@ const CustomerLogin = () => {
         }
       } else {
         // Registration logic
-        const newCustomer = {
-          name: formData.name,
+        const newUser = {
+          first_name: formData.first_name,
+          last_name: formData.last_name,
           email: formData.email,
           password: formData.password,
           phone: formData.phone,
           address: formData.address,
           status: 'active',
-          created_at: new Date().toISOString()
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
 
-        await customersAPI.create(newCustomer);
+        const userResponse = await usersAPI.create(newUser);
+        const newUserId = userResponse.data.id;
+        
+        // Assign customer role
+        await userRolesAPI.create({
+          user_id: newUserId,
+          role_id: 3 // Customer role
+        });
+        
         toast.success('Registration successful! Please login.');
         setIsLogin(true);
-        setFormData({ email: '', password: '', name: '', phone: '', address: '' });
+        setFormData({ email: '', password: '', first_name: '', last_name: '', phone: '', address: '' });
       }
     } catch (error) {
       console.error('Error:', error);
@@ -91,22 +113,43 @@ const CustomerLogin = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {!isLogin && (
               <>
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Full Name
-                  </label>
-                  <div className="mt-1 relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required={!isLogin}
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter your full name"
-                    />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
+                      First Name
+                    </label>
+                    <div className="mt-1 relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                      <input
+                        id="first_name"
+                        name="first_name"
+                        type="text"
+                        required={!isLogin}
+                        value={formData.first_name}
+                        onChange={handleInputChange}
+                        className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="First name"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
+                      Last Name
+                    </label>
+                    <div className="mt-1 relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                      <input
+                        id="last_name"
+                        name="last_name"
+                        type="text"
+                        required={!isLogin}
+                        value={formData.last_name}
+                        onChange={handleInputChange}
+                        className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Last name"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -230,7 +273,7 @@ const CustomerLogin = () => {
                 type="button"
                 onClick={() => {
                   setIsLogin(!isLogin);
-                  setFormData({ email: '', password: '', name: '', phone: '', address: '' });
+                  setFormData({ email: '', password: '', first_name: '', last_name: '', phone: '', address: '' });
                 }}
                 className="text-blue-600 hover:text-blue-500 font-medium"
               >

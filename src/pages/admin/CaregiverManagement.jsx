@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Edit, Trash2, Eye, CheckCircle, Clock, XCircle } from 'lucide-react';
-import { caregiversAPI, skillsAPI } from '../../services/api';
+import { usersAPI, userRolesAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 
@@ -16,12 +16,22 @@ const CaregiverManagement = () => {
 
   const fetchData = async () => {
     try {
-      const [caregiversResponse, skillsResponse] = await Promise.all([
-        caregiversAPI.getAll(),
+      const [usersResponse, userRolesResponse, skillsResponse] = await Promise.all([
+        usersAPI.getAll(),
+        userRolesAPI.getAll(),
         skillsAPI.getAll()
       ]);
       
-      setCaregivers(caregiversResponse.data);
+      // Filter users with caregiver role (role_id = 2)
+      const caregiverRoleIds = userRolesResponse.data
+        .filter(role => role.role_id === 2)
+        .map(role => role.user_id);
+      
+      const caregiverUsers = usersResponse.data.filter(user => 
+        caregiverRoleIds.includes(user.id)
+      );
+      
+      setCaregivers(caregiverUsers);
       setSkills(skillsResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -106,56 +116,50 @@ const CaregiverManagement = () => {
                   <tr key={caregiver.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10">
+                        <div className="h-10 w-10 flex-shrink-0">
                           <img
-                            className="h-10 w-10 rounded-full object-cover"
-                            src={caregiver.profilePicture}
-                            alt={`${caregiver.first_name} ${caregiver.last_name}`}
+                            className="h-10 w-10 rounded-full"
+                            src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/40'}
+                            alt={caregiver.first_name}
                           />
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
                             {caregiver.first_name} {caregiver.last_name}
                           </div>
-                          <div className="text-sm text-gray-500 truncate max-w-xs">
-                            {caregiver.bio}
-                          </div>
+                          <div className="text-sm text-gray-500">{caregiver.email}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {caregiver.yearsOfExperience}
+                      {caregiver.years_experience || caregiver.yearsOfExperience || 'N/A'} years
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center space-x-2">
-                        {getBackgroundCheckIcon(caregiver.backgroundCheckStatus)}
-                        <span className="text-sm text-gray-900">{caregiver.backgroundCheckStatus}</span>
+                      <div className="flex items-center">
+                        {getBackgroundCheckIcon(caregiver.background_check_status || caregiver.backgroundCheckStatus)}
+                        <span className="ml-2 text-sm text-gray-900 capitalize">
+                          {caregiver.background_check_status || caregiver.backgroundCheckStatus || 'Unknown'}
+                        </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 max-w-xs">
-                      <div className="truncate">
-                        {getSkillNames(caregiver.skillIds)}
-                      </div>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {getSkillNames(caregiver.skillIds)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                      <Link
-                        to={`/admin/caregivers/${caregiver.id}/availability`}
-                        className="text-blue-600 hover:text-blue-900 inline-flex items-center"
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        Availability
-                      </Link>
-                      <button className="text-indigo-600 hover:text-indigo-900 inline-flex items-center">
-                        <Edit className="h-4 w-4 mr-1" />
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(caregiver.id)}
-                        className="text-red-600 hover:text-red-900 inline-flex items-center"
-                      >
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Delete
-                      </button>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex space-x-2">
+                        <Link
+                          to={`/admin/caregivers/${caregiver.id}/availability`}
+                          className="text-indigo-600 hover:text-indigo-900"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(caregiver.id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

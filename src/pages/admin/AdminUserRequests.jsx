@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  MessageSquare, 
+  Calendar, 
   Search, 
   Filter,
   Eye,
@@ -11,22 +11,21 @@ import {
   User,
   Phone,
   Mail,
+  MapPin,
   Package,
-  Calendar,
-  MessageCircle,
-  AlertCircle,
-  CheckCircle2,
-  Plus
+  DollarSign,
+  Plus,
+  MessageSquare,
+  AlertCircle
 } from 'lucide-react';
-import { userRequestsAPI, customersAPI, packagesAPI, appointmentsAPI, caregiversAPI } from '../../services/api';
+import { userRequestsAPI, usersAPI, packagesAPI, appointmentsAPI, userRolesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const AdminUserRequests = () => {
   const [userRequests, setUserRequests] = useState([]);
-  const [customers, setCustomers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [packages, setPackages] = useState([]);
-  const [caregivers, setCaregivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -39,8 +38,8 @@ const AdminUserRequests = () => {
     notes: ''
   });
   const [appointmentFormData, setAppointmentFormData] = useState({
-    customer_id: '',
-    caregiver_id: '',
+    user_id: '',
+    caregiver_user_id: '',
     package_id: '',
     appointment_datetime_start: '',
     appointment_datetime_end: '',
@@ -57,16 +56,14 @@ const AdminUserRequests = () => {
 
   const fetchData = async () => {
     try {
-      const [requestsResponse, customersResponse, packagesResponse, caregiversResponse] = await Promise.all([
+      const [requestsResponse, usersResponse, packagesResponse] = await Promise.all([
         userRequestsAPI.getAll(),
-        customersAPI.getAll(),
-        packagesAPI.getAll(),
-        caregiversAPI.getAll()
+        usersAPI.getAll(),
+        packagesAPI.getAll()
       ]);
       setUserRequests(requestsResponse.data);
-      setCustomers(customersResponse.data);
+      setUsers(usersResponse.data);
       setPackages(packagesResponse.data);
-      setCaregivers(caregiversResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load user requests');
@@ -92,13 +89,13 @@ const AdminUserRequests = () => {
   };
 
   const handleCreateAppointmentFromRequest = (request) => {
-    const customer = customers.find(c => c.id === request.customer_id);
+    const customer = users.find(u => u.id === request.user_id);
     const pkg = packages.find(p => p.id === request.package_id);
     
     // Auto-fill appointment form with request data
     setAppointmentFormData({
-      customer_id: request.customer_id,
-      caregiver_id: '', // Admin needs to select
+      user_id: request.user_id,
+      caregiver_user_id: '', // Admin needs to select
       package_id: request.package_id,
       appointment_datetime_start: '',
       appointment_datetime_end: '',
@@ -143,8 +140,8 @@ const AdminUserRequests = () => {
       setShowCreateAppointmentModal(false);
       setSelectedRequestForAppointment(null);
       setAppointmentFormData({
-        customer_id: '',
-        caregiver_id: '',
+        user_id: '',
+        caregiver_user_id: '',
         package_id: '',
         appointment_datetime_start: '',
         appointment_datetime_end: '',
@@ -194,7 +191,7 @@ const AdminUserRequests = () => {
 
       // Create appointment from request
       const appointmentData = {
-        customer_id: request.customer_id,
+        user_id: request.user_id,
         package_id: request.package_id,
         status: 'pending',
         booking_notes: request.notes,
@@ -242,8 +239,8 @@ const AdminUserRequests = () => {
     }
   };
 
-  const getCustomerById = (customerId) => {
-    return customers.find(customer => customer.id === customerId);
+  const getCustomerById = (userId) => {
+    return users.find(user => user.id === userId);
   };
 
   const getPackageById = (packageId) => {
@@ -264,12 +261,12 @@ const AdminUserRequests = () => {
     switch (method) {
       case 'phone': return <Phone className="h-4 w-4" />;
       case 'email': return <Mail className="h-4 w-4" />;
-      default: return <MessageCircle className="h-4 w-4" />;
+      default: return <MessageSquare className="h-4 w-4" />;
     }
   };
 
   const filteredRequests = userRequests.filter(request => {
-    const customer = getCustomerById(request.customer_id);
+    const customer = getCustomerById(request.user_id);
     const pkg = getPackageById(request.package_id);
     
     const matchesSearch = 
@@ -348,7 +345,7 @@ const AdminUserRequests = () => {
         {/* Requests List */}
         <div className="space-y-4">
           {filteredRequests.map((request) => {
-            const customer = getCustomerById(request.customer_id);
+            const customer = getCustomerById(request.user_id);
             const pkg = getPackageById(request.package_id);
             
             return (
@@ -388,7 +385,7 @@ const AdminUserRequests = () => {
                               className="text-blue-600 hover:text-blue-900 p-1"
                               title="Mark as Contacted"
                             >
-                              <MessageCircle className="h-4 w-4" />
+                              <MessageSquare className="h-4 w-4" />
                             </button>
                             <button
                               onClick={() => handleStatusUpdate(request.id, 'rejected')}
@@ -547,7 +544,7 @@ const AdminUserRequests = () => {
                       <span className="font-medium text-blue-800">Customer:</span> 
                       <span className="ml-2 text-blue-700">
                         {(() => {
-                          const customer = customers.find(c => c.id === selectedRequestForAppointment.customer_id);
+                          const customer = users.find(u => u.id === selectedRequestForAppointment.user_id);
                           return customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown';
                         })()}
                       </span>
@@ -578,16 +575,16 @@ const AdminUserRequests = () => {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Customer *</label>
                       <select
-                        name="customer_id"
-                        value={appointmentFormData.customer_id}
+                        name="user_id"
+                        value={appointmentFormData.user_id}
                         onChange={handleAppointmentInputChange}
                         required
                         className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="">Select Customer</option>
-                        {customers.map(customer => (
-                          <option key={customer.id} value={customer.id}>
-                            {customer.first_name} {customer.last_name} - {customer.email}
+                        {users.map(user => (
+                          <option key={user.id} value={user.id}>
+                            {user.first_name} {user.last_name} - {user.email}
                           </option>
                         ))}
                       </select>
@@ -597,14 +594,14 @@ const AdminUserRequests = () => {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Caregiver *</label>
                       <select
-                        name="caregiver_id"
-                        value={appointmentFormData.caregiver_id}
+                        name="caregiver_user_id"
+                        value={appointmentFormData.caregiver_user_id}
                         onChange={handleAppointmentInputChange}
                         required
                         className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="">Select Caregiver</option>
-                        {caregivers.map(caregiver => (
+                        {users.filter(u => u.role === 'caregiver').map(caregiver => (
                           <option key={caregiver.id} value={caregiver.id}>
                             {caregiver.first_name} {caregiver.last_name} - ${caregiver.hourlyRate}/hr
                           </option>

@@ -98,7 +98,7 @@ const Navbar = () => {
               </button>
             ) : currentUser ? (
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-600">Welcome, {currentUser.name}</span>
+                <span className="text-sm text-gray-600">Welcome, {currentUser.first_name} {currentUser.last_name}</span>
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-1 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
@@ -162,7 +162,7 @@ const Navbar = () => {
             ) : currentUser ? (
               <div className="space-y-1">
                 <div className="px-3 py-2 text-sm text-gray-600">
-                  Welcome, {currentUser.name}
+                  Welcome, {currentUser.first_name} {currentUser.last_name}
                 </div>
                 <button
                   onClick={handleLogout}

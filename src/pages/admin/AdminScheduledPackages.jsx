@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Package, Edit, Trash2, Play, Pause, X, Eye } from 'lucide-react';
-import { scheduledPackagesAPI, packagesAPI, customersAPI, caregiversAPI } from '../../services/api';
+import { scheduledPackagesAPI, packagesAPI, usersAPI, userRolesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Modal from '../../components/common/Modal';
@@ -12,8 +12,7 @@ const AdminScheduledPackages = () => {
   const { isAdmin } = useAuth();
   const [scheduledPackages, setScheduledPackages] = useState([]);
   const [packages, setPackages] = useState([]);
-  const [customers, setCustomers] = useState([]);
-  const [caregivers, setCaregivers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
@@ -21,9 +20,9 @@ const AdminScheduledPackages = () => {
   const [showCalendarPreview, setShowCalendarPreview] = useState(false);
 
   const [formData, setFormData] = useState({
-    customer_id: '',
+    user_id: '',
     package_id: '',
-    caregiver_id: '',
+    caregiver_user_id: '',
     start_datetime: '',
     rrule: '',
     end_date: '',
@@ -37,17 +36,15 @@ const AdminScheduledPackages = () => {
 
   const fetchData = async () => {
     try {
-      const [scheduledResponse, packagesResponse, customersResponse, caregiversResponse] = await Promise.all([
+      const [scheduledResponse, packagesResponse, usersResponse] = await Promise.all([
         scheduledPackagesAPI.getAll(),
         packagesAPI.getAll(),
-        customersAPI.getAll(),
-        caregiversAPI.getAll()
+        usersAPI.getAll()
       ]);
       
       setScheduledPackages(scheduledResponse.data);
       setPackages(packagesResponse.data);
-      setCustomers(customersResponse.data);
-      setCaregivers(caregiversResponse.data);
+      setUsers(usersResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load data');
@@ -85,9 +82,9 @@ const AdminScheduledPackages = () => {
     }
     setEditingPackage(null);
     setFormData({
-      customer_id: '',
+      user_id: '',
       package_id: '',
-      caregiver_id: '',
+      caregiver_user_id: '',
       start_datetime: '',
       rrule: '',
       end_date: '',
@@ -98,18 +95,14 @@ const AdminScheduledPackages = () => {
   };
 
   const openEditModal = (pkg) => {
-    if (!isAdmin) {
-      toast.error('Only administrators can edit scheduled packages');
-      return;
-    }
     setEditingPackage(pkg);
     setFormData({
-      customer_id: pkg.customer_id.toString(),
+      user_id: pkg.user_id.toString(),
       package_id: pkg.package_id.toString(),
-      caregiver_id: pkg.caregiver_id ? pkg.caregiver_id.toString() : '',
+      caregiver_user_id: pkg.caregiver_user_id ? pkg.caregiver_user_id.toString() : '',
       start_datetime: pkg.start_datetime,
       rrule: pkg.rrule,
-      end_date: pkg.end_date || '',
+      end_date: pkg.end_date,
       status: pkg.status,
       exceptions: pkg.exceptions || []
     });
@@ -119,29 +112,31 @@ const AdminScheduledPackages = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.customer_id || !formData.package_id || !formData.start_datetime || !formData.rrule) {
+    if (!formData.user_id || !formData.package_id || !formData.start_datetime || !formData.rrule) {
       toast.error('Please fill in all required fields');
       return;
     }
 
     try {
       const submitData = {
-        ...formData,
-        customer_id: parseInt(formData.customer_id),
+        user_id: parseInt(formData.user_id),
         package_id: parseInt(formData.package_id),
-        caregiver_id: formData.caregiver_id ? parseInt(formData.caregiver_id) : null,
-        updated_at: new Date().toISOString()
+        caregiver_user_id: formData.caregiver_user_id ? parseInt(formData.caregiver_user_id) : null,
+        start_datetime: formData.start_datetime,
+        rrule: formData.rrule,
+        end_date: formData.end_date,
+        status: formData.status,
+        exceptions: formData.exceptions
       };
 
       if (editingPackage) {
         await scheduledPackagesAPI.update(editingPackage.id, submitData);
         toast.success('Scheduled package updated successfully');
       } else {
-        submitData.created_at = new Date().toISOString();
         await scheduledPackagesAPI.create(submitData);
         toast.success('Scheduled package created successfully');
       }
-      
+
       setShowModal(false);
       fetchData();
     } catch (error) {
@@ -155,6 +150,7 @@ const AdminScheduledPackages = () => {
       toast.error('Only administrators can delete scheduled packages');
       return;
     }
+
     if (window.confirm('Are you sure you want to delete this scheduled package?')) {
       try {
         await scheduledPackagesAPI.delete(id);
@@ -168,26 +164,9 @@ const AdminScheduledPackages = () => {
   };
 
   const handleStatusChange = async (id, newStatus) => {
-    if (!isAdmin) {
-      toast.error('Only administrators can change scheduled package status');
-      return;
-    }
     try {
-      // Use specialized methods for status changes to avoid data corruption
-      switch (newStatus) {
-        case 'paused':
-          await scheduledPackagesAPI.pause(id);
-          break;
-        case 'active':
-          await scheduledPackagesAPI.resume(id);
-          break;
-        case 'cancelled':
-          await scheduledPackagesAPI.cancel(id);
-          break;
-        default:
-          await scheduledPackagesAPI.update(id, { status: newStatus });
-      }
-      toast.success(`Scheduled package ${newStatus} successfully`);
+      await scheduledPackagesAPI.update(id, { status: newStatus });
+      toast.success(`Status updated to ${newStatus}`);
       fetchData();
     } catch (error) {
       console.error('Error updating status:', error);
@@ -197,56 +176,39 @@ const AdminScheduledPackages = () => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      active: { color: 'bg-green-100 text-green-800', label: 'Active' },
-      paused: { color: 'bg-yellow-100 text-yellow-800', label: 'Paused' },
-      cancelled: { color: 'bg-red-100 text-red-800', label: 'Cancelled' }
+      active: { color: 'bg-green-100 text-green-800', icon: <Play className="h-4 w-4" /> },
+      paused: { color: 'bg-yellow-100 text-yellow-800', icon: <Pause className="h-4 w-4" /> },
+      cancelled: { color: 'bg-red-100 text-red-800', icon: <X className="h-4 w-4" /> }
     };
     
-    const config = statusConfig[status] || statusConfig.active;
+    const config = statusConfig[status] || { color: 'bg-gray-100 text-gray-800', icon: <Clock className="h-4 w-4" /> };
+    
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.color}`}>
-        {config.label}
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
+        {config.icon}
+        <span className="ml-1 capitalize">{status}</span>
       </span>
     );
   };
 
   const formatRRule = (rrule) => {
-    if (!rrule) return 'No pattern set';
+    if (!rrule) return 'No recurrence';
     
-    const parts = rrule.split(';');
-    const parsed = {};
-    parts.forEach(part => {
-      const [key, value] = part.split('=');
-      parsed[key] = value;
-    });
+    // Simple formatting for common RRULE patterns
+    if (rrule.includes('FREQ=DAILY')) return 'Daily';
+    if (rrule.includes('FREQ=WEEKLY')) return 'Weekly';
+    if (rrule.includes('FREQ=MONTHLY')) return 'Monthly';
+    if (rrule.includes('FREQ=YEARLY')) return 'Yearly';
     
-    let description = 'Repeats ';
-    
-    if (parsed.INTERVAL && parsed.INTERVAL > 1) {
-      description += `every ${parsed.INTERVAL} `;
-    } else {
-      description += 'every ';
-    }
-    
-    description += parsed.FREQ?.toLowerCase() || 'unknown';
-    
-    if (parsed.BYDAY) {
-      const days = parsed.BYDAY.split(',');
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const dayLabels = days.map(day => {
-        const dayIndex = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'].indexOf(day);
-        return dayIndex >= 0 ? dayNames[dayIndex] : day;
-      });
-      description += ` on ${dayLabels.join(', ')}`;
-    }
-    
-    if (parsed.COUNT) {
-      description += ` for ${parsed.COUNT} occurrences`;
-    } else if (parsed.UNTIL) {
-      description += ` until ${new Date(parsed.UNTIL).toLocaleDateString()}`;
-    }
-    
-    return description;
+    return 'Custom recurrence';
+  };
+
+  const getCustomerById = (userId) => {
+    return users.find(user => user.id === userId);
+  };
+
+  const getCaregiverById = (userId) => {
+    return users.find(user => user.id === userId);
   };
 
   if (loading) {
@@ -306,9 +268,9 @@ const AdminScheduledPackages = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {scheduledPackages.map((pkg) => {
-                  const customer = customers.find(c => c.id === pkg.customer_id);
+                  const customer = getCustomerById(pkg.user_id);
                   const packageData = packages.find(p => p.id === pkg.package_id);
-                  const caregiver = caregivers.find(c => c.id === pkg.caregiver_id);
+                  const caregiver = getCaregiverById(pkg.caregiver_user_id);
                   
                   return (
                     <tr key={pkg.id} className="hover:bg-gray-50">
@@ -456,16 +418,16 @@ const AdminScheduledPackages = () => {
                   Customer *
                 </label>
                 <select
-                  name="customer_id"
-                  value={formData.customer_id}
+                  name="user_id"
+                  value={formData.user_id}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
                   <option value="">Select Customer</option>
-                  {customers.map(customer => (
-                    <option key={customer.id} value={customer.id}>
-                      {customer.first_name} {customer.last_name} - {customer.email}
+                  {users.map(user => (
+                    <option key={user.id} value={user.id}>
+                      {user.first_name} {user.last_name} - {user.email}
                     </option>
                   ))}
                 </select>
@@ -496,15 +458,15 @@ const AdminScheduledPackages = () => {
                   Caregiver (Optional)
                 </label>
                 <select
-                  name="caregiver_id"
-                  value={formData.caregiver_id}
+                  name="caregiver_user_id"
+                  value={formData.caregiver_user_id}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">No preference</option>
-                  {caregivers.map(caregiver => (
-                    <option key={caregiver.id} value={caregiver.id}>
-                      {caregiver.first_name} {caregiver.last_name}
+                  {users.map(user => (
+                    <option key={user.id} value={user.id}>
+                      {user.first_name} {user.last_name}
                     </option>
                   ))}
                 </select>

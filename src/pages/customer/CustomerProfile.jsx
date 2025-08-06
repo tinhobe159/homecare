@@ -52,12 +52,12 @@ const CustomerProfile = () => {
       
       // Filter appointments for current user
       const userAppointments = appointmentsResponse.data.filter(
-        apt => apt.customer_email === currentUser.email || apt.customer_id === currentUser.id
+        apt => apt.user_id === currentUser.id
       );
       
       // Filter user requests for current user
       const userUserRequests = userRequestsResponse.data.filter(
-        req => req.customer_id === currentUser.id
+        req => req.user_id === currentUser.id
       );
       
       setAppointments(userAppointments);
@@ -134,7 +134,7 @@ const CustomerProfile = () => {
     if (currentUser?.first_name && currentUser?.last_name) {
       return `${currentUser.first_name} ${currentUser.last_name}`;
     }
-    return currentUser?.name || 'Unknown Customer';
+    return 'Unknown Customer';
   };
 
   // Get customer initial for avatar

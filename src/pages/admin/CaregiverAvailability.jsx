@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Plus } from 'lucide-react';
-import { caregiversAPI, caregiverAvailabilityAPI } from '../../services/api';
+import { usersAPI, caregiverAvailabilityAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 
@@ -18,8 +18,8 @@ const CaregiverAvailability = () => {
   const fetchData = async () => {
     try {
       const [caregiverResponse, availabilityResponse] = await Promise.all([
-        caregiversAPI.getById(id),
-        caregiverAvailabilityAPI.getByCaregiverId(id)
+        usersAPI.getById(id),
+        caregiverAvailabilityAPI.getByUserId(id)
       ]);
       
       setCaregiver(caregiverResponse.data);
