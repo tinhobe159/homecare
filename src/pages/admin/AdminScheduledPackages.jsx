@@ -6,8 +6,10 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Modal from '../../components/common/Modal';
 import RecurrenceBuilder from '../../components/common/RecurrenceBuilder';
 import CalendarPreview from '../../components/common/CalendarPreview';
+import { useAuth } from '../../contexts/AuthContext';
 
 const AdminScheduledPackages = () => {
+  const { isAdmin } = useAuth();
   const [scheduledPackages, setScheduledPackages] = useState([]);
   const [packages, setPackages] = useState([]);
   const [customers, setCustomers] = useState([]);
@@ -77,6 +79,10 @@ const AdminScheduledPackages = () => {
   };
 
   const openCreateModal = () => {
+    if (!isAdmin) {
+      toast.error('Only administrators can create scheduled packages');
+      return;
+    }
     setEditingPackage(null);
     setFormData({
       customer_id: '',
@@ -92,6 +98,10 @@ const AdminScheduledPackages = () => {
   };
 
   const openEditModal = (pkg) => {
+    if (!isAdmin) {
+      toast.error('Only administrators can edit scheduled packages');
+      return;
+    }
     setEditingPackage(pkg);
     setFormData({
       customer_id: pkg.customer_id.toString(),
@@ -141,6 +151,10 @@ const AdminScheduledPackages = () => {
   };
 
   const handleDelete = async (id) => {
+    if (!isAdmin) {
+      toast.error('Only administrators can delete scheduled packages');
+      return;
+    }
     if (window.confirm('Are you sure you want to delete this scheduled package?')) {
       try {
         await scheduledPackagesAPI.delete(id);
@@ -154,6 +168,10 @@ const AdminScheduledPackages = () => {
   };
 
   const handleStatusChange = async (id, newStatus) => {
+    if (!isAdmin) {
+      toast.error('Only administrators can change scheduled package status');
+      return;
+    }
     try {
       // Use specialized methods for status changes to avoid data corruption
       switch (newStatus) {
@@ -251,12 +269,14 @@ const AdminScheduledPackages = () => {
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold text-gray-900">All Scheduled Packages</h2>
-              <button
-                onClick={openCreateModal}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-              >
-                Create New Schedule
-              </button>
+              {isAdmin && (
+                <button
+                  onClick={openCreateModal}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  Create New Schedule
+                </button>
+              )}
             </div>
           </div>
 
@@ -359,56 +379,60 @@ const AdminScheduledPackages = () => {
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button
-                            onClick={() => openEditModal(pkg)}
-                            className="text-indigo-600 hover:text-indigo-900"
-                            title="Edit"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          {pkg.status === 'active' && (
-                            <button
-                              onClick={() => handleStatusChange(pkg.id, 'paused')}
-                              className="text-yellow-600 hover:text-yellow-900"
-                              title="Pause"
-                            >
-                              <Pause className="w-4 h-4" />
-                            </button>
+                          {isAdmin && (
+                            <>
+                              <button
+                                onClick={() => openEditModal(pkg)}
+                                className="text-indigo-600 hover:text-indigo-900"
+                                title="Edit"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </button>
+                              {pkg.status === 'active' && (
+                                <button
+                                  onClick={() => handleStatusChange(pkg.id, 'paused')}
+                                  className="text-yellow-600 hover:text-yellow-900"
+                                  title="Pause"
+                                >
+                                  <Pause className="w-4 h-4" />
+                                </button>
+                              )}
+                              {pkg.status === 'paused' && (
+                                <button
+                                  onClick={() => handleStatusChange(pkg.id, 'active')}
+                                  className="text-green-600 hover:text-green-900"
+                                  title="Resume"
+                                >
+                                  <Play className="w-4 h-4" />
+                                </button>
+                              )}
+                              {pkg.status === 'cancelled' && (
+                                <button
+                                  onClick={() => handleStatusChange(pkg.id, 'active')}
+                                  className="text-green-600 hover:text-green-900"
+                                  title="Reactivate"
+                                >
+                                  <Play className="w-4 h-4" />
+                                </button>
+                              )}
+                              {(pkg.status === 'active' || pkg.status === 'paused') && (
+                                <button
+                                  onClick={() => handleStatusChange(pkg.id, 'cancelled')}
+                                  className="text-red-600 hover:text-red-900"
+                                  title="Cancel"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              )}
+                              <button
+                                onClick={() => handleDelete(pkg.id)}
+                                className="text-red-600 hover:text-red-900"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </>
                           )}
-                          {pkg.status === 'paused' && (
-                            <button
-                              onClick={() => handleStatusChange(pkg.id, 'active')}
-                              className="text-green-600 hover:text-green-900"
-                              title="Resume"
-                            >
-                              <Play className="w-4 h-4" />
-                            </button>
-                          )}
-                          {pkg.status === 'cancelled' && (
-                            <button
-                              onClick={() => handleStatusChange(pkg.id, 'active')}
-                              className="text-green-600 hover:text-green-900"
-                              title="Reactivate"
-                            >
-                              <Play className="w-4 h-4" />
-                            </button>
-                          )}
-                          {(pkg.status === 'active' || pkg.status === 'paused') && (
-                            <button
-                              onClick={() => handleStatusChange(pkg.id, 'cancelled')}
-                              className="text-red-600 hover:text-red-900"
-                              title="Cancel"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          )}
-                          <button
-                            onClick={() => handleDelete(pkg.id)}
-                            className="text-red-600 hover:text-red-900"
-                            title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
                         </div>
                       </td>
                     </tr>

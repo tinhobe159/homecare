@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard, Repeat, CalendarDays } from 'lucide-react';
-import { packagesAPI, userRequestsAPI, caregiversAPI, scheduledPackagesAPI } from '../../services/api';
+import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard } from 'lucide-react';
+import { packagesAPI, userRequestsAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-import RecurrenceBuilder from '../../components/common/RecurrenceBuilder';
-import CalendarPreview from '../../components/common/CalendarPreview';
 import { useAuth } from '../../contexts/AuthContext';
 
 const BookingPage = () => {
@@ -19,7 +17,6 @@ const BookingPage = () => {
   
   // Form state
   const [formData, setFormData] = useState({
-    bookingType: 'one-time', // 'one-time' or 'scheduled'
     selectedPackage: location.state?.packageId || new URLSearchParams(location.search).get('package') || '',
     customerName: '',
     customerEmail: '',
@@ -33,15 +30,6 @@ const BookingPage = () => {
     emergencyPhone: '',
     selectedCaregiver: ''
   });
-
-  // Scheduled package state
-  const [scheduledData, setScheduledData] = useState({
-    rrule: '',
-    startDatetime: '',
-    exceptions: []
-  });
-
-  const [showRecurrenceBuilder, setShowRecurrenceBuilder] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -84,31 +72,7 @@ const BookingPage = () => {
     }));
   };
 
-  const handleBookingTypeChange = (type) => {
-    setFormData(prev => ({
-      ...prev,
-      bookingType: type
-    }));
-    
-    if (type === 'scheduled') {
-      setShowRecurrenceBuilder(true);
-    }
-  };
 
-  const handleRecurrenceChange = (rrule) => {
-    console.log('RecurrenceBuilder called handleRecurrenceChange with rrule:', rrule);
-    setScheduledData(prev => ({
-      ...prev,
-      rrule
-    }));
-  };
-
-  const handleExceptionChange = (exceptions) => {
-    setScheduledData(prev => ({
-      ...prev,
-      exceptions
-    }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,58 +88,21 @@ const BookingPage = () => {
       return;
     }
 
-    if (formData.bookingType === 'scheduled') {
-      console.log('Scheduled package validation:', {
-        rrule: scheduledData.rrule,
-        startDatetime: scheduledData.startDatetime,
-        hasRrule: !!scheduledData.rrule,
-        hasStartDatetime: !!scheduledData.startDatetime
-      });
-      
-      if (!scheduledData.startDatetime) {
-        toast.error('Please select a start date and time for your scheduled package');
-        return;
-      }
-      
-      if (!scheduledData.rrule) {
-        return;
-      }
-    } else {
-      if (!formData.preferredDate || !formData.preferredTime) {
-        toast.error('Please select date and time for one-time booking');
-        return;
-      }
+    if (!formData.preferredDate || !formData.preferredTime) {
+      toast.error('Please select date and time for your appointment');
+      return;
     }
 
     setSubmitting(true);
     
     try {
-      if (formData.bookingType === 'scheduled') {
-        // Create scheduled package
-        const scheduledPackageData = {
-          customer_id: currentUser?.id || null,
-          package_id: parseInt(formData.selectedPackage),
-          caregiver_id: formData.selectedCaregiver ? parseInt(formData.selectedCaregiver) : null,
-          start_datetime: scheduledData.startDatetime,
-          rrule: scheduledData.rrule,
-          end_date: null,
-          status: 'active',
-          exceptions: scheduledData.exceptions,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        };
-
-        console.log('Creating scheduled package with data:', scheduledPackageData);
-        await scheduledPackagesAPI.create(scheduledPackageData);
-        toast.success('Scheduled package created successfully!');
-      } else {
-        // Create one-time request
-        const requestData = {
-          customer_id: currentUser?.id || null,
-          package_id: parseInt(formData.selectedPackage),
-          status: 'new',
-          preferred_contact_method: 'email',
-          notes: `Customer: ${formData.customerName}
+      // Create one-time request only
+      const requestData = {
+        customer_id: currentUser?.id || null,
+        package_id: parseInt(formData.selectedPackage),
+        status: 'new',
+        preferred_contact_method: 'email',
+        notes: `Customer: ${formData.customerName}
 Email: ${formData.customerEmail}
 Phone: ${formData.customerPhone}
 Address: ${formData.address}
@@ -186,12 +113,11 @@ Special Instructions: ${formData.specialInstructions}
 Emergency Contact: ${formData.emergencyContact}
 Emergency Phone: ${formData.emergencyPhone}
 Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
-          created_at: new Date().toISOString()
-        };
+        created_at: new Date().toISOString()
+      };
 
-        await userRequestsAPI.create(requestData);
-        toast.success('Request submitted successfully! We will contact you soon.');
-      }
+      await userRequestsAPI.create(requestData);
+      toast.success('Request submitted successfully! We will contact you soon.');
       
       navigate('/');
     } catch (error) {
@@ -223,46 +149,23 @@ Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
-            {/* Booking Type Selection */}
+            {/* Booking Type Selection - Only One-time for customers */}
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                 <Calendar className="h-5 w-5 mr-2" />
                 Booking Type
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div
-                  className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${
-                    formData.bookingType === 'one-time'
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => handleBookingTypeChange('one-time')}
-                >
-                  <div className="flex items-center space-x-3 mb-3">
-                    <Calendar className="h-6 w-6 text-blue-600" />
-                    <h3 className="text-lg font-semibold">One-time Appointment</h3>
-                  </div>
-                  <p className="text-gray-600">
-                    Book a single appointment for a specific date and time. Perfect for occasional care needs.
-                  </p>
+              <div className="border-2 border-blue-500 bg-blue-50 rounded-lg p-6">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Calendar className="h-6 w-6 text-blue-600" />
+                  <h3 className="text-lg font-semibold">One-time Appointment</h3>
                 </div>
-                
-                <div
-                  className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${
-                    formData.bookingType === 'scheduled'
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => handleBookingTypeChange('scheduled')}
-                >
-                  <div className="flex items-center space-x-3 mb-3">
-                    <Repeat className="h-6 w-6 text-blue-600" />
-                    <h3 className="text-lg font-semibold">Scheduled Package</h3>
-                  </div>
-                  <p className="text-gray-600">
-                    Set up recurring appointments with flexible scheduling. Ideal for ongoing care needs.
-                  </p>
-                </div>
+                <p className="text-gray-600">
+                  Book a single appointment for a specific date and time. Perfect for occasional care needs.
+                </p>
+                <p className="text-sm text-blue-600 mt-2">
+                  <strong>Note:</strong> For recurring scheduled packages, please contact our admin team.
+                </p>
               </div>
             </div>
 
@@ -413,94 +316,7 @@ Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
               </div>
             )}
 
-            {/* Schedule Configuration - Scheduled */}
-            {formData.bookingType === 'scheduled' && (
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                  <Repeat className="h-5 w-5 mr-2" />
-                  Schedule Configuration
-                </h2>
-                
-                {/* Start Date and Time */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Start Date *
-                    </label>
-                    <input
-                      type="date"
-                      value={scheduledData.startDatetime.split('T')[0] || ''}
-                      onChange={(e) => {
-                        const time = scheduledData.startDatetime.split('T')[1] || '09:00';
-                        setScheduledData(prev => ({
-                          ...prev,
-                          startDatetime: `${e.target.value}T${time}`
-                        }));
-                      }}
-                      min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Start Time *
-                    </label>
-                    <input
-                      type="time"
-                      value={scheduledData.startDatetime.split('T')[1] || '09:00'}
-                      onChange={(e) => {
-                        const date = scheduledData.startDatetime.split('T')[0] || new Date().toISOString().split('T')[0];
-                        setScheduledData(prev => ({
-                          ...prev,
-                          startDatetime: `${date}T${e.target.value}`
-                        }));
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                </div>
 
-                {/* Recurrence Builder */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">Recurrence Pattern</h3>
-                    <button
-                      type="button"
-                      onClick={() => setShowRecurrenceBuilder(!showRecurrenceBuilder)}
-                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                    >
-                      {showRecurrenceBuilder ? 'Hide Builder' : 'Show Builder'}
-                    </button>
-                  </div>
-                  
-                  {showRecurrenceBuilder && (
-                    <RecurrenceBuilder
-                      onRecurrenceChange={handleRecurrenceChange}
-                      initialValue={scheduledData.rrule}
-                    />
-                  )}
-                  
-                  {scheduledData.rrule && !showRecurrenceBuilder && (
-                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                      <p className="text-blue-800 font-medium">Current Pattern:</p>
-                      <p className="text-blue-700">{scheduledData.rrule}</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Calendar Preview */}
-                {scheduledData.rrule && scheduledData.startDatetime && (
-                  <CalendarPreview
-                    rrule={scheduledData.rrule}
-                    startDate={scheduledData.startDatetime}
-                    exceptions={scheduledData.exceptions}
-                    onExceptionChange={handleExceptionChange}
-                  />
-                )}
-              </div>
-            )}
 
             {/* Caregiver Selection */}
             <div>
@@ -658,20 +474,11 @@ Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
                     <p><span className="font-medium">Package:</span> {selectedPackage.name}</p>
                     <p><span className="font-medium">Cost:</span> ${selectedPackage.total_cost}</p>
                     <p><span className="font-medium">Duration:</span> {selectedPackage.duration_hours} hours</p>
-                    <p><span className="font-medium">Type:</span> {formData.bookingType === 'one-time' ? 'One-time' : 'Scheduled'}</p>
+                    <p><span className="font-medium">Type:</span> One-time Appointment</p>
                   </div>
                   <div>
-                    {formData.bookingType === 'one-time' ? (
-                      <>
-                        <p><span className="font-medium">Date:</span> {formData.preferredDate}</p>
-                        <p><span className="font-medium">Time:</span> {formData.preferredTime}</p>
-                      </>
-                    ) : (
-                      <>
-                        <p><span className="font-medium">Start Date:</span> {scheduledData.startDatetime.split('T')[0]}</p>
-                        <p><span className="font-medium">Start Time:</span> {scheduledData.startDatetime.split('T')[1]}</p>
-                      </>
-                    )}
+                    <p><span className="font-medium">Date:</span> {formData.preferredDate}</p>
+                    <p><span className="font-medium">Time:</span> {formData.preferredTime}</p>
                     <p><span className="font-medium">Customer:</span> {formData.customerName}</p>
                   </div>
                 </div>
@@ -700,7 +507,7 @@ Selected Caregiver: ${formData.selectedCaregiver ? 'Yes' : 'No preference'}`,
                 ) : (
                   <>
                     <CreditCard className="h-4 w-4 mr-2" />
-                    {formData.bookingType === 'scheduled' ? 'Create Scheduled Package' : 'Submit Request'}
+                    Submit Request
                   </>
                 )}
               </button>
