@@ -42,11 +42,6 @@
       "phone_number": "555-0101",
       "emergency_contact_name": "Jane Doe",
       "emergency_contact_phone": "555-0102",
-      "medical_info": {
-        "allergies": ["Penicillin"],
-        "medications": ["Aspirin"],
-        "medical_conditions": ["Hypertension"]
-      },
       "created_at": "2025-01-15T10:00:00Z",
       "last_active": "2025-08-01T10:45:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop"
@@ -61,11 +56,6 @@
       "phone_number": "555-0103",
       "emergency_contact_name": "Tom Smith",
       "emergency_contact_phone": "555-0104",
-      "medical_info": {
-        "allergies": [],
-        "medications": ["Metformin"],
-        "medical_conditions": ["Diabetes"]
-      },
       "created_at": "2025-02-20T14:30:00Z",
       "last_active": "2025-08-02T12:00:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop"
@@ -80,11 +70,6 @@
       "phone_number": "555-0105",
       "emergency_contact_name": "Lisa Johnson",
       "emergency_contact_phone": "555-0106",
-      "medical_info": {
-        "allergies": ["Shellfish"],
-        "medications": [],
-        "medical_conditions": ["Arthritis"]
-      },
       "created_at": "2025-03-10T09:15:00Z",
       "last_active": "2025-08-03T10:30:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop"
@@ -99,11 +84,6 @@
       "phone_number": "555-0107",
       "emergency_contact_name": "Mike Brown",
       "emergency_contact_phone": "555-0108",
-      "medical_info": {
-        "allergies": [],
-        "medications": ["Lisinopril"],
-        "medical_conditions": ["Hypertension"]
-      },
       "created_at": "2025-04-05T16:45:00Z",
       "last_active": "2025-08-04T12:45:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=200&h=200&fit=crop"
@@ -118,11 +98,6 @@
       "phone_number": "555-0109",
       "emergency_contact_name": "Emma Wilson",
       "emergency_contact_phone": "555-0110",
-      "medical_info": {
-        "allergies": ["Nuts"],
-        "medications": [],
-        "medical_conditions": []
-      },
       "created_at": "2025-05-12T11:20:00Z",
       "last_active": "2025-07-15T09:00:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop"
@@ -137,11 +112,6 @@
       "phone_number": "555-0111",
       "emergency_contact_name": "Robert Davis",
       "emergency_contact_phone": "555-0112",
-      "medical_info": {
-        "allergies": [],
-        "medications": ["Metoprolol"],
-        "medical_conditions": ["Heart Disease"]
-      },
       "created_at": "2025-07-28T13:10:00Z",
       "last_active": "2025-07-28T13:10:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop"
@@ -156,11 +126,6 @@
       "phone_number": "555-0113",
       "emergency_contact_name": "Jennifer Miller",
       "emergency_contact_phone": "555-0114",
-      "medical_info": {
-        "allergies": ["Latex"],
-        "medications": ["Warfarin"],
-        "medical_conditions": ["Blood Clot Disorder"]
-      },
       "created_at": "2025-07-29T15:30:00Z",
       "last_active": "2025-07-29T15:30:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop"
@@ -175,11 +140,6 @@
       "phone_number": "555-0115",
       "emergency_contact_name": "William Taylor",
       "emergency_contact_phone": "555-0116",
-      "medical_info": {
-        "allergies": ["Sulfa"],
-        "medications": ["Atorvastatin"],
-        "medical_conditions": ["High Cholesterol"]
-      },
       "created_at": "2025-06-10T09:45:00Z",
       "last_active": "2025-08-05T14:20:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop"
@@ -194,14 +154,115 @@
       "phone_number": "555-0117",
       "emergency_contact_name": "Sarah Anderson",
       "emergency_contact_phone": "555-0118",
-      "medical_info": {
-        "allergies": [],
-        "medications": ["Levothyroxine"],
-        "medical_conditions": ["Hypothyroidism"]
-      },
       "created_at": "2025-05-22T11:10:00Z",
       "last_active": "2025-08-06T10:15:00Z",
       "avatarUrl": "https://images.unsplash.com/photo-1542178243-bc20204b769f?w=200&h=200&fit=crop"
+    }
+  ],
+  "allergies": [
+    {
+      "id": 1,
+      "customer_id": 1,
+      "allergy": "Penicillin"
+    },
+    {
+      "id": 2,
+      "customer_id": 3,
+      "allergy": "Shellfish"
+    },
+    {
+      "id": 3,
+      "customer_id": 5,
+      "allergy": "Nuts"
+    },
+    {
+      "id": 4,
+      "customer_id": 7,
+      "allergy": "Latex"
+    },
+    {
+      "id": 5,
+      "customer_id": 8,
+      "allergy": "Sulfa"
+    }
+  ],
+  "medications": [
+    {
+      "id": 1,
+      "customer_id": 1,
+      "medication": "Aspirin"
+    },
+    {
+      "id": 2,
+      "customer_id": 2,
+      "medication": "Metformin"
+    },
+    {
+      "id": 3,
+      "customer_id": 4,
+      "medication": "Lisinopril"
+    },
+    {
+      "id": 4,
+      "customer_id": 6,
+      "medication": "Metoprolol"
+    },
+    {
+      "id": 5,
+      "customer_id": 7,
+      "medication": "Warfarin"
+    },
+    {
+      "id": 6,
+      "customer_id": 8,
+      "medication": "Atorvastatin"
+    },
+    {
+      "id": 7,
+      "customer_id": 9,
+      "medication": "Levothyroxine"
+    }
+  ],
+  "medical_conditions": [
+    {
+      "id": 1,
+      "customer_id": 1,
+      "condition": "Hypertension"
+    },
+    {
+      "id": 2,
+      "customer_id": 2,
+      "condition": "Diabetes"
+    },
+    {
+      "id": 3,
+      "customer_id": 3,
+      "condition": "Arthritis"
+    },
+    {
+      "id": 4,
+      "customer_id": 4,
+      "condition": "Hypertension"
+    },
+    {
+      "id": 5,
+      "customer_id": 6,
+      "condition": "Heart Disease"
+    },
+    {
+      "id": 6,
+      "customer_id": 7,
+      "condition": "Blood Clot Disorder"
+    },
+    {
+      "id": 7,
+      "customer_id": 8,
+      "condition": "High Cholesterol"
+    },
+    {
+      "id": 8,
+      "customer_id": 9,
+      "condition": "Hypothyroidism"
     }
   ],
   "caregivers": [
