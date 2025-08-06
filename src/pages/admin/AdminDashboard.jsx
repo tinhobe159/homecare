@@ -7,7 +7,12 @@ import {
   Star,
   Calendar,
   Clock,
-  Activity
+  Activity,
+  UserPlus,
+  BarChart3,
+  LineChart,
+  CheckCircle,
+  UserMinus
 } from 'lucide-react';
 import { 
   appointmentsAPI, paymentsAPI, usersAPI

@@ -26,7 +26,7 @@ const CaregiverCard = ({ caregiver, skills, caregiverSkills }) => {
           </h3>
           <div className="flex items-center space-x-2 mt-1">
             <Clock className="h-4 w-4 text-gray-500" />
-            <span className="text-sm text-gray-500">{caregiver.years_experience || caregiver.yearsOfExperience} years experience</span>
+            <span className="text-sm text-gray-500">{caregiver.years_experience} years experience</span>
           </div>
           {caregiver.background_check_status === 'verified' && (
             <div className="flex items-center space-x-1 mt-1">
@@ -62,10 +62,10 @@ const CaregiverCard = ({ caregiver, skills, caregiverSkills }) => {
         <div className="flex items-center space-x-1">
           <Star className="h-4 w-4 text-yellow-400 fill-current" />
           <span className="text-sm font-medium text-gray-900">{caregiver.rating}</span>
-          <span className="text-sm text-gray-500">({caregiver.total_reviews || caregiver.totalReviews} reviews)</span>
+          <span className="text-sm text-gray-500">({caregiver.total_reviews} reviews)</span>
         </div>
         <div className="text-lg font-semibold text-green-600">
-          ${caregiver.hourly_rate || caregiver.hourlyRate}/hr
+          ${caregiver.hourly_rate}/hr
         </div>
       </div>
       

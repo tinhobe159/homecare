@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard } from 'lucide-react';
-import { packagesAPI, userRequestsAPI, usersAPI, userRolesAPI } from '../../services/api';
+import { packagesAPI, userRequestsAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { useAuth } from '../../contexts/AuthContext';
@@ -50,24 +50,13 @@ const BookingPage = () => {
 
   const fetchData = async () => {
     try {
-      const [packagesResponse, usersResponse, userRolesResponse] = await Promise.all([
+      const [packagesResponse, caregiversResponse] = await Promise.all([
         packagesAPI.getAll(),
-        usersAPI.getAll(),
-        userRolesAPI.getAll()
+        caregiversAPI.getAll()
       ]);
       
       setPackages(packagesResponse.data);
-      
-      // Filter users with caregiver role (role_id = 2)
-      const caregiverRoleIds = userRolesResponse.data
-        .filter(role => role.role_id === 2)
-        .map(role => role.user_id);
-      
-      const caregiverUsers = usersResponse.data.filter(user => 
-        caregiverRoleIds.includes(user.id)
-      );
-      
-      setCaregivers(caregiverUsers);
+      setCaregivers(caregiversResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load data');
@@ -385,16 +374,16 @@ const BookingPage = () => {
                             {caregiver.first_name} {caregiver.last_name}
                           </h3>
                           <p className="text-xs text-gray-500">
-                            {caregiver.years_experience || caregiver.yearsOfExperience} years experience
+                            {caregiver.years_experience} years experience
                           </p>
                           <div className="flex items-center mt-1">
                             <span className="text-xs text-yellow-600">★</span>
                             <span className="text-xs text-gray-600 ml-1">
-                              {caregiver.rating} ({caregiver.total_reviews || caregiver.totalReviews} reviews)
+                              {caregiver.rating} ({caregiver.total_reviews} reviews)
                             </span>
                           </div>
                           <p className="text-xs text-blue-600 font-medium mt-1">
-                            ${caregiver.hourly_rate || caregiver.hourlyRate}/hr
+                            ${caregiver.hourly_rate}/hr
                           </p>
                         </div>
                       </div>

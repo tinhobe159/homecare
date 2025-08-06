@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Filter } from 'lucide-react';
-import { usersAPI, userRolesAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
+import { caregiversAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import CaregiverCard from '../../components/common/CaregiverCard';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -36,27 +36,26 @@ const CaregiversPage = () => {
 
   const fetchData = async () => {
     try {
-      const [usersResponse, userRolesResponse, skillsResponse, caregiverSkillsResponse] = await Promise.all([
-        usersAPI.getAll(),
-        userRolesAPI.getAll(),
+      console.log('🔄 CaregiversPage: Starting fetchData...');
+      const [caregiversResponse, skillsResponse, caregiverSkillsResponse] = await Promise.all([
+        caregiversAPI.getAll(),
         skillsAPI.getAll(),
         caregiverSkillsAPI.getAll()
       ]);
       
-      // Filter users with caregiver role (role_id = 2)
-      const caregiverRoleIds = userRolesResponse.data
-        .filter(role => role.role_id === 2)
-        .map(role => role.user_id);
+      console.log('📊 CaregiversPage: Received data:', {
+        caregivers: caregiversResponse.data.length,
+        skills: skillsResponse.data.length,
+        caregiverSkills: caregiverSkillsResponse.data.length
+      });
       
-      const caregiverUsers = usersResponse.data.filter(user => 
-        caregiverRoleIds.includes(user.id)
-      );
+      console.log('👥 CaregiversPage: First caregiver:', caregiversResponse.data[0]);
       
-      setCaregivers(caregiverUsers);
+      setCaregivers(caregiversResponse.data);
       setSkills(skillsResponse.data);
       setCaregiverSkills(caregiverSkillsResponse.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('❌ CaregiversPage: Error fetching data:', error);
       toast.error('Failed to load caregivers data');
     } finally {
       setLoading(false);
