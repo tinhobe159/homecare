@@ -18,7 +18,7 @@ const CustomerLogin = () => {
     password: 'SecureP@ss2024!',
     first_name: '',
     last_name: '',
-    phone: '',
+    phone_number: '',
     address: ''
   });
 
@@ -67,7 +67,7 @@ const CustomerLogin = () => {
           last_name: formData.last_name,
           email: formData.email,
           password: formData.password,
-          phone: formData.phone,
+          phone_number: formData.phone_number,
           address: formData.address,
           status: 'active',
           created_at: new Date().toISOString(),
@@ -85,7 +85,7 @@ const CustomerLogin = () => {
         
         toast.success('Registration successful! Please login.');
         setIsLogin(true);
-        setFormData({ email: '', password: '', first_name: '', last_name: '', phone: '', address: '' });
+        setFormData({ email: '', password: '', first_name: '', last_name: '', phone_number: '', address: '' });
       }
     } catch (error) {
       console.error('Error:', error);
@@ -164,7 +164,7 @@ const CustomerLogin = () => {
                       name="phone"
                       type="tel"
                       required={!isLogin}
-                      value={formData.phone}
+                      value={formData.phone_number}
                       onChange={handleInputChange}
                       className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Enter your phone number"
@@ -273,7 +273,7 @@ const CustomerLogin = () => {
                 type="button"
                 onClick={() => {
                   setIsLogin(!isLogin);
-                  setFormData({ email: '', password: '', first_name: '', last_name: '', phone: '', address: '' });
+                  setFormData({ email: '', password: '', first_name: '', last_name: '', phone_number: '', address: '' });
                 }}
                 className="text-blue-600 hover:text-blue-500 font-medium"
               >

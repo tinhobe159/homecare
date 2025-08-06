@@ -29,7 +29,7 @@ const AdminCaregivers = () => {
     first_name: '',
     last_name: '',
     email: '',
-    phone: '',
+    phone_number: '',
     address: '',
     status: 'active',
     hourly_rate: '',
@@ -94,7 +94,7 @@ const AdminCaregivers = () => {
         first_name: formData.first_name,
         last_name: formData.last_name,
         email: formData.email,
-        phone: formData.phone,
+        phone_number: formData.phone_number,
         address: formData.address,
         status: formData.status,
         hourly_rate: parseFloat(formData.hourly_rate),
@@ -133,7 +133,7 @@ const AdminCaregivers = () => {
         first_name: '', 
         last_name: '', 
         email: '', 
-        phone: '', 
+        phone_number: '', 
         address: '', 
         status: 'active',
         hourly_rate: '',
@@ -154,7 +154,7 @@ const AdminCaregivers = () => {
       first_name: caregiver.first_name || '',
       last_name: caregiver.last_name || '',
       email: caregiver.email || '',
-      phone: caregiver.phone || '',
+      phone_number: caregiver.phone_number || '',
       address: caregiver.address || '',
       status: caregiver.status || 'active',
       hourly_rate: caregiver.hourly_rate?.toString() || '',
@@ -182,7 +182,7 @@ const AdminCaregivers = () => {
     const matchesSearch = (caregiver.first_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
                          (caregiver.last_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
                          (caregiver.email || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         (caregiver.phone || '').includes(searchTerm || '');
+                         (caregiver.phone_number || '').includes(searchTerm || '');
     const matchesFilter = filterStatus === 'all' || caregiver.status === filterStatus;
     return matchesSearch && matchesFilter;
   });
@@ -215,7 +215,7 @@ const AdminCaregivers = () => {
                   first_name: '', 
                   last_name: '', 
                   email: '', 
-                  phone: '', 
+                  phone_number: '', 
                   address: '', 
                   status: 'active',
                   hourly_rate: '',
@@ -301,7 +301,7 @@ const AdminCaregivers = () => {
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <Phone className="h-4 w-4 mr-2" />
-                    {caregiver.phone}
+                    {caregiver.phone_number}
                   </div>
                   {caregiver.address && (
                     <div className="flex items-center text-sm text-gray-600">
@@ -401,8 +401,8 @@ const AdminCaregivers = () => {
                       <label className="block text-sm font-medium text-gray-700">Phone</label>
                       <input
                         type="tel"
-                        name="phone"
-                        value={formData.phone}
+                        name="phone_number"
+                        value={formData.phone_number}
                         onChange={handleInputChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required

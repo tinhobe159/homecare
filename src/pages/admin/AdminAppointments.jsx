@@ -364,7 +364,7 @@ const AdminAppointments = () => {
                       </p>
                       <p className="text-gray-600 flex items-center">
                         <Phone className="h-3 w-3 mr-1" />
-                        {customer?.phone || appointment.customer_phone}
+                        {customer?.phone_number || appointment.customer_phone}
                       </p>
                       {appointment.address && (
                         <p className="text-gray-600 flex items-center">
@@ -691,7 +691,7 @@ const AdminAppointments = () => {
                       <div className="space-y-2 text-sm">
                         <p><span className="font-medium">Name:</span> {customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown'}</p>
                         <p><span className="font-medium">Email:</span> {customer?.email || selectedAppointment.customer_email}</p>
-                        <p><span className="font-medium">Phone:</span> {customer?.phone || selectedAppointment.customer_phone}</p>
+                        <p><span className="font-medium">Phone:</span> {customer?.phone_number || selectedAppointment.customer_phone}</p>
                         {selectedAppointment.address && (
                           <p><span className="font-medium">Address:</span> {selectedAppointment.address}</p>
                         )}
@@ -753,7 +753,7 @@ const AdminAppointments = () => {
                           <>
                             <p><span className="font-medium">Name:</span> {caregiver.first_name} {caregiver.last_name}</p>
                             <p><span className="font-medium">Email:</span> {caregiver.email}</p>
-                            <p><span className="font-medium">Phone:</span> {caregiver.phone}</p>
+                            <p><span className="font-medium">Phone:</span> {caregiver.phone_number}</p>
                             <p><span className="font-medium">Hourly Rate:</span> ${caregiver.hourlyRate}/hr</p>
                           </>
                         ) : (

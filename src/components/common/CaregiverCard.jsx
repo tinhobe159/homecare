@@ -2,17 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle, Clock, Star } from 'lucide-react';
 
-const CaregiverCard = ({ caregiver, skills }) => {
-  const caregiverSkills = skills.filter(skill => 
-    caregiver.skillIds && Array.isArray(caregiver.skillIds) && 
-    caregiver.skillIds.includes(skill.id)
+const CaregiverCard = ({ caregiver, skills, caregiverSkills }) => {
+  // Get skills for this specific caregiver
+  const caregiverSkillIds = caregiverSkills
+    .filter(cs => cs.user_id === caregiver.id)
+    .map(cs => cs.skill_id);
+  
+  const caregiverSkillList = skills.filter(skill => 
+    caregiverSkillIds.includes(skill.id)
   );
 
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border border-gray-200">
       <div className="flex items-center mb-4">
         <img
-          src={caregiver.profilePicture}
+          src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/64'}
           alt={`${caregiver.first_name} ${caregiver.last_name}`}
           className="w-16 h-16 rounded-full object-cover mr-4"
         />
@@ -22,9 +26,9 @@ const CaregiverCard = ({ caregiver, skills }) => {
           </h3>
           <div className="flex items-center space-x-2 mt-1">
             <Clock className="h-4 w-4 text-gray-500" />
-            <span className="text-sm text-gray-500">{caregiver.yearsOfExperience} years experience</span>
+            <span className="text-sm text-gray-500">{caregiver.years_experience || caregiver.yearsOfExperience} years experience</span>
           </div>
-          {caregiver.backgroundCheckStatus === 'verified' && (
+          {caregiver.background_check_status === 'verified' && (
             <div className="flex items-center space-x-1 mt-1">
               <CheckCircle className="h-4 w-4 text-green-500" />
               <span className="text-sm text-green-600">Background Verified</span>
@@ -38,7 +42,7 @@ const CaregiverCard = ({ caregiver, skills }) => {
       <div className="mb-4">
         <h4 className="text-sm font-medium text-gray-900 mb-2">Skills:</h4>
         <div className="flex flex-wrap gap-2">
-          {caregiverSkills.slice(0, 3).map((skill) => (
+          {caregiverSkillList.slice(0, 3).map((skill) => (
             <span
               key={skill.id}
               className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
@@ -46,9 +50,9 @@ const CaregiverCard = ({ caregiver, skills }) => {
               {skill.name}
             </span>
           ))}
-          {caregiverSkills.length > 3 && (
+          {caregiverSkillList.length > 3 && (
             <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-              +{caregiverSkills.length - 3} more
+              +{caregiverSkillList.length - 3} more
             </span>
           )}
         </div>
@@ -58,10 +62,10 @@ const CaregiverCard = ({ caregiver, skills }) => {
         <div className="flex items-center space-x-1">
           <Star className="h-4 w-4 text-yellow-400 fill-current" />
           <span className="text-sm font-medium text-gray-900">{caregiver.rating}</span>
-          <span className="text-sm text-gray-500">({caregiver.totalReviews} reviews)</span>
+          <span className="text-sm text-gray-500">({caregiver.total_reviews || caregiver.totalReviews} reviews)</span>
         </div>
         <div className="text-lg font-semibold text-green-600">
-          ${caregiver.hourlyRate}/hr
+          ${caregiver.hourly_rate || caregiver.hourlyRate}/hr
         </div>
       </div>
       

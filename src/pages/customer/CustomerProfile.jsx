@@ -32,7 +32,7 @@ const CustomerProfile = () => {
     first_name: currentUser?.first_name || '',
     last_name: currentUser?.last_name || '',
     email: currentUser?.email || '',
-    phone: currentUser?.phone || '',
+    phone_number: currentUser?.phone_number || '',
     address: currentUser?.address || ''
   });
 
@@ -97,7 +97,7 @@ const CustomerProfile = () => {
       first_name: currentUser?.first_name || '',
       last_name: currentUser?.last_name || '',
       email: currentUser?.email || '',
-      phone: currentUser?.phone || '',
+      phone_number: currentUser?.phone_number || '',
       address: currentUser?.address || ''
     });
     setEditing(false);
@@ -257,15 +257,15 @@ const CustomerProfile = () => {
                   {editing ? (
                     <input
                       type="tel"
-                      name="phone"
-                      value={formData.phone}
+                      name="phone_number"
+                      value={formData.phone_number}
                       onChange={handleInputChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   ) : (
                     <div className="flex items-center text-gray-900">
                       <Phone className="h-4 w-4 mr-2 text-gray-400" />
-                      {currentUser.phone}
+                      {currentUser.phone_number}
                     </div>
                   )}
                 </div>

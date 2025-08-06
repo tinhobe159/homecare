@@ -42,7 +42,7 @@ const BookingPage = () => {
         ...prev,
         customerName: `${currentUser.first_name} ${currentUser.last_name}` || '',
         customerEmail: currentUser.email || '',
-        customerPhone: currentUser.phone || currentUser.phone_number || '',
+        customerPhone: currentUser.phone_number || '',
         address: currentUser.address || ''
       }));
     }
@@ -375,7 +375,7 @@ const BookingPage = () => {
                       <div className="flex items-center space-x-3">
                         <div className="flex-shrink-0">
                           <img
-                            src={caregiver.profilePicture}
+                            src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/48'}
                             alt={`${caregiver.first_name} ${caregiver.last_name}`}
                             className="w-12 h-12 rounded-full object-cover"
                           />
@@ -385,16 +385,16 @@ const BookingPage = () => {
                             {caregiver.first_name} {caregiver.last_name}
                           </h3>
                           <p className="text-xs text-gray-500">
-                            {caregiver.yearsOfExperience} years experience
+                            {caregiver.years_experience || caregiver.yearsOfExperience} years experience
                           </p>
                           <div className="flex items-center mt-1">
                             <span className="text-xs text-yellow-600">★</span>
                             <span className="text-xs text-gray-600 ml-1">
-                              {caregiver.rating} ({caregiver.totalReviews} reviews)
+                              {caregiver.rating} ({caregiver.total_reviews || caregiver.totalReviews} reviews)
                             </span>
                           </div>
                           <p className="text-xs text-blue-600 font-medium mt-1">
-                            ${caregiver.hourlyRate}/hr
+                            ${caregiver.hourly_rate || caregiver.hourlyRate}/hr
                           </p>
                         </div>
                       </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Filter } from 'lucide-react';
-import { usersAPI, userRolesAPI, skillsAPI } from '../../services/api';
+import { usersAPI, userRolesAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import CaregiverCard from '../../components/common/CaregiverCard';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ const CaregiversPage = () => {
   const [selectedSkill, setSelectedSkill] = useState('all');
   const [caregivers, setCaregivers] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [caregiverSkills, setCaregiverSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredCaregivers, setFilteredCaregivers] = useState([]);
 
@@ -20,21 +21,26 @@ const CaregiversPage = () => {
     if (selectedSkill === 'all') {
       setFilteredCaregivers(caregivers);
     } else {
+      // Filter caregivers who have the selected skill
+      const caregiversWithSkill = caregiverSkills
+        .filter(cs => cs.skill_id === selectedSkill)
+        .map(cs => cs.user_id);
+      
       setFilteredCaregivers(
         caregivers.filter(caregiver => 
-          caregiver.skillIds && Array.isArray(caregiver.skillIds) && 
-          caregiver.skillIds.includes(selectedSkill)
+          caregiversWithSkill.includes(caregiver.id)
         )
       );
     }
-  }, [selectedSkill, caregivers]);
+  }, [selectedSkill, caregivers, caregiverSkills]);
 
   const fetchData = async () => {
     try {
-      const [usersResponse, userRolesResponse, skillsResponse] = await Promise.all([
+      const [usersResponse, userRolesResponse, skillsResponse, caregiverSkillsResponse] = await Promise.all([
         usersAPI.getAll(),
         userRolesAPI.getAll(),
-        skillsAPI.getAll()
+        skillsAPI.getAll(),
+        caregiverSkillsAPI.getAll()
       ]);
       
       // Filter users with caregiver role (role_id = 2)
@@ -48,6 +54,7 @@ const CaregiversPage = () => {
       
       setCaregivers(caregiverUsers);
       setSkills(skillsResponse.data);
+      setCaregiverSkills(caregiverSkillsResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load caregivers data');
@@ -114,7 +121,12 @@ const CaregiversPage = () => {
         {/* Caregivers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCaregivers.map((caregiver) => (
-            <CaregiverCard key={caregiver.id} caregiver={caregiver} skills={skills} />
+            <CaregiverCard 
+              key={caregiver.id} 
+              caregiver={caregiver} 
+              skills={skills} 
+              caregiverSkills={caregiverSkills}
+            />
           ))}
         </div>
 
