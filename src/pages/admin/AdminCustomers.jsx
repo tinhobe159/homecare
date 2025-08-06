@@ -12,7 +12,7 @@ import {
   MapPin,
   Calendar
 } from 'lucide-react';
-import { usersAPI, userRolesAPI } from '../../services/api';
+import { customersAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -40,21 +40,8 @@ const AdminCustomers = () => {
 
   const fetchCustomers = async () => {
     try {
-      const [usersResponse, userRolesResponse] = await Promise.all([
-        usersAPI.getAll(),
-        userRolesAPI.getAll()
-      ]);
-      
-      // Filter users with customer role (role_id = 3)
-      const customerRoleIds = userRolesResponse.data
-        .filter(role => role.role_id === 3)
-        .map(role => role.user_id);
-      
-      const customerUsers = usersResponse.data.filter(user => 
-        customerRoleIds.includes(user.id)
-      );
-      
-      setCustomers(customerUsers);
+      const customersResponse = await customersAPI.getAll();
+      setCustomers(customersResponse.data);
     } catch (error) {
       console.error('Error fetching customers:', error);
       toast.error('Failed to load customers');
@@ -76,17 +63,14 @@ const AdminCustomers = () => {
     
     try {
       if (editingCustomer) {
-        await usersAPI.update(editingCustomer.id, formData);
+        await customersAPI.update(editingCustomer.id, formData);
         toast.success('Customer updated successfully');
       } else {
-        const userResponse = await usersAPI.create(formData);
-        const newUserId = userResponse.data.id;
+        const customerResponse = await customersAPI.create(formData);
+        const newCustomerId = customerResponse.data.id;
         
-        // Assign customer role
-        await userRolesAPI.create({
-          user_id: newUserId,
-          role_id: 3 // Customer role
-        });
+        // No role assignment needed as customers are not explicitly tied to roles here
+        // If roles are introduced, this would be the place to assign them.
         
         toast.success('Customer created successfully');
       }
@@ -128,7 +112,7 @@ const AdminCustomers = () => {
   const handleDelete = async (customerId) => {
     if (window.confirm('Are you sure you want to delete this customer?')) {
       try {
-        await usersAPI.delete(customerId);
+        await customersAPI.delete(customerId);
         toast.success('Customer deleted successfully');
         fetchCustomers();
       } catch (error) {

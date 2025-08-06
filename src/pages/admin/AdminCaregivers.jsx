@@ -13,13 +13,14 @@ import {
   Clock,
   Award
 } from 'lucide-react';
-import { usersAPI, userRolesAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
+import { caregiversAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const AdminCaregivers = () => {
   const [caregivers, setCaregivers] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [caregiverSkills, setCaregiverSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -44,23 +45,15 @@ const AdminCaregivers = () => {
 
   const fetchData = async () => {
     try {
-      const [usersResponse, userRolesResponse, skillsResponse] = await Promise.all([
-        usersAPI.getAll(),
-        userRolesAPI.getAll(),
-        skillsAPI.getAll()
+      const [caregiversResponse, skillsResponse, caregiverSkillsResponse] = await Promise.all([
+        caregiversAPI.getAll(),
+        skillsAPI.getAll(),
+        caregiverSkillsAPI.getAll()
       ]);
       
-      // Filter users with caregiver role (role_id = 2)
-      const caregiverRoleIds = userRolesResponse.data
-        .filter(role => role.role_id === 2)
-        .map(role => role.user_id);
-      
-      const caregiverUsers = usersResponse.data.filter(user => 
-        caregiverRoleIds.includes(user.id)
-      );
-      
-      setCaregivers(caregiverUsers);
+      setCaregivers(caregiversResponse.data);
       setSkills(skillsResponse.data);
+      setCaregiverSkills(caregiverSkillsResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load data');
@@ -105,17 +98,11 @@ const AdminCaregivers = () => {
       };
 
       if (editingCaregiver) {
-        await usersAPI.update(editingCaregiver.id, caregiverData);
+        await caregiversAPI.update(editingCaregiver.id, caregiverData);
         toast.success('Caregiver updated successfully');
       } else {
-        const userResponse = await usersAPI.create(caregiverData);
-        const newCaregiverId = userResponse.data.id;
-        
-        // Assign caregiver role
-        await userRolesAPI.create({
-          user_id: newCaregiverId,
-          role_id: 2 // Caregiver role
-        });
+        const caregiverResponse = await caregiversAPI.create(caregiverData);
+        const newCaregiverId = caregiverResponse.data.id;
         
         // Add skills for the new caregiver
         for (const skillId of formData.selectedSkills) {
@@ -168,7 +155,7 @@ const AdminCaregivers = () => {
   const handleDelete = async (caregiverId) => {
     if (window.confirm('Are you sure you want to delete this caregiver?')) {
       try {
-        await usersAPI.delete(caregiverId);
+        await caregiversAPI.delete(caregiverId);
         toast.success('Caregiver deleted successfully');
         fetchData();
       } catch (error) {

@@ -36,26 +36,17 @@ const CaregiversPage = () => {
 
   const fetchData = async () => {
     try {
-      console.log('🔄 CaregiversPage: Starting fetchData...');
       const [caregiversResponse, skillsResponse, caregiverSkillsResponse] = await Promise.all([
         caregiversAPI.getAll(),
         skillsAPI.getAll(),
         caregiverSkillsAPI.getAll()
       ]);
       
-      console.log('📊 CaregiversPage: Received data:', {
-        caregivers: caregiversResponse.data.length,
-        skills: skillsResponse.data.length,
-        caregiverSkills: caregiverSkillsResponse.data.length
-      });
-      
-      console.log('👥 CaregiversPage: First caregiver:', caregiversResponse.data[0]);
-      
       setCaregivers(caregiversResponse.data);
       setSkills(skillsResponse.data);
       setCaregiverSkills(caregiverSkillsResponse.data);
     } catch (error) {
-      console.error('❌ CaregiversPage: Error fetching data:', error);
+      console.error('Error fetching data:', error);
       toast.error('Failed to load caregivers data');
     } finally {
       setLoading(false);

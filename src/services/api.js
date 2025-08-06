@@ -107,31 +107,22 @@ export const customersAPI = {
 // Caregiver Profiles (for backward compatibility)
 export const caregiversAPI = {
   getAll: () => {
-    console.log('🔍 caregiversAPI.getAll() called');
     return api.get('/users').then(response => {
-      console.log('📋 Users response:', response.data.length, 'users');
       // Filter users with caregiver role and join with caregiver_profiles
       return api.get('/user_roles?role_id=2').then(rolesResponse => {
-        console.log('👥 Caregiver roles response:', rolesResponse.data.length, 'roles');
         const caregiverUserIds = rolesResponse.data.map(role => role.user_id);
         const caregiverUsers = response.data.filter(user => caregiverUserIds.includes(user.id));
-        console.log('🔍 Filtered caregiver users:', caregiverUsers.length, 'users');
         return api.get('/caregiver_profiles').then(profilesResponse => {
-          console.log('📄 Caregiver profiles response:', profilesResponse.data.length, 'profiles');
-          const result = {
+          return {
             data: caregiverUsers.map(user => {
               const profile = profilesResponse.data.find(p => p.user_id === user.id);
-              const joined = { ...user, ...profile };
-              console.log('🔗 Joined user:', user.id, joined.first_name, joined.years_experience, joined.hourly_rate);
-              return joined;
+              return { ...user, ...profile };
             })
           };
-          console.log('✅ Final caregivers result:', result.data.length, 'caregivers');
-          return result;
         });
       });
     }).catch(error => {
-      console.error('❌ Error in caregiversAPI.getAll():', error);
+      console.error('Error in caregiversAPI.getAll():', error);
       throw error;
     });
   },

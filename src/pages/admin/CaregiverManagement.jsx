@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Edit, Trash2, Eye, CheckCircle, Clock, XCircle } from 'lucide-react';
-import { usersAPI, userRolesAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
+import { caregiversAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 
 const CaregiverManagement = () => {
   const [caregivers, setCaregivers] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [caregiverSkills, setCaregiverSkills] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,23 +17,15 @@ const CaregiverManagement = () => {
 
   const fetchData = async () => {
     try {
-      const [usersResponse, userRolesResponse, skillsResponse] = await Promise.all([
-        usersAPI.getAll(),
-        userRolesAPI.getAll(),
-        skillsAPI.getAll()
+      const [caregiversResponse, skillsResponse, caregiverSkillsResponse] = await Promise.all([
+        caregiversAPI.getAll(),
+        skillsAPI.getAll(),
+        caregiverSkillsAPI.getAll()
       ]);
       
-      // Filter users with caregiver role (role_id = 2)
-      const caregiverRoleIds = userRolesResponse.data
-        .filter(role => role.role_id === 2)
-        .map(role => role.user_id);
-      
-      const caregiverUsers = usersResponse.data.filter(user => 
-        caregiverRoleIds.includes(user.id)
-      );
-      
-      setCaregivers(caregiverUsers);
+      setCaregivers(caregiversResponse.data);
       setSkills(skillsResponse.data);
+      setCaregiverSkills(caregiverSkillsResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load caregivers data');
@@ -49,12 +42,18 @@ const CaregiverManagement = () => {
     }
   };
 
-  const getSkillNames = (skillIds) => {
-    if (!skillIds || !Array.isArray(skillIds)) {
+  const getSkillNames = (caregiverId) => {
+    // Get skills for this specific caregiver
+    const caregiverSkillIds = caregiverSkills
+      .filter(cs => cs.user_id === caregiverId)
+      .map(cs => cs.skill_id);
+    
+    if (caregiverSkillIds.length === 0) {
       return 'No skills listed';
     }
-    return skillIds.map(id => {
-      const skill = skills.find(s => s.id === id);
+    
+    return caregiverSkillIds.map(skillId => {
+      const skill = skills.find(s => s.id === skillId);
       return skill ? skill.name : 'Unknown';
     }).join(', ');
   };
@@ -143,7 +142,7 @@ const CaregiverManagement = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {getSkillNames(caregiver.skillIds)}
+                      {getSkillNames(caregiver.id)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
