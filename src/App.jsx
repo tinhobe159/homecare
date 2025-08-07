@@ -75,7 +75,6 @@ const AppContent = () => {
             <Route path="user-requests" element={<AdminUserRequests />} />
             <Route path="roles" element={<AdminRoles />} />
             <Route path="departments" element={<AdminDepartments />} />
-            <Route path="user-assignments" element={<AdminUserAssignments />} />
           </Route>
 
           {/* Add more routes as needed */}
