@@ -172,6 +172,20 @@ const AdminScheduledPackages = () => {
       toast.error('Only administrators can edit scheduled packages');
       return;
     }
+    
+    // Parse the start_datetime properly, handling timezone
+    let parsedStartDatetime = '';
+    if (pkg.start_datetime) {
+      const date = new Date(pkg.start_datetime);
+      // Convert to local timezone and format as YYYY-MM-DDTHH:mm
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      parsedStartDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+    
     setEditingPackage(pkg);
     setFormData({
       user_id: pkg.user_id || '',
@@ -185,7 +199,7 @@ const AdminScheduledPackages = () => {
     });
     setScheduledData({
       rrule: pkg.rrule || '',
-      startDatetime: pkg.start_datetime || '',
+      startDatetime: parsedStartDatetime,
       exceptions: pkg.exceptions || []
     });
     setShowRecurrenceBuilder(false);
@@ -197,11 +211,18 @@ const AdminScheduledPackages = () => {
     e.preventDefault();
     
     try {
+      // Convert the local datetime to ISO format with timezone
+      let formattedStartDatetime = formData.start_datetime;
+      if (scheduledData.startDatetime) {
+        const date = new Date(scheduledData.startDatetime);
+        formattedStartDatetime = date.toISOString();
+      }
+      
       const packageData = {
         user_id: parseInt(formData.user_id),
         package_id: parseInt(formData.package_id),
         caregiver_id: parseInt(formData.caregiver_id),
-        start_datetime: formData.start_datetime,
+        start_datetime: formattedStartDatetime,
         rrule: formData.rrule,
         end_date: formData.end_date,
         status: formData.status,
