@@ -92,22 +92,56 @@ export const rolesAPI = {
 
 // Customer Profiles (for backward compatibility)
 export const customersAPI = {
-  getAll: () => api.get('/users').then(response => {
-    // Filter users with customer role and join with customer_profiles
-    return api.get('/user_roles?role_id=3').then(rolesResponse => {
+  getAll: async () => {
+    try {
+      // Get all users
+      const usersResponse = await api.get('/users');
+      // Get customer roles (role_id: 3 = customer)
+      const rolesResponse = await api.get('/user_roles?role_id=3');
       const customerUserIds = rolesResponse.data.map(role => role.user_id);
-      const customerUsers = response.data.filter(user => customerUserIds.includes(user.id));
-      return api.get('/customer_profiles').then(profilesResponse => {
-        return {
-          data: customerUsers.map(user => {
-            const profile = profilesResponse.data.find(p => p.user_id === user.id);
-            return { ...user, ...profile };
-          })
-        };
+      // Filter users who are customers
+      const customerUsers = usersResponse.data.filter(user => customerUserIds.includes(user.id));
+      // Get customer profiles (additional data)
+      const profilesResponse = await api.get('/customer_profiles');
+      // Merge customers with their profiles (if profile exists)
+      const customersWithProfiles = customerUsers.map(user => {
+        const profile = profilesResponse.data.find(p => p.user_id === user.id);
+        if (profile) {
+          const { id: profileId, ...profileData } = profile;
+          return { ...user, ...profileData };
+        }
+        return user;
       });
-    });
-  }),
-  getById: (id) => api.get(`/users/${id}`),
+      return { data: customersWithProfiles };
+    } catch (error) {
+      console.error('Error in customersAPI.getAll():', error);
+      throw error;
+    }
+  },
+  getById: async (id) => {
+    try {
+      // Get the specific user
+      const userResponse = await api.get(`/users/${id}`);
+      // Check if user has customer role
+      const rolesResponse = await api.get('/user_roles?role_id=3');
+      const customerUserIds = rolesResponse.data.map(role => role.user_id);
+      if (!customerUserIds.includes(Number(id))) {
+        throw new Error('User is not a customer');
+      }
+      // Get customer profile (additional data)
+      const profilesResponse = await api.get('/customer_profiles');
+      const profile = profilesResponse.data.find(p => p.user_id === Number(id));
+      if (profile) {
+        const { id: profileId, ...profileData } = profile;
+        const customerWithProfile = { ...userResponse.data, ...profileData };
+        return { data: customerWithProfile };
+      }
+      return { data: userResponse.data };
+    } catch (error) {
+      console.error('Error in customersAPI.getById():', error);
+      throw error;
+    }
+  },
   create: (data) => api.post('/users', data),
   update: (id, data) => api.put(`/users/${id}`, data),
   delete: (id) => api.delete(`/users/${id}`),
@@ -133,8 +167,12 @@ export const caregiversAPI = {
       // Merge caregivers with their profiles (if profile exists)
       const caregiversWithProfiles = caregiverUsers.map(user => {
         const profile = profilesResponse.data.find(p => p.user_id === user.id);
-        // If profile exists, merge it with user data
-        return profile ? { ...user, ...profile } : user;
+        // If profile exists, merge it with user data, but preserve user.id
+        if (profile) {
+          const { id: profileId, ...profileData } = profile; // Remove profile.id to avoid conflict
+          return { ...user, ...profileData };
+        }
+        return user;
       });
       
       return { data: caregiversWithProfiles };
@@ -155,7 +193,14 @@ export const caregiversAPI = {
       // Merge user with profile (if profile exists)
       const caregiverWithProfile = profile ? { ...userResponse.data, ...profile } : userResponse.data;
       
-      return { data: caregiverWithProfile };
+      // Remove profile.id to avoid conflict with user.id
+      if (profile) {
+        const { id: profileId, ...profileData } = profile;
+        const caregiverWithProfile = { ...userResponse.data, ...profileData };
+        return { data: caregiverWithProfile };
+      }
+      
+      return { data: userResponse.data };
     } catch (error) {
       console.error('Error in caregiversAPI.getById():', error);
       throw error;
