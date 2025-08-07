@@ -166,11 +166,13 @@ const AdminCaregivers = () => {
   };
 
   const filteredCaregivers = caregivers.filter(caregiver => {
-    const matchesSearch = (caregiver.first_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         (caregiver.last_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+    const fullName = `${caregiver.first_name} ${caregiver.last_name}`.toLowerCase();
+    const matchesSearch = fullName.includes((searchTerm || '').toLowerCase()) ||
                          (caregiver.email || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
                          (caregiver.phone_number || '').includes(searchTerm || '');
-    const matchesFilter = filterStatus === 'all' || caregiver.status === filterStatus;
+    const matchesFilter = filterStatus === 'all' || 
+                         (filterStatus === 'active' && caregiver.is_active) ||
+                         (filterStatus === 'inactive' && !caregiver.is_active);
     return matchesSearch && matchesFilter;
   });
 
@@ -272,11 +274,9 @@ const AdminCaregivers = () => {
                     </div>
                   </div>
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    caregiver.status === 'active' ? 'bg-green-100 text-green-800' :
-                    caregiver.status === 'inactive' ? 'bg-red-100 text-red-800' :
-                    'bg-yellow-100 text-yellow-800'
+                    caregiver.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                   }`}>
-                    {caregiver.status}
+                    {caregiver.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
 

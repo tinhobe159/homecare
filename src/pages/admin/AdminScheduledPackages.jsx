@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Package, Edit, Trash2, Play, Pause, X, Eye } from 'lucide-react';
-import { scheduledPackagesAPI, packagesAPI, usersAPI, userRolesAPI } from '../../services/api';
+import { scheduledPackagesAPI, packagesAPI, usersAPI, userRolesAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Modal from '../../components/common/Modal';
@@ -13,6 +13,7 @@ const AdminScheduledPackages = () => {
   const [scheduledPackages, setScheduledPackages] = useState([]);
   const [packages, setPackages] = useState([]);
   const [users, setUsers] = useState([]);
+  const [caregivers, setCaregivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
@@ -22,7 +23,7 @@ const AdminScheduledPackages = () => {
   const [formData, setFormData] = useState({
     user_id: '',
     package_id: '',
-    caregiver_user_id: '',
+    caregiver_id: '',
     start_datetime: '',
     rrule: '',
     end_date: '',
@@ -36,15 +37,17 @@ const AdminScheduledPackages = () => {
 
   const fetchData = async () => {
     try {
-      const [scheduledResponse, packagesResponse, usersResponse] = await Promise.all([
+      const [scheduledResponse, packagesResponse, usersResponse, caregiversResponse] = await Promise.all([
         scheduledPackagesAPI.getAll(),
         packagesAPI.getAll(),
-        usersAPI.getAll()
+        usersAPI.getAll(),
+        caregiversAPI.getAll()
       ]);
       
       setScheduledPackages(scheduledResponse.data);
       setPackages(packagesResponse.data);
       setUsers(usersResponse.data);
+      setCaregivers(caregiversResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load data');
@@ -84,7 +87,7 @@ const AdminScheduledPackages = () => {
     setFormData({
       user_id: '',
       package_id: '',
-      caregiver_user_id: '',
+      caregiver_id: '',
       start_datetime: '',
       rrule: '',
       end_date: '',
@@ -99,7 +102,7 @@ const AdminScheduledPackages = () => {
     setFormData({
       user_id: pkg.user_id.toString(),
       package_id: pkg.package_id.toString(),
-      caregiver_user_id: pkg.caregiver_user_id ? pkg.caregiver_user_id.toString() : '',
+      caregiver_id: pkg.caregiver_id ? pkg.caregiver_id.toString() : '',
       start_datetime: pkg.start_datetime,
       rrule: pkg.rrule,
       end_date: pkg.end_date,
@@ -121,7 +124,7 @@ const AdminScheduledPackages = () => {
       const submitData = {
         user_id: parseInt(formData.user_id),
         package_id: parseInt(formData.package_id),
-        caregiver_user_id: formData.caregiver_user_id ? parseInt(formData.caregiver_user_id) : null,
+        caregiver_id: formData.caregiver_id ? parseInt(formData.caregiver_id) : null,
         start_datetime: formData.start_datetime,
         rrule: formData.rrule,
         end_date: formData.end_date,
@@ -208,7 +211,7 @@ const AdminScheduledPackages = () => {
   };
 
   const getCaregiverById = (userId) => {
-    return users.find(user => user.id === userId);
+    return caregivers.find(caregiver => caregiver.id === userId);
   };
 
   if (loading) {
@@ -270,7 +273,7 @@ const AdminScheduledPackages = () => {
                 {scheduledPackages.map((pkg) => {
                   const customer = getCustomerById(pkg.user_id);
                   const packageData = packages.find(p => p.id === pkg.package_id);
-                  const caregiver = getCaregiverById(pkg.caregiver_user_id);
+                  const caregiver = getCaregiverById(pkg.caregiver_id);
                   
                   return (
                     <tr key={pkg.id} className="hover:bg-gray-50">
@@ -279,7 +282,7 @@ const AdminScheduledPackages = () => {
                           <div className="flex-shrink-0 h-10 w-10">
                             <img
                               className="h-10 w-10 rounded-full"
-                              src={customer?.avatarUrl || 'https://via.placeholder.com/40'}
+                              src={customer?.avatar_url || 'https://via.placeholder.com/40'}
                               alt=""
                             />
                           </div>
@@ -300,7 +303,7 @@ const AdminScheduledPackages = () => {
                           <div className="flex items-center">
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={caregiver.profilePicture}
+                              src={caregiver.avatar_url || 'https://via.placeholder.com/32'}
                               alt=""
                             />
                             <div className="ml-2">
@@ -458,15 +461,15 @@ const AdminScheduledPackages = () => {
                   Caregiver (Optional)
                 </label>
                 <select
-                  name="caregiver_user_id"
-                  value={formData.caregiver_user_id}
+                  name="caregiver_id"
+                  value={formData.caregiver_id}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">No preference</option>
-                  {users.map(user => (
-                    <option key={user.id} value={user.id}>
-                      {user.first_name} {user.last_name}
+                  {caregivers.map(caregiver => (
+                    <option key={caregiver.id} value={caregiver.id}>
+                      {caregiver.first_name} {caregiver.last_name}
                     </option>
                   ))}
                 </select>

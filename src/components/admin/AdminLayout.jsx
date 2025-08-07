@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { 
   Home, Users, Calendar, Package, Settings, 
   LogOut, Menu, X, MessageSquare, BarChart3,
-  UserCheck, FileText, Heart
+  UserCheck, FileText, Heart, Shield, Building2
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
@@ -43,6 +43,9 @@ const AdminLayout = () => {
     { path: '/admin', label: 'Dashboard', icon: Home },
     { path: '/admin/customers', label: 'Customers', icon: Users },
     { path: '/admin/caregivers', label: 'Caregivers', icon: UserCheck },
+    { path: '/admin/employees', label: 'Employees', icon: Users },
+    { path: '/admin/roles', label: 'Roles', icon: Shield },
+    { path: '/admin/departments', label: 'Departments', icon: Building2 },
     { path: '/admin/appointments', label: 'Appointments', icon: Calendar },
     { path: '/admin/user-requests', label: 'User Requests', icon: MessageSquare },
     { path: '/admin/services', label: 'Services', icon: Settings },

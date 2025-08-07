@@ -31,7 +31,7 @@ const AdminCustomers = () => {
     date_of_birth: '',
     emergency_contact_name: '',
     emergency_contact_phone: '',
-    status: 'active'
+    is_active: true
   });
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const AdminCustomers = () => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: name === 'is_active' ? (value === 'active') : value
     }));
   };
 
@@ -85,7 +85,7 @@ const AdminCustomers = () => {
         date_of_birth: '',
         emergency_contact_name: '',
         emergency_contact_phone: '',
-        status: 'active' 
+        is_active: true 
       });
       fetchCustomers();
     } catch (error) {
@@ -104,7 +104,7 @@ const AdminCustomers = () => {
       date_of_birth: customer.date_of_birth || '',
       emergency_contact_name: customer.emergency_contact_name || '',
       emergency_contact_phone: customer.emergency_contact_phone || '',
-      status: customer.status || 'active'
+      is_active: customer.is_active || true
     });
     setShowModal(true);
   };
@@ -143,7 +143,9 @@ const AdminCustomers = () => {
     const matchesSearch = fullName.includes((searchTerm || '').toLowerCase()) ||
                          (customer.email || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
                          (customer.phone_number || '').includes(searchTerm || '');
-    const matchesFilter = filterStatus === 'all' || customer.status === filterStatus;
+    const matchesFilter = filterStatus === 'all' || 
+                         (filterStatus === 'active' && customer.is_active) ||
+                         (filterStatus === 'inactive' && !customer.is_active);
     return matchesSearch && matchesFilter;
   });
 
@@ -178,7 +180,7 @@ const AdminCustomers = () => {
                 date_of_birth: '',
                 emergency_contact_name: '',
                 emergency_contact_phone: '',
-                status: 'active' 
+                is_active: true 
               });
               setShowModal(true);
             }}
@@ -212,7 +214,6 @@ const AdminCustomers = () => {
               <option value="all">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
-              <option value="pending">Pending</option>
             </select>
           </div>
           <div className="text-right">
@@ -271,11 +272,9 @@ const AdminCustomers = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      customer.status === 'active' ? 'bg-green-100 text-green-800' :
-                      customer.status === 'inactive' ? 'bg-red-100 text-red-800' :
-                      'bg-yellow-100 text-yellow-800'
+                      customer.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
-                      {customer.status}
+                      {customer.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -389,14 +388,13 @@ const AdminCustomers = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Status</label>
                     <select
-                      name="status"
-                      value={formData.status}
+                      name="is_active"
+                      value={formData.is_active ? 'active' : 'inactive'}
                       onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="active">Active</option>
                       <option value="inactive">Inactive</option>
-                      <option value="pending">Pending</option>
                     </select>
                   </div>
                   <div className="flex justify-end space-x-3 pt-4">

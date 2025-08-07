@@ -1279,52 +1279,52 @@
   ],
   "skills": [
     {
-      "id": "1",
+      "id": 1,
       "name": "Personal Care",
       "description": "Assistance with bathing, dressing, and grooming"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Medication Management",
       "description": "Administering and monitoring medications"
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Dementia Care",
       "description": "Specialized care for patients with dementia"
     },
     {
-      "id": "4",
+      "id": 4,
       "name": "Mobility Assistance",
       "description": "Help with walking, transfers, and exercises"
     },
     {
-      "id": "5",
+      "id": 5,
       "name": "Meal Preparation",
       "description": "Preparing nutritious meals and dietary planning"
     },
     {
-      "id": "6",
+      "id": 6,
       "name": "Wound Care",
       "description": "Basic wound care and dressing changes"
     },
     {
-      "id": "7",
+      "id": 7,
       "name": "Physical Therapy",
       "description": "Rehabilitation exercises and mobility training"
     },
     {
-      "id": "8",
+      "id": 8,
       "name": "Companionship",
       "description": "Social interaction and emotional support"
     },
     {
-      "id": "9",
+      "id": 9,
       "name": "Health Monitoring",
       "description": "Vital signs monitoring and health assessments"
     },
     {
-      "id": "10",
+      "id": 10,
       "name": "Palliative Care",
       "description": "Comfort-focused care for serious illnesses"
     }

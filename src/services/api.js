@@ -81,6 +81,15 @@ export const userRolesAPI = {
   delete: (id) => api.delete(`/user_roles/${id}`),
 };
 
+// Roles API
+export const rolesAPI = {
+  getAll: () => api.get('/roles'),
+  getById: (id) => api.get(`/roles/${id}`),
+  create: (data) => api.post('/roles', data),
+  update: (id, data) => api.put(`/roles/${id}`, data),
+  delete: (id) => api.delete(`/roles/${id}`),
+};
+
 // Customer Profiles (for backward compatibility)
 export const customersAPI = {
   getAll: () => api.get('/users').then(response => {
@@ -226,6 +235,24 @@ export const userRequestsAPI = {
   update: (id, data) => api.put(`/userRequests/${id}`, data),
   delete: (id) => api.delete(`/userRequests/${id}`),
   convert: (id) => api.patch(`/userRequests/${id}/convert`),
+};
+
+// Departments API
+export const departmentsAPI = {
+  getAll: () => api.get('/departments'),
+  getById: (id) => api.get(`/departments/${id}`),
+  create: (data) => api.post('/departments', data),
+  update: (id, data) => api.put(`/departments/${id}`, data),
+  delete: (id) => api.delete(`/departments/${id}`),
+};
+
+// Administrator Profiles API
+export const administratorProfilesAPI = {
+  getAll: () => api.get('/administrator_profiles'),
+  getById: (id) => api.get(`/administrator_profiles/${id}`),
+  create: (data) => api.post('/administrator_profiles', data),
+  update: (id, data) => api.put(`/administrator_profiles/${id}`, data),
+  delete: (id) => api.delete(`/administrator_profiles/${id}`),
 };
 
 export default api;
