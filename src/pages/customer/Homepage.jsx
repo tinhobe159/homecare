@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Users, Shield, Heart, ArrowRight, Star, Clock, DollarSign, MessageSquare } from 'lucide-react';
+import { Calendar, Users, Shield, Heart, ArrowRight, Star, Clock, DollarSign, MessageSquare, Home, Activity } from 'lucide-react';
 import { packagesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -52,27 +52,35 @@ const Homepage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
+      <section className="bg-gradient-to-br from-[#17407b] via-blue-700 to-blue-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
+            {/* VERON Logo */}
+            <div className="flex justify-center mb-8">
+              <img 
+                src="/favicon.png" 
+                alt="VERON Logo" 
+                className="h-16 md:h-20 w-auto"
+              />
+            </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Compassionate Care<br />
-              <span className="text-blue-200">In Your Home</span>
+              VERON — <br />
+              <span className="text-blue-200">Home, Health, Happiness.</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Professional, personalized homecare services designed to help you maintain independence and quality of life in the comfort of your own home.
+              At VERON, we bring home, health, and happiness to you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/book"
-                className="bg-white text-blue-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                className="bg-white text-[#17407b] px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
               >
                 <Calendar className="h-5 w-5" />
                 <span>Request Care Package</span>
               </Link>
               <Link
                 to="/packages"
-                className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-700 transition-all duration-200 flex items-center justify-center space-x-2"
+                className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-[#17407b] transition-all duration-200 flex items-center justify-center space-x-2"
               >
                 <span>View All Packages</span>
                 <ArrowRight className="h-5 w-5" />
@@ -89,8 +97,11 @@ const Homepage = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Why Choose Our Services?
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
               We provide comprehensive, professional care with a personal touch
+            </p>
+            <p className="text-lg font-medium text-[#17407b]">
+              Home. Health. Happiness. Every time.
             </p>
           </div>
           
@@ -98,36 +109,50 @@ const Homepage = () => {
             {[
               {
                 icon: Users,
-                title: 'Professional Caregivers',
-                description: 'Licensed and experienced caregivers who are passionate about providing quality care.'
+                title: 'Ensuring your health with expert support',
+                description: 'Licensed and experienced caregivers who are passionate about providing quality care.',
+                color: 'text-green-600',
+                bgColor: 'bg-green-100'
               },
               {
                 icon: Shield,
-                title: 'Safe & Secure',
-                description: 'All caregivers are thoroughly vetted, insured, and bonded for your peace of mind.'
+                title: 'Creating a happy, peaceful environment',
+                description: 'All caregivers are thoroughly vetted, insured, and bonded for your peace of mind.',
+                color: 'text-yellow-600',
+                bgColor: 'bg-yellow-100'
               },
               {
                 icon: Heart,
-                title: 'Personalized Care',
-                description: 'Customized care plans designed to meet your specific needs and preferences.'
+                title: 'Custom care bringing home comfort',
+                description: 'Customized care plans designed to meet your specific needs and preferences.',
+                color: 'text-red-600',
+                bgColor: 'bg-red-100'
               },
               {
                 icon: Calendar,
-                title: 'Flexible Scheduling',
-                description: '24/7 availability with flexible scheduling to fit your lifestyle and needs.'
+                title: 'Health care when you need it, even from home',
+                description: '24/7 availability with flexible scheduling to fit your lifestyle and needs.',
+                color: 'text-blue-600',
+                bgColor: 'bg-blue-100'
               }
             ].map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <div key={index} className="text-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                    <Icon className="h-8 w-8 text-blue-600" />
+                  <div className={`inline-flex items-center justify-center w-16 h-16 ${feature.bgColor} rounded-full mb-4`}>
+                    <Icon className={`h-8 w-8 ${feature.color}`} />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
                   <p className="text-gray-600">{feature.description}</p>
                 </div>
               );
             })}
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-lg text-gray-700 italic">
+              At VERON, we believe that well-being starts at home.
+            </p>
           </div>
         </div>
       </section>
@@ -139,8 +164,8 @@ const Homepage = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Popular Care Packages
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Choose from our most popular care packages designed to meet various needs
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
+              Explore our care packages that deliver on home, health, and happiness.
             </p>
           </div>
 
@@ -151,7 +176,12 @@ const Homepage = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {packages.map((pkg) => (
-                <div key={pkg.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
+                <div key={pkg.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden relative">
+                  {/* VERON Badge */}
+                  <div className="absolute top-4 right-4 bg-[#17407b] text-white px-3 py-1 rounded-full text-xs font-medium">
+                    Home. Health. Happiness.
+                  </div>
+                  
                   <div className="p-6">
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">{pkg.name}</h3>
                     <p className="text-gray-600 mb-4">{pkg.description}</p>
@@ -167,7 +197,7 @@ const Homepage = () => {
                     </div>
                     <Link
                       to={`/packages/${pkg.id}`}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-center font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
+                      className="w-full bg-[#17407b] hover:bg-blue-700 text-white py-2 px-4 rounded-md text-center font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                     >
                       <span>View Details</span>
                       <ArrowRight className="h-4 w-4" />
@@ -191,7 +221,7 @@ const Homepage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-blue-600 py-20">
+      <section className="bg-[#17407b] py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Get Started?
@@ -199,13 +229,32 @@ const Homepage = () => {
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Contact us today to learn more about our services and how we can help you or your loved ones.
           </p>
-          <Link
-            to="/book"
-            className="bg-white text-blue-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl inline-flex items-center space-x-2"
-          >
-            <Calendar className="h-5 w-5" />
-            <span>Request Your First Visit</span>
-          </Link>
+          <div className="space-y-4">
+            <Link
+              to="/book"
+              className="bg-white text-[#17407b] px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl inline-flex items-center space-x-2"
+            >
+              <Calendar className="h-5 w-5" />
+              <span>Request Your First Visit</span>
+            </Link>
+            <p className="text-sm text-blue-200 mt-2">
+              Bring Home, Health & Happiness to your life.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer Brand Section */}
+      <section className="bg-gray-900 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="flex items-center justify-center space-x-2 mb-2">
+            <Home className="h-5 w-5 text-white" />
+            <Activity className="h-5 w-5 text-white" />
+            <Heart className="h-5 w-5 text-white" />
+          </div>
+          <p className="text-white font-semibold text-lg">
+            VERON – Home. Health. Happiness.
+          </p>
         </div>
       </section>
     </div>
