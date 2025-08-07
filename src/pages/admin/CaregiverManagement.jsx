@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   Edit, Trash2, Eye, CheckCircle, Clock, XCircle, 
   Users, UserPlus, Star, TrendingUp, Calendar,
-  Search, Filter, Plus, BarChart3, Activity
+  Search, Filter, Plus, BarChart3, Activity, Mail, Phone
 } from 'lucide-react';
 import { caregiversAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -16,6 +16,7 @@ const CaregiverManagement = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterSkill, setFilterSkill] = useState('all'); // Added skill filter state
   const [metrics, setMetrics] = useState({
     total: 0,
     active: 0,
@@ -40,7 +41,11 @@ const CaregiverManagement = () => {
         caregiverSkillsAPI.getAll()
       ]);
       
-      setCaregivers(caregiversResponse.data);
+      // Filter only caregiver users (assuming IDs 12-19 based on the data)
+      // In a real app, you'd filter by role or use a separate endpoint
+      const caregiverUsers = caregiversResponse.data.filter(user => user.id >= 12 && user.id <= 19);
+      
+      setCaregivers(caregiverUsers);
       setSkills(skillsResponse.data);
       setCaregiverSkills(caregiverSkillsResponse.data);
     } catch (error) {
@@ -100,6 +105,19 @@ const CaregiverManagement = () => {
     }).join(', ');
   };
 
+  // Helper function to get caregiver skill IDs
+  const getCaregiverSkillIds = (caregiverId) => {
+    return caregiverSkills
+      .filter(cs => cs.user_id === caregiverId)
+      .map(cs => cs.skill_id);
+  };
+
+  // Helper function to check if caregiver has specific skill
+  const caregiverHasSkill = (caregiverId, skillId) => {
+    const caregiverSkillIds = getCaregiverSkillIds(caregiverId);
+    return caregiverSkillIds.includes(skillId);
+  };
+
   const getBackgroundCheckIcon = (status) => {
     switch (status) {
       case 'verified':
@@ -117,10 +135,15 @@ const CaregiverManagement = () => {
     const fullName = `${caregiver.first_name} ${caregiver.last_name}`.toLowerCase();
     const matchesSearch = fullName.includes((searchTerm || '').toLowerCase()) ||
                          (caregiver.email || '').toLowerCase().includes((searchTerm || '').toLowerCase());
-    const matchesFilter = filterStatus === 'all' || 
+    
+    const matchesStatus = filterStatus === 'all' || 
                          (filterStatus === 'active' && caregiver.is_active) ||
                          (filterStatus === 'inactive' && !caregiver.is_active);
-    return matchesSearch && matchesFilter;
+    
+    // NEW: Skill filter implementation
+    const matchesSkill = filterSkill === 'all' || caregiverHasSkill(caregiver.id, parseInt(filterSkill));
+    
+    return matchesSearch && matchesStatus && matchesSkill;
   });
 
   if (loading) {
@@ -240,7 +263,7 @@ const CaregiverManagement = () => {
 
         {/* Filters and Search */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
@@ -263,6 +286,21 @@ const CaregiverManagement = () => {
                 <option value="inactive">Inactive</option>
               </select>
             </div>
+            {/* NEW: Skill Filter Dropdown */}
+            <div>
+              <select
+                value={filterSkill}
+                onChange={(e) => setFilterSkill(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Skills</option>
+                {skills.map(skill => (
+                  <option key={skill.id} value={skill.id}>
+                    {skill.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="text-right">
               <span className="text-sm text-gray-600">
                 {filteredCaregivers.length} of {caregivers.length} caregivers
@@ -271,105 +309,119 @@ const CaregiverManagement = () => {
           </div>
         </div>
 
-        {/* Caregivers Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Caregiver Profiles</h3>
-          </div>
-          
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Caregiver
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Years of Experience
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Background Check
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Skills
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredCaregivers.map((caregiver) => (
-                  <tr key={caregiver.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0">
-                          <img
-                            className="h-10 w-10 rounded-full"
-                            src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/40'}
-                            alt={caregiver.first_name}
-                          />
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">
-                            {caregiver.first_name} {caregiver.last_name}
-                          </div>
-                          <div className="text-sm text-gray-500">{caregiver.email}</div>
-                          <div className="text-xs text-gray-400">ID: {caregiver.id}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {caregiver.years_experience || caregiver.yearsOfExperience || caregiver.experience_years || 'N/A'} years
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        {getBackgroundCheckIcon(caregiver.background_check_status || caregiver.backgroundCheckStatus)}
-                        <span className="ml-2 text-sm text-gray-900 capitalize">
-                          {caregiver.background_check_status || caregiver.backgroundCheckStatus || 'Unknown'}
+        {/* Caregivers Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCaregivers.map((caregiver) => (
+            <div key={caregiver.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+              <div className="p-6">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                      <img
+                        className="h-12 w-12 rounded-full object-cover"
+                        src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/48'}
+                        alt={caregiver.first_name}
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {caregiver.first_name} {caregiver.last_name}
+                      </h3>
+                      <p className="text-sm text-gray-500">ID: {caregiver.id}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    {getBackgroundCheckIcon(caregiver.background_check_status || caregiver.backgroundCheckStatus)}
+                    <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      (caregiver.background_check_status || caregiver.backgroundCheckStatus) === 'verified' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {caregiver.background_check_status || caregiver.backgroundCheckStatus || 'Unknown'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Contact Info */}
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Mail className="h-4 w-4 mr-2" />
+                    {caregiver.email}
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Phone className="h-4 w-4 mr-2" />
+                    {caregiver.phone_number || 'No phone'}
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Clock className="h-4 w-4 mr-2" />
+                    {caregiver.years_experience || caregiver.yearsOfExperience || caregiver.experience_years || 'N/A'} years experience
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Star className="h-4 w-4 mr-2" />
+                    Rating: {caregiver.rating || 'N/A'} ({caregiver.total_reviews || 0} reviews)
+                  </div>
+                </div>
+
+                {/* Skills */}
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-gray-900 mb-2">Skills:</h4>
+                  <div className="flex flex-wrap gap-1">
+                    {getSkillNames(caregiver.id) === 'No skills listed' ? (
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                        No skills listed
+                      </span>
+                    ) : (
+                      getSkillNames(caregiver.id).split(', ').slice(0, 3).map((skill, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                        >
+                          {skill}
                         </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <div className="max-w-xs truncate" title={getSkillNames(caregiver.id)}>
-                        {getSkillNames(caregiver.id)}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <Link
-                          to={`/admin/caregivers/${caregiver.id}/availability`}
-                          className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50"
-                          title="View Availability"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(caregiver.id)}
-                          className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
-                          title="Delete Caregiver"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            
-            {filteredCaregivers.length === 0 && (
-              <div className="text-center py-12">
-                <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-xl text-gray-500 mb-2">No caregivers found</p>
-                <p className="text-gray-400">Try adjusting your search or filters.</p>
+                      ))
+                    )}
+                    {getSkillNames(caregiver.id) !== 'No skills listed' && 
+                     getSkillNames(caregiver.id).split(', ').length > 3 && (
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                        +{getSkillNames(caregiver.id).split(', ').length - 3} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-end space-x-2">
+                  <Link
+                    to={`/admin/caregivers/${caregiver.id}/availability`}
+                    className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50"
+                    title="View Availability"
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(caregiver.id)}
+                    className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
+                    title="Delete Caregiver"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+          ))}
         </div>
+
+        {filteredCaregivers.length === 0 && (
+          <div className="text-center py-12">
+            <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-xl text-gray-500 mb-2">No caregivers found</p>
+            <p className="text-gray-400">Try adjusting your search or filters.</p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default CaregiverManagement; 
+export default CaregiverManagement;

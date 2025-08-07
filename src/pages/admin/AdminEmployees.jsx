@@ -135,6 +135,22 @@ const AdminEmployees = () => {
           is_active: formData.is_active
         });
         userId = editingEmployee.id;
+        
+        // Update or create administrator profile
+        const existingProfile = administratorProfiles.find(ap => ap.user_id === userId);
+        if (formData.department_id) {
+          if (existingProfile) {
+            await administratorProfilesAPI.update(existingProfile.id, {
+              user_id: userId,
+              department: parseInt(formData.department_id)
+            });
+          } else {
+            await administratorProfilesAPI.create({
+              user_id: userId,
+              department: parseInt(formData.department_id)
+            });
+          }
+        }
         toast.success('Employee updated successfully');
       } else {
         // Create new user
@@ -147,6 +163,14 @@ const AdminEmployees = () => {
           is_active: formData.is_active
         });
         userId = userResponse.data.id;
+        
+        // Create administrator profile if department is selected
+        if (formData.department_id) {
+          await administratorProfilesAPI.create({
+            user_id: userId,
+            department: parseInt(formData.department_id)
+          });
+        }
         toast.success('Employee created successfully');
       }
       
@@ -169,6 +193,7 @@ const AdminEmployees = () => {
   };
 
   const handleEdit = (employee) => {
+    const adminProfile = administratorProfiles.find(ap => ap.user_id === employee.id);
     setEditingEmployee(employee);
     setFormData({
       first_name: employee.first_name || '',
@@ -176,7 +201,7 @@ const AdminEmployees = () => {
       email: employee.email || '',
       phone_number: employee.phone_number || '',
       password: '',
-      department_id: employee.department_id || '',
+      department_id: adminProfile ? adminProfile.department.toString() : '',
       is_active: employee.is_active || true
     });
     setShowModal(true);
@@ -204,9 +229,9 @@ const AdminEmployees = () => {
 
   const getEmployeesWithDepartments = () => {
     return users.map(user => {
-      const department = departments.find(dept => dept.id === user.department_id);
-      const userRole = userRoles.find(ur => ur.user_id === user.id);
       const adminProfile = administratorProfiles.find(ap => ap.user_id === user.id);
+      const department = adminProfile ? departments.find(dept => dept.id === adminProfile.department) : null;
+      const userRole = userRoles.find(ur => ur.user_id === user.id);
       
       return {
         ...user,
@@ -445,11 +470,11 @@ const AdminEmployees = () => {
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <Phone className="h-4 w-4 mr-2" />
-                    {employee.phone_number}
+                    {employee.phone_number || 'No phone number'}
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <Building2 className="h-4 w-4 mr-2" />
-                    {employee.department}
+                    {employee.department || 'No department'}
                   </div>
                 </div>
 

@@ -5,13 +5,14 @@ import {
   Users, Activity, Star, TrendingUp,
   BarChart3, Settings
 } from 'lucide-react';
-import { departmentsAPI, usersAPI } from '../../services/api';
+import { departmentsAPI, usersAPI, administratorProfilesAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 
 const AdminDepartments = () => {
   const [departments, setDepartments] = useState([]);
   const [users, setUsers] = useState([]);
+  const [administratorProfiles, setAdministratorProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -36,16 +37,18 @@ const AdminDepartments = () => {
 
   useEffect(() => {
     calculateMetrics();
-  }, [departments, users]);
+  }, [departments, users, administratorProfiles]);
 
   const fetchData = async () => {
     try {
-      const [departmentsResponse, usersResponse] = await Promise.all([
+      const [departmentsResponse, usersResponse, administratorProfilesResponse] = await Promise.all([
         departmentsAPI.getAll(),
-        usersAPI.getAll()
+        usersAPI.getAll(),
+        administratorProfilesAPI.getAll()
       ]);
       setDepartments(departmentsResponse.data);
       setUsers(usersResponse.data);
+      setAdministratorProfiles(administratorProfilesResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load departments data');
@@ -58,13 +61,11 @@ const AdminDepartments = () => {
     const total = departments.length;
     const active = departments.filter(d => d.is_active).length;
     
-    // Calculate employees per department
+    // Calculate employees per department using administrator_profiles
     const departmentEmployeeCounts = {};
-    users.forEach(user => {
-      if (user.department_id) {
-        const deptId = user.department_id;
-        departmentEmployeeCounts[deptId] = (departmentEmployeeCounts[deptId] || 0) + 1;
-      }
+    administratorProfiles.forEach(profile => {
+      const deptId = profile.department;
+      departmentEmployeeCounts[deptId] = (departmentEmployeeCounts[deptId] || 0) + 1;
     });
     
     const totalEmployees = Object.values(departmentEmployeeCounts).reduce((sum, count) => sum + count, 0);
@@ -150,7 +151,8 @@ const AdminDepartments = () => {
   };
 
   const getEmployeeCount = (departmentId) => {
-    return users.filter(user => user.department_id === departmentId).length;
+    const count = administratorProfiles.filter(profile => profile.department === departmentId).length;
+    return count;
   };
 
   const filteredDepartments = departments.filter(department => {
