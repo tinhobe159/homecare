@@ -117,23 +117,26 @@ export const customersAPI = {
 export const caregiversAPI = {
   getAll: async () => {
     try {
-      // Get all users, roles, and profiles
-      const [usersResponse, rolesResponse, profilesResponse] = await Promise.all([
-        api.get('/users'),
-        api.get('/user_roles?role_id=2'),
-        api.get('/caregiver_profiles')
-      ]);
+      // Get all users first
+      const usersResponse = await api.get('/users');
+      
+      // Get caregiver roles (role_id: 2 = caregiver)
+      const rolesResponse = await api.get('/user_roles?role_id=2');
       const caregiverUserIds = rolesResponse.data.map(role => role.user_id);
-      // Only include users who have BOTH a caregiver role and a caregiver profile
-      const caregiversWithProfiles = usersResponse.data
-        .filter(user => caregiverUserIds.includes(user.id))
-        .map(user => {
-          const profile = profilesResponse.data.find(p => p.user_id === user.id);
-          // Only include if profile exists
-          if (!profile) return null;
-          return { ...user, ...profile };
-        })
-        .filter(Boolean); // Remove nulls
+      
+      // Filter users who are caregivers
+      const caregiverUsers = usersResponse.data.filter(user => caregiverUserIds.includes(user.id));
+      
+      // Get caregiver profiles (additional data)
+      const profilesResponse = await api.get('/caregiver_profiles');
+      
+      // Merge caregivers with their profiles (if profile exists)
+      const caregiversWithProfiles = caregiverUsers.map(user => {
+        const profile = profilesResponse.data.find(p => p.user_id === user.id);
+        // If profile exists, merge it with user data
+        return profile ? { ...user, ...profile } : user;
+      });
+      
       return { data: caregiversWithProfiles };
     } catch (error) {
       console.error('Error in caregiversAPI.getAll():', error);
@@ -144,20 +147,22 @@ export const caregiversAPI = {
     try {
       // Get the specific user
       const userResponse = await api.get(`/users/${id}`);
+      
       // Check if user has caregiver role
       const rolesResponse = await api.get('/user_roles?role_id=2');
       const caregiverUserIds = rolesResponse.data.map(role => role.user_id);
+      
       if (!caregiverUserIds.includes(Number(id))) {
         throw new Error('User is not a caregiver');
       }
-      // Get caregiver profile
+      
+      // Get caregiver profile (additional data)
       const profilesResponse = await api.get('/caregiver_profiles');
       const profile = profilesResponse.data.find(p => p.user_id === Number(id));
-      if (!profile) {
-        throw new Error('Caregiver profile not found');
-      }
-      // Merge user with profile
-      const caregiverWithProfile = { ...userResponse.data, ...profile };
+      
+      // Merge user with profile (if profile exists)
+      const caregiverWithProfile = profile ? { ...userResponse.data, ...profile } : userResponse.data;
+      
       return { data: caregiverWithProfile };
     } catch (error) {
       console.error('Error in caregiversAPI.getById():', error);

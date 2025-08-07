@@ -104,7 +104,7 @@ const CaregiverDetailsPage = () => {
                 <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6 mb-4">
                   <div className="flex items-center justify-center md:justify-start space-x-2">
                     <Clock className="h-4 w-4 text-gray-500" />
-                    <span className="text-gray-600">{caregiver.years_experience || caregiver.yearsOfExperience} years experience</span>
+                    <span className="text-gray-600">{caregiver.years_experience || 'N/A'} years experience</span>
                   </div>
                   
                   {caregiver.background_check_status === 'verified' && (
@@ -118,11 +118,11 @@ const CaregiverDetailsPage = () => {
                 <div className="flex items-center justify-center md:justify-start space-x-4 mb-4">
                   <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    <span className="font-medium text-gray-900">{caregiver.rating}</span>
-                    <span className="text-gray-500">({caregiver.total_reviews || caregiver.totalReviews} reviews)</span>
+                    <span className="font-medium text-gray-900">{caregiver.rating || 'N/A'}</span>
+                    <span className="text-gray-500">({caregiver.total_reviews || 0} reviews)</span>
                   </div>
                   <div className="text-lg font-semibold text-green-600">
-                    ${caregiver.hourly_rate || caregiver.hourlyRate}/hr
+                    ${caregiver.hourly_rate || 'N/A'}/hr
                   </div>
                 </div>
 
@@ -145,7 +145,7 @@ const CaregiverDetailsPage = () => {
         {/* Bio Section */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mt-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">About {caregiver.first_name}</h2>
-          <p className="text-gray-600 leading-relaxed">{caregiver.bio}</p>
+          <p className="text-gray-600 leading-relaxed">{caregiver.bio || 'No bio available'}</p>
         </div>
 
         {/* Skills Section */}

@@ -339,13 +339,13 @@ const CaregiverManagement = () => {
                     </div>
                   </div>
                   <div className="flex items-center">
-                    {getBackgroundCheckIcon(caregiver.background_check_status || caregiver.backgroundCheckStatus)}
+                    {getBackgroundCheckIcon(caregiver.background_check_status)}
                     <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      (caregiver.background_check_status || caregiver.backgroundCheckStatus) === 'verified' 
+                      caregiver.background_check_status === 'verified' 
                         ? 'bg-green-100 text-green-800' 
                         : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {caregiver.background_check_status || caregiver.backgroundCheckStatus || 'Unknown'}
+                      {caregiver.background_check_status || 'Unknown'}
                     </span>
                   </div>
                 </div>
@@ -362,7 +362,7 @@ const CaregiverManagement = () => {
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <Clock className="h-4 w-4 mr-2" />
-                    {caregiver.years_experience || caregiver.yearsOfExperience || caregiver.experience_years || 'N/A'} years experience
+                    {caregiver.years_experience || 'N/A'} years experience
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <Star className="h-4 w-4 mr-2 text-yellow-400 fill-current" />
