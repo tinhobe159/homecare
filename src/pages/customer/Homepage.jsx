@@ -56,15 +56,8 @@ const Homepage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             {/* VERON Logo */}
-            <div className="flex justify-center mb-8">
-              <img 
-                src="/favicon.png" 
-                alt="VERON Logo" 
-                className="h-16 md:h-20 w-auto"
-              />
-            </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              VERON — <br />
+              VERON<br />
               <span className="text-blue-200">Home, Health, Happiness.</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto leading-relaxed">
