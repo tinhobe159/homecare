@@ -21,9 +21,11 @@ const CaregiversPage = () => {
     if (selectedSkill === 'all') {
       setFilteredCaregivers(caregivers);
     } else {
+      // Convert selectedSkill to number for comparison
+      const skillId = Number(selectedSkill);
       // Filter caregivers who have the selected skill
       const caregiversWithSkill = caregiverSkills
-        .filter(cs => cs.skill_id === selectedSkill)
+        .filter(cs => cs.skill_id === skillId)
         .map(cs => cs.user_id);
       
       setFilteredCaregivers(
