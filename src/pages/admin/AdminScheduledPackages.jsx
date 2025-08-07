@@ -45,6 +45,13 @@ const AdminScheduledPackages = () => {
     exceptions: []
   });
 
+  // Scheduled package state for better UX
+  const [scheduledData, setScheduledData] = useState({
+    rrule: '',
+    startDatetime: '',
+    exceptions: []
+  });
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -112,6 +119,11 @@ const AdminScheduledPackages = () => {
   };
 
   const handleRecurrenceChange = (rrule) => {
+    console.log('RecurrenceBuilder called handleRecurrenceChange with rrule:', rrule);
+    setScheduledData(prev => ({
+      ...prev,
+      rrule
+    }));
     setFormData(prev => ({
       ...prev,
       rrule
@@ -119,6 +131,10 @@ const AdminScheduledPackages = () => {
   };
 
   const handleExceptionChange = (exceptions) => {
+    setScheduledData(prev => ({
+      ...prev,
+      exceptions
+    }));
     setFormData(prev => ({
       ...prev,
       exceptions
@@ -141,6 +157,13 @@ const AdminScheduledPackages = () => {
       status: 'active',
       exceptions: []
     });
+    setScheduledData({
+      rrule: '',
+      startDatetime: '',
+      exceptions: []
+    });
+    setShowRecurrenceBuilder(false);
+    setShowCalendarPreview(false);
     setShowModal(true);
   };
 
@@ -160,6 +183,13 @@ const AdminScheduledPackages = () => {
       status: pkg.status || 'active',
       exceptions: pkg.exceptions || []
     });
+    setScheduledData({
+      rrule: pkg.rrule || '',
+      startDatetime: pkg.start_datetime || '',
+      exceptions: pkg.exceptions || []
+    });
+    setShowRecurrenceBuilder(false);
+    setShowCalendarPreview(false);
     setShowModal(true);
   };
 
@@ -518,97 +548,315 @@ const AdminScheduledPackages = () => {
             isOpen={showModal}
             onClose={() => setShowModal(false)}
             title={editingPackage ? 'Edit Scheduled Package' : 'Schedule New Package'}
+            size="lg"
           >
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Customer</label>
-                  <select
-                    name="user_id"
-                    value={formData.user_id}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  >
-                    <option value="">Select Customer</option>
-                    {users.map(user => (
-                      <option key={user.id} value={user.id}>
-                        {user.first_name} {user.last_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Package</label>
-                  <select
-                    name="package_id"
-                    value={formData.package_id}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  >
-                    <option value="">Select Package</option>
-                    {packages.map(pkg => (
-                      <option key={pkg.id} value={pkg.id}>
-                        {pkg.name} - ${pkg.total_cost}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Caregiver</label>
-                  <select
-                    name="caregiver_id"
-                    value={formData.caregiver_id}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  >
-                    <option value="">Select Caregiver</option>
-                    {caregivers.map(caregiver => (
-                      <option key={caregiver.id} value={caregiver.user_id}>
-                        {caregiver.first_name} {caregiver.last_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Start Date & Time</label>
-                  <input
-                    type="datetime-local"
-                    name="start_datetime"
-                    value={formData.start_datetime}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">End Date</label>
-                  <input
-                    type="date"
-                    name="end_date"
-                    value={formData.end_date}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Status</label>
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="active">Active</option>
-                    <option value="paused">Paused</option>
-                    <option value="cancelled">Cancelled</option>
-                    <option value="completed">Completed</option>
-                  </select>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Package and Customer Selection */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Package className="h-5 w-5 mr-2" />
+                  Package & Customer Selection
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Customer *</label>
+                    <select
+                      name="user_id"
+                      value={formData.user_id}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    >
+                      <option value="">Select Customer</option>
+                      {users.map(user => (
+                        <option key={user.id} value={user.id}>
+                          {user.first_name} {user.last_name} ({user.email})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Package *</label>
+                    <select
+                      name="package_id"
+                      value={formData.package_id}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    >
+                      <option value="">Select Package</option>
+                      {packages.map(pkg => (
+                        <option key={pkg.id} value={pkg.id}>
+                          {pkg.name} - ${pkg.total_cost} ({pkg.duration_hours}h)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
+              {/* Caregiver Selection */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <User className="h-5 w-5 mr-2" />
+                  Caregiver Selection
+                </h3>
+                <div className="mb-4">
+                  <p className="text-sm text-gray-600 mb-4">
+                    Select a specific caregiver for this scheduled package. If no caregiver is selected, the system will assign the best available caregiver.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {/* No preference option */}
+                    <div
+                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
+                        formData.caregiver_id === ''
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => setFormData(prev => ({
+                        ...prev,
+                        caregiver_id: ''
+                      }))}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-shrink-0">
+                          <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                            <User className="h-6 w-6 text-gray-500" />
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-sm font-medium text-gray-900">
+                            No Preference
+                          </h3>
+                          <p className="text-xs text-gray-500">
+                            Auto-assign best caregiver
+                          </p>
+                          <p className="text-xs text-gray-600 mt-1">
+                            System will match with most suitable caregiver.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {caregivers.map((caregiver) => (
+                      <div
+                        key={caregiver.id}
+                        className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
+                          formData.caregiver_id === caregiver.user_id.toString()
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                        onClick={() => setFormData(prev => ({
+                          ...prev,
+                          caregiver_id: prev.caregiver_id === caregiver.user_id.toString() ? '' : caregiver.user_id.toString()
+                        }))}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="flex-shrink-0">
+                            <img
+                              src={caregiver.avatar_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop'}
+                              alt={`${caregiver.first_name} ${caregiver.last_name}`}
+                              className="w-12 h-12 rounded-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-sm font-medium text-gray-900">
+                              {caregiver.first_name} {caregiver.last_name}
+                            </h3>
+                            <p className="text-xs text-gray-500">
+                              {caregiver.years_experience} years experience
+                            </p>
+                            <div className="flex items-center mt-1">
+                              <span className="text-xs text-yellow-600">★</span>
+                              <span className="text-xs text-gray-600 ml-1">
+                                {caregiver.rating} ({caregiver.total_reviews} reviews)
+                              </span>
+                            </div>
+                            <p className="text-xs text-blue-600 font-medium mt-1">
+                              ${caregiver.hourly_rate}/hr
+                            </p>
+                          </div>
+                        </div>
+                        {caregiver.bio && (
+                          <p className="text-xs text-gray-600 mt-2 line-clamp-2">
+                            {caregiver.bio}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Schedule Configuration */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Calendar className="h-5 w-5 mr-2" />
+                  Schedule Configuration
+                </h3>
+                
+                {/* Start Date and Time */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Start Date *
+                    </label>
+                    <input
+                      type="date"
+                      value={scheduledData.startDatetime.split('T')[0] || ''}
+                      onChange={(e) => {
+                        const time = scheduledData.startDatetime.split('T')[1] || '09:00';
+                        const newStartDatetime = `${e.target.value}T${time}`;
+                        setScheduledData(prev => ({
+                          ...prev,
+                          startDatetime: newStartDatetime
+                        }));
+                        setFormData(prev => ({
+                          ...prev,
+                          start_datetime: newStartDatetime
+                        }));
+                      }}
+                      min={new Date().toISOString().split('T')[0]}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Start Time *
+                    </label>
+                    <input
+                      type="time"
+                      value={scheduledData.startDatetime.split('T')[1] || '09:00'}
+                      onChange={(e) => {
+                        const date = scheduledData.startDatetime.split('T')[0] || new Date().toISOString().split('T')[0];
+                        const newStartDatetime = `${date}T${e.target.value}`;
+                        setScheduledData(prev => ({
+                          ...prev,
+                          startDatetime: newStartDatetime
+                        }));
+                        setFormData(prev => ({
+                          ...prev,
+                          start_datetime: newStartDatetime
+                        }));
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Recurrence Builder */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold">Recurrence Pattern</h3>
+                    <button
+                      type="button"
+                      onClick={() => setShowRecurrenceBuilder(!showRecurrenceBuilder)}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    >
+                      {showRecurrenceBuilder ? 'Hide Builder' : 'Show Builder'}
+                    </button>
+                  </div>
+                  
+                  {showRecurrenceBuilder && (
+                    <RecurrenceBuilder
+                      onRecurrenceChange={handleRecurrenceChange}
+                      initialValue={scheduledData.rrule}
+                    />
+                  )}
+                  
+                  {scheduledData.rrule && !showRecurrenceBuilder && (
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <p className="text-blue-800 font-medium">Current Pattern:</p>
+                      <p className="text-blue-700">{scheduledData.rrule}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Calendar Preview */}
+                {scheduledData.rrule && scheduledData.startDatetime && (
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold">Calendar Preview</h3>
+                      <button
+                        type="button"
+                        onClick={() => setShowCalendarPreview(!showCalendarPreview)}
+                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      >
+                        {showCalendarPreview ? 'Hide Preview' : 'Show Preview'}
+                      </button>
+                    </div>
+                    
+                    {showCalendarPreview && (
+                      <CalendarPreview
+                        rrule={scheduledData.rrule}
+                        startDate={scheduledData.startDatetime}
+                        exceptions={scheduledData.exceptions}
+                        onExceptionChange={handleExceptionChange}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Status and End Date */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Activity className="h-5 w-5 mr-2" />
+                  Package Status
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select
+                      name="status"
+                      value={formData.status}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="active">Active</option>
+                      <option value="paused">Paused</option>
+                      <option value="cancelled">Cancelled</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">End Date (Optional)</label>
+                    <input
+                      type="date"
+                      name="end_date"
+                      value={formData.end_date}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Leave empty for no end date"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Summary */}
+              {formData.package_id && (
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="font-semibold text-gray-900 mb-2">Package Summary</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p><span className="font-medium">Package:</span> {packages.find(p => p.id === parseInt(formData.package_id))?.name}</p>
+                      <p><span className="font-medium">Cost:</span> ${packages.find(p => p.id === parseInt(formData.package_id))?.total_cost}</p>
+                      <p><span className="font-medium">Duration:</span> {packages.find(p => p.id === parseInt(formData.package_id))?.duration_hours} hours</p>
+                      <p><span className="font-medium">Status:</span> {formData.status}</p>
+                    </div>
+                    <div>
+                      <p><span className="font-medium">Start Date:</span> {scheduledData.startDatetime.split('T')[0]}</p>
+                      <p><span className="font-medium">Start Time:</span> {scheduledData.startDatetime.split('T')[1]}</p>
+                      <p><span className="font-medium">Customer:</span> {users.find(u => u.id === parseInt(formData.user_id))?.first_name} {users.find(u => u.id === parseInt(formData.user_id))?.last_name}</p>
+                      <p><span className="font-medium">Caregiver:</span> {formData.caregiver_id ? caregivers.find(c => c.user_id === parseInt(formData.caregiver_id))?.first_name + ' ' + caregivers.find(c => c.user_id === parseInt(formData.caregiver_id))?.last_name : 'Auto-assign'}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
               <div className="flex justify-end space-x-3 pt-4">
                 <button
                   type="button"
@@ -619,10 +867,11 @@ const AdminScheduledPackages = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
                   data-action="save"
                 >
-                  {editingPackage ? 'Update' : 'Create'}
+                  <Calendar className="h-4 w-4 mr-2" />
+                  {editingPackage ? 'Update Package' : 'Create Package'}
                 </button>
               </div>
             </form>
