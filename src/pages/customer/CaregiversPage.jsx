@@ -44,7 +44,6 @@ const CaregiversPage = () => {
         skillsAPI.getAll(),
         caregiverSkillsAPI.getAll()
       ]);
-      
       setCaregivers(caregiversResponse.data);
       setSkills(skillsResponse.data);
       setCaregiverSkills(caregiverSkillsResponse.data);

@@ -5,11 +5,11 @@ import { CheckCircle, Clock, Star } from 'lucide-react';
 const CaregiverCard = ({ caregiver, skills, caregiverSkills }) => {
   // Get skills for this specific caregiver
   const caregiverSkillIds = caregiverSkills
-    .filter(cs => cs.user_id === caregiver.id)
-    .map(cs => cs.skill_id);
+    .filter(cs => Number(cs.user_id) === Number(caregiver.id))
+    .map(cs => Number(cs.skill_id));
   
   const caregiverSkillList = skills.filter(skill => 
-    caregiverSkillIds.includes(skill.id)
+    caregiverSkillIds.includes(Number(skill.id))
   );
 
   return (

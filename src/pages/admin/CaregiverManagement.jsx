@@ -88,15 +88,15 @@ const CaregiverManagement = () => {
   const getSkillNames = (caregiverId) => {
     // Get skills for this specific caregiver
     const caregiverSkillIds = caregiverSkills
-      .filter(cs => cs.user_id === caregiverId)
-      .map(cs => cs.skill_id);
+      .filter(cs => Number(cs.user_id) === Number(caregiverId))
+      .map(cs => Number(cs.skill_id));
     
     if (caregiverSkillIds.length === 0) {
       return 'No skills listed';
     }
     
     return caregiverSkillIds.map(skillId => {
-      const skill = skills.find(s => s.id === skillId);
+      const skill = skills.find(s => Number(s.id) === skillId);
       return skill ? skill.name : 'Unknown';
     }).join(', ');
   };
