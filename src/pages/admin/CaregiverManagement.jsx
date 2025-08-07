@@ -41,11 +41,7 @@ const CaregiverManagement = () => {
         caregiverSkillsAPI.getAll()
       ]);
       
-      // Filter only caregiver users (assuming IDs 12-19 based on the data)
-      // In a real app, you'd filter by role or use a separate endpoint
-      const caregiverUsers = caregiversResponse.data.filter(user => user.id >= 12 && user.id <= 19);
-      
-      setCaregivers(caregiverUsers);
+      setCaregivers(caregiversResponse.data);
       setSkills(skillsResponse.data);
       setCaregiverSkills(caregiverSkillsResponse.data);
     } catch (error) {
@@ -108,14 +104,14 @@ const CaregiverManagement = () => {
   // Helper function to get caregiver skill IDs
   const getCaregiverSkillIds = (caregiverId) => {
     return caregiverSkills
-      .filter(cs => cs.user_id === caregiverId)
-      .map(cs => cs.skill_id);
+      .filter(cs => Number(cs.user_id) === Number(caregiverId))
+      .map(cs => Number(cs.skill_id));
   };
 
   // Helper function to check if caregiver has specific skill
   const caregiverHasSkill = (caregiverId, skillId) => {
     const caregiverSkillIds = getCaregiverSkillIds(caregiverId);
-    return caregiverSkillIds.includes(skillId);
+    return caregiverSkillIds.includes(Number(skillId));
   };
 
   const getBackgroundCheckIcon = (status) => {
