@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Calendar, 
   Search, 
@@ -17,7 +18,11 @@ import {
   DollarSign,
   Plus,
   MessageSquare,
-  AlertCircle
+  AlertCircle,
+  Activity,
+  Star,
+  TrendingUp,
+  BarChart3
 } from 'lucide-react';
 import { userRequestsAPI, usersAPI, packagesAPI, appointmentsAPI, userRolesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
@@ -34,6 +39,13 @@ const AdminUserRequests = () => {
   const [showCreateAppointmentModal, setShowCreateAppointmentModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedRequestForAppointment, setSelectedRequestForAppointment] = useState(null);
+  const [metrics, setMetrics] = useState({
+    total: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+    averageResponseTime: 0
+  });
   const [formData, setFormData] = useState({
     status: '',
     notes: ''
@@ -55,6 +67,10 @@ const AdminUserRequests = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    calculateMetrics();
+  }, [userRequests]);
+
   const fetchData = async () => {
     try {
       const [requestsResponse, usersResponse, packagesResponse] = await Promise.all([
@@ -71,6 +87,24 @@ const AdminUserRequests = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateMetrics = () => {
+    const total = userRequests.length;
+    const pending = userRequests.filter(r => r.status === 'pending').length;
+    const approved = userRequests.filter(r => r.status === 'approved').length;
+    const rejected = userRequests.filter(r => r.status === 'rejected').length;
+    
+    // Mock average response time (in hours)
+    const averageResponseTime = 4.2;
+
+    setMetrics({
+      total,
+      pending,
+      approved,
+      rejected,
+      averageResponseTime
+    });
   };
 
   const handleInputChange = (e) => {
@@ -283,34 +317,110 @@ const AdminUserRequests = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header with Breadcrumb */}
+        <div className="mb-8">
+          <nav className="flex mb-4" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              <li className="inline-flex items-center">
+                <Link to="/admin" className="text-gray-700 hover:text-blue-600">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="mx-2 text-gray-400">/</span>
+                  <span className="text-gray-500">User Requests</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+          
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                <MessageSquare className="h-6 w-6 mr-2" />
-                User Requests Management
-              </h1>
-              <p className="text-gray-600 mt-1">Manage and track customer inquiries</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">User Requests Management</h1>
+              <p className="text-gray-600">Manage and track customer inquiries</p>
             </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-blue-600">{userRequests.length}</div>
-              <div className="text-sm text-gray-500">Total Requests</div>
+          </div>
+        </div>
+
+        {/* Dashboard Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Requests</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.total}</p>
+              </div>
+              <div className="p-3 rounded-full bg-blue-100">
+                <MessageSquare className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Pending</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.pending}</p>
+                <p className="text-sm text-yellow-600 mt-1">Awaiting response</p>
+              </div>
+              <div className="p-3 rounded-full bg-yellow-100">
+                <Clock className="h-6 w-6 text-yellow-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Approved</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.approved}</p>
+                <p className="text-sm text-green-600 mt-1">Converted</p>
+              </div>
+              <div className="p-3 rounded-full bg-green-100">
+                <CheckCircle className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Rejected</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.rejected}</p>
+                <p className="text-sm text-red-600 mt-1">Not approved</p>
+              </div>
+              <div className="p-3 rounded-full bg-red-100">
+                <XCircle className="h-6 w-6 text-red-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Avg Response</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.averageResponseTime}h</p>
+                <p className="text-sm text-purple-600 mt-1">Response time</p>
+              </div>
+              <div className="p-3 rounded-full bg-purple-100">
+                <TrendingUp className="h-6 w-6 text-purple-600" />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -320,6 +430,7 @@ const AdminUserRequests = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                data-action="search"
               />
             </div>
             <div>

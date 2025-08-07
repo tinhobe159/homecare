@@ -49,23 +49,25 @@ const AdminAuditLogs = () => {
     const total = auditLogs.length;
     const today = new Date().toDateString();
     const todayLogs = auditLogs.filter(log => {
-      const logDate = new Date(log.timestamp).toDateString();
+      const logDate = new Date(log.timestamp || new Date()).toDateString();
       return logDate === today;
     }).length;
     
-    const critical = auditLogs.filter(log => 
-      log.action_type === 'DELETE' || log.action_type === 'SECURITY' || log.action_type === 'ERROR'
-    ).length;
+    const critical = auditLogs.filter(log => {
+      const actionType = log.action_type || '';
+      return actionType === 'DELETE' || actionType === 'SECURITY' || actionType === 'ERROR';
+    }).length;
     
     const averagePerDay = total > 0 ? Math.round(total / 30) : 0; // Assuming 30 days
     
     // Find most common action
     const actionCounts = {};
     auditLogs.forEach(log => {
-      actionCounts[log.action_type] = (actionCounts[log.action_type] || 0) + 1;
+      const actionType = log.action_type || 'UNKNOWN';
+      actionCounts[actionType] = (actionCounts[actionType] || 0) + 1;
     });
     const topAction = Object.keys(actionCounts).reduce((a, b) => 
-      actionCounts[a] > actionCounts[b] ? a : b, ''
+      actionCounts[a] > actionCounts[b] ? a : b, 'UNKNOWN'
     );
 
     setMetrics({
@@ -121,17 +123,17 @@ const AdminAuditLogs = () => {
   };
 
   const filteredLogs = auditLogs.filter(log => {
-    const matchesSearch = log.user_name.toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         log.action_type.toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         log.table_name.toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         log.description.toLowerCase().includes((searchTerm || '').toLowerCase());
+    const matchesSearch = (log.user_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (log.action_type || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (log.table_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (log.description || '').toLowerCase().includes((searchTerm || '').toLowerCase());
     const matchesAction = filterAction === 'all' || log.action_type === filterAction;
     const matchesUser = filterUser === 'all' || log.user_name === filterUser;
     return matchesSearch && matchesAction && matchesUser;
   });
 
-  const uniqueUsers = [...new Set(auditLogs.map(log => log.user_name))];
-  const uniqueActions = [...new Set(auditLogs.map(log => log.action_type))];
+  const uniqueUsers = [...new Set(auditLogs.map(log => log.user_name).filter(Boolean))];
+  const uniqueActions = [...new Set(auditLogs.map(log => log.action_type).filter(Boolean))];
 
   if (loading) {
     return (
@@ -334,18 +336,18 @@ const AdminAuditLogs = () => {
                           </div>
                         </div>
                         <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">{log.user_name}</div>
-                          <div className="text-sm text-gray-500">ID: {log.user_id}</div>
+                          <div className="text-sm font-medium text-gray-900">{log.user_name || 'Unknown User'}</div>
+                          <div className="text-sm text-gray-500">ID: {log.user_id || 'N/A'}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{log.table_name}</div>
-                      <div className="text-sm text-gray-500">ID: {log.record_id}</div>
+                      <div className="text-sm text-gray-900">{log.table_name || 'Unknown Table'}</div>
+                      <div className="text-sm text-gray-500">ID: {log.record_id || 'N/A'}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900 max-w-xs truncate" title={log.description}>
-                        {log.description}
+                      <div className="text-sm text-gray-900 max-w-xs truncate" title={log.description || 'No description'}>
+                        {log.description || 'No description'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

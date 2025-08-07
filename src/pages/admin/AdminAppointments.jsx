@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Calendar, 
   Search, 
@@ -14,7 +15,11 @@ import {
   MapPin,
   Package,
   DollarSign,
-  Plus
+  Plus,
+  Activity,
+  Star,
+  TrendingUp,
+  BarChart3
 } from 'lucide-react';
 import { appointmentsAPI, packagesAPI, usersAPI, userRequestsAPI, userRolesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
@@ -31,6 +36,13 @@ const AdminAppointments = () => {
   const [showModal, setShowModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [metrics, setMetrics] = useState({
+    total: 0,
+    pending: 0,
+    confirmed: 0,
+    completed: 0,
+    totalRevenue: 0
+  });
   const [formData, setFormData] = useState({
     status: '',
     notes: ''
@@ -51,6 +63,10 @@ const AdminAppointments = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    calculateMetrics();
+  }, [appointments, packages]);
+
   const fetchData = async () => {
     try {
       const [appointmentsResponse, packagesResponse, usersResponse, userRequestsResponse] = await Promise.all([
@@ -69,6 +85,27 @@ const AdminAppointments = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateMetrics = () => {
+    const total = appointments.length;
+    const pending = appointments.filter(a => a.status === 'Pending').length;
+    const confirmed = appointments.filter(a => a.status === 'Confirmed').length;
+    const completed = appointments.filter(a => a.status === 'Completed').length;
+    
+    // Calculate total revenue
+    const totalRevenue = appointments.reduce((sum, appointment) => {
+      const pkg = packages.find(p => p.id === appointment.package_id);
+      return sum + (pkg?.total_cost || 0);
+    }, 0);
+
+    setMetrics({
+      total,
+      pending,
+      confirmed,
+      completed,
+      totalRevenue
+    });
   };
 
   const handleInputChange = (e) => {
@@ -212,73 +249,150 @@ const AdminAppointments = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-              <Calendar className="h-6 w-6 mr-2" />
-              Appointment Management
-            </h1>
-            <p className="text-gray-600 mt-1">Manage and track all appointments</p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="text-right">
-              <div className="text-2xl font-bold text-blue-600">{appointments.length}</div>
-              <div className="text-sm text-gray-500">Total Appointments</div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header with Breadcrumb */}
+        <div className="mb-8">
+          <nav className="flex mb-4" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              <li className="inline-flex items-center">
+                <Link to="/admin" className="text-gray-700 hover:text-blue-600">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="mx-2 text-gray-400">/</span>
+                  <span className="text-gray-500">Appointment Management</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+          
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Appointment Management</h1>
+              <p className="text-gray-600">Manage and track all appointments</p>
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2 transition-colors duration-200"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-200"
+              data-action="add-appointment"
             >
               <Plus className="h-4 w-4" />
               <span>Create Appointment</span>
             </button>
           </div>
         </div>
-      </div>
-  
-      {/* Filters and Search */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-[50%] transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <input
-              type="text"
-              placeholder="Search appointments..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+
+        {/* Dashboard Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Appointments</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.total}</p>
+              </div>
+              <div className="p-3 rounded-full bg-blue-100">
+                <Calendar className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
           </div>
-          <div>
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">All Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Confirmed">Confirmed</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Pending</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.pending}</p>
+                <p className="text-sm text-yellow-600 mt-1">Awaiting confirmation</p>
+              </div>
+              <div className="p-3 rounded-full bg-yellow-100">
+                <Clock className="h-6 w-6 text-yellow-600" />
+              </div>
+            </div>
           </div>
-          <div className="text-right">
-            <span className="text-sm text-gray-600">
-              {filteredAppointments.length} of {appointments.length} appointments
-            </span>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Confirmed</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.confirmed}</p>
+                <p className="text-sm text-green-600 mt-1">Ready to proceed</p>
+              </div>
+              <div className="p-3 rounded-full bg-green-100">
+                <CheckCircle className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Completed</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.completed}</p>
+                <p className="text-sm text-blue-600 mt-1">Finished</p>
+              </div>
+              <div className="p-3 rounded-full bg-blue-100">
+                <Activity className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Revenue</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">${metrics.totalRevenue.toFixed(0)}</p>
+                <p className="text-sm text-purple-600 mt-1">Total value</p>
+              </div>
+              <div className="p-3 rounded-full bg-purple-100">
+                <DollarSign className="h-6 w-6 text-purple-600" />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+
+        {/* Filters and Search */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-[50%] transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search appointments..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                data-action="search"
+              />
+            </div>
+            <div>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div className="text-right">
+              <span className="text-sm text-gray-600">
+                {filteredAppointments.length} of {appointments.length} appointments
+              </span>
+            </div>
+          </div>
+        </div>
   
       {/* Appointments List */}
       <div className="space-y-4">
@@ -851,6 +965,7 @@ const AdminAppointments = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

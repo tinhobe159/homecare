@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Package, Edit, Trash2, Play, Pause, X, Eye } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { 
+  Calendar, Clock, User, Package, Edit, Trash2, Play, Pause, X, Eye,
+  Search, Filter, Activity, Star, TrendingUp, BarChart3, 
+  DollarSign, Users, AlertTriangle
+} from 'lucide-react';
 import { scheduledPackagesAPI, packagesAPI, usersAPI, userRolesAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -15,10 +20,19 @@ const AdminScheduledPackages = () => {
   const [users, setUsers] = useState([]);
   const [caregivers, setCaregivers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
   const [showModal, setShowModal] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
   const [showRecurrenceBuilder, setShowRecurrenceBuilder] = useState(false);
   const [showCalendarPreview, setShowCalendarPreview] = useState(false);
+  const [metrics, setMetrics] = useState({
+    total: 0,
+    active: 0,
+    totalRevenue: 0,
+    averageDuration: 0,
+    satisfactionRate: 0
+  });
 
   const [formData, setFormData] = useState({
     user_id: '',
@@ -34,6 +48,10 @@ const AdminScheduledPackages = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    calculateMetrics();
+  }, [scheduledPackages, packages]);
 
   const fetchData = async () => {
     try {
@@ -54,6 +72,35 @@ const AdminScheduledPackages = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateMetrics = () => {
+    const total = scheduledPackages.length;
+    const active = scheduledPackages.filter(sp => sp.status === 'active').length;
+    
+    // Calculate total revenue
+    const totalRevenue = scheduledPackages.reduce((sum, sp) => {
+      const pkg = packages.find(p => p.id === sp.package_id);
+      return sum + (pkg?.total_cost || 0);
+    }, 0);
+    
+    // Calculate average duration
+    const totalDuration = scheduledPackages.reduce((sum, sp) => {
+      const pkg = packages.find(p => p.id === sp.package_id);
+      return sum + (pkg?.duration_hours || 0);
+    }, 0);
+    const averageDuration = total > 0 ? totalDuration / total : 0;
+    
+    // Mock satisfaction rate
+    const satisfactionRate = 4.3;
+
+    setMetrics({
+      total,
+      active,
+      totalRevenue,
+      averageDuration,
+      satisfactionRate
+    });
   };
 
   const handleInputChange = (e) => {
@@ -98,15 +145,19 @@ const AdminScheduledPackages = () => {
   };
 
   const openEditModal = (pkg) => {
+    if (!isAdmin) {
+      toast.error('Only administrators can edit scheduled packages');
+      return;
+    }
     setEditingPackage(pkg);
     setFormData({
-      user_id: pkg.user_id.toString(),
-      package_id: pkg.package_id.toString(),
-      caregiver_id: pkg.caregiver_id ? pkg.caregiver_id.toString() : '',
-      start_datetime: pkg.start_datetime,
-      rrule: pkg.rrule,
-      end_date: pkg.end_date,
-      status: pkg.status,
+      user_id: pkg.user_id || '',
+      package_id: pkg.package_id || '',
+      caregiver_id: pkg.caregiver_id || '',
+      start_datetime: pkg.start_datetime || '',
+      rrule: pkg.rrule || '',
+      end_date: pkg.end_date || '',
+      status: pkg.status || 'active',
       exceptions: pkg.exceptions || []
     });
     setShowModal(true);
@@ -115,16 +166,11 @@ const AdminScheduledPackages = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.user_id || !formData.package_id || !formData.start_datetime || !formData.rrule) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
-
     try {
-      const submitData = {
+      const packageData = {
         user_id: parseInt(formData.user_id),
         package_id: parseInt(formData.package_id),
-        caregiver_id: formData.caregiver_id ? parseInt(formData.caregiver_id) : null,
+        caregiver_id: parseInt(formData.caregiver_id),
         start_datetime: formData.start_datetime,
         rrule: formData.rrule,
         end_date: formData.end_date,
@@ -133,14 +179,15 @@ const AdminScheduledPackages = () => {
       };
 
       if (editingPackage) {
-        await scheduledPackagesAPI.update(editingPackage.id, submitData);
+        await scheduledPackagesAPI.update(editingPackage.id, packageData);
         toast.success('Scheduled package updated successfully');
       } else {
-        await scheduledPackagesAPI.create(submitData);
+        await scheduledPackagesAPI.create(packageData);
         toast.success('Scheduled package created successfully');
       }
-
+      
       setShowModal(false);
+      setEditingPackage(null);
       fetchData();
     } catch (error) {
       console.error('Error saving scheduled package:', error);
@@ -153,7 +200,7 @@ const AdminScheduledPackages = () => {
       toast.error('Only administrators can delete scheduled packages');
       return;
     }
-
+    
     if (window.confirm('Are you sure you want to delete this scheduled package?')) {
       try {
         await scheduledPackagesAPI.delete(id);
@@ -167,9 +214,14 @@ const AdminScheduledPackages = () => {
   };
 
   const handleStatusChange = async (id, newStatus) => {
+    if (!isAdmin) {
+      toast.error('Only administrators can change package status');
+      return;
+    }
+    
     try {
       await scheduledPackagesAPI.update(id, { status: newStatus });
-      toast.success(`Status updated to ${newStatus}`);
+      toast.success('Status updated successfully');
       fetchData();
     } catch (error) {
       console.error('Error updating status:', error);
@@ -178,32 +230,30 @@ const AdminScheduledPackages = () => {
   };
 
   const getStatusBadge = (status) => {
-    const statusConfig = {
-      active: { color: 'bg-green-100 text-green-800', icon: <Play className="h-4 w-4" /> },
-      paused: { color: 'bg-yellow-100 text-yellow-800', icon: <Pause className="h-4 w-4" /> },
-      cancelled: { color: 'bg-red-100 text-red-800', icon: <X className="h-4 w-4" /> }
-    };
-    
-    const config = statusConfig[status] || { color: 'bg-gray-100 text-gray-800', icon: <Clock className="h-4 w-4" /> };
-    
-    return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
-        {config.icon}
-        <span className="ml-1 capitalize">{status}</span>
-      </span>
-    );
+    switch (status) {
+      case 'active':
+        return <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>;
+      case 'paused':
+        return <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Paused</span>;
+      case 'cancelled':
+        return <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Cancelled</span>;
+      case 'completed':
+        return <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Completed</span>;
+      default:
+        return <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Unknown</span>;
+    }
   };
 
   const formatRRule = (rrule) => {
     if (!rrule) return 'No recurrence';
     
-    // Simple formatting for common RRULE patterns
+    // Simple formatting for display
     if (rrule.includes('FREQ=DAILY')) return 'Daily';
     if (rrule.includes('FREQ=WEEKLY')) return 'Weekly';
     if (rrule.includes('FREQ=MONTHLY')) return 'Monthly';
     if (rrule.includes('FREQ=YEARLY')) return 'Yearly';
     
-    return 'Custom recurrence';
+    return 'Custom';
   };
 
   const getCustomerById = (userId) => {
@@ -211,390 +261,373 @@ const AdminScheduledPackages = () => {
   };
 
   const getCaregiverById = (userId) => {
-    return caregivers.find(caregiver => caregiver.id === userId);
+    return caregivers.find(caregiver => caregiver.user_id === userId);
   };
+
+  const getPackageById = (packageId) => {
+    return packages.find(pkg => pkg.id === packageId);
+  };
+
+  const filteredScheduledPackages = scheduledPackages.filter(sp => {
+    const customer = getCustomerById(sp.user_id);
+    const caregiver = getCaregiverById(sp.caregiver_id);
+    const pkg = getPackageById(sp.package_id);
+    
+    const matchesSearch = (customer?.first_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (customer?.last_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (caregiver?.first_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (caregiver?.last_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         (pkg?.name || '').toLowerCase().includes((searchTerm || '').toLowerCase());
+    const matchesStatus = filterStatus === 'all' || sp.status === filterStatus;
+    return matchesSearch && matchesStatus;
+  });
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header with Breadcrumb */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Scheduled Packages</h1>
-          <p className="text-gray-600">Manage recurring care packages and schedules</p>
-        </div>
-
-        <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-900">All Scheduled Packages</h2>
-              {isAdmin && (
-                <button
-                  onClick={openCreateModal}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                >
-                  Create New Schedule
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Customer
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Package
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Caregiver
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Schedule
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {scheduledPackages.map((pkg) => {
-                  const customer = getCustomerById(pkg.user_id);
-                  const packageData = packages.find(p => p.id === pkg.package_id);
-                  const caregiver = getCaregiverById(pkg.caregiver_id);
-                  
-                  return (
-                    <tr key={pkg.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={customer?.avatar_url || 'https://via.placeholder.com/40'}
-                              alt=""
-                            />
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
-                              {customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown'}
-                            </div>
-                            <div className="text-sm text-gray-500">{customer?.email}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{packageData?.name}</div>
-                        <div className="text-sm text-gray-500">${packageData?.total_cost}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {caregiver ? (
-                          <div className="flex items-center">
-                            <img
-                              className="h-8 w-8 rounded-full"
-                              src={caregiver.avatar_url || 'https://via.placeholder.com/32'}
-                              alt=""
-                            />
-                            <div className="ml-2">
-                              <div className="text-sm font-medium text-gray-900">
-                                {caregiver.first_name} {caregiver.last_name}
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <span className="text-sm text-gray-500">Not assigned</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900">
-                          <div className="font-medium">
-                            {new Date(pkg.start_datetime).toLocaleDateString()}
-                          </div>
-                          <div className="text-gray-500">
-                            {new Date(pkg.start_datetime).toLocaleTimeString()}
-                          </div>
-                          <div className="text-xs text-gray-400 mt-1">
-                            {formatRRule(pkg.rrule)}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {getStatusBadge(pkg.status)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div className="flex items-center space-x-2">
-                          <button
-                            onClick={() => {
-                              setEditingPackage(pkg);
-                              setShowCalendarPreview(true);
-                            }}
-                            className="text-blue-600 hover:text-blue-900"
-                            title="View Calendar"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
-                          {isAdmin && (
-                            <>
-                              <button
-                                onClick={() => openEditModal(pkg)}
-                                className="text-indigo-600 hover:text-indigo-900"
-                                title="Edit"
-                              >
-                                <Edit className="w-4 h-4" />
-                              </button>
-                              {pkg.status === 'active' && (
-                                <button
-                                  onClick={() => handleStatusChange(pkg.id, 'paused')}
-                                  className="text-yellow-600 hover:text-yellow-900"
-                                  title="Pause"
-                                >
-                                  <Pause className="w-4 h-4" />
-                                </button>
-                              )}
-                              {pkg.status === 'paused' && (
-                                <button
-                                  onClick={() => handleStatusChange(pkg.id, 'active')}
-                                  className="text-green-600 hover:text-green-900"
-                                  title="Resume"
-                                >
-                                  <Play className="w-4 h-4" />
-                                </button>
-                              )}
-                              {pkg.status === 'cancelled' && (
-                                <button
-                                  onClick={() => handleStatusChange(pkg.id, 'active')}
-                                  className="text-green-600 hover:text-green-900"
-                                  title="Reactivate"
-                                >
-                                  <Play className="w-4 h-4" />
-                                </button>
-                              )}
-                              {(pkg.status === 'active' || pkg.status === 'paused') && (
-                                <button
-                                  onClick={() => handleStatusChange(pkg.id, 'cancelled')}
-                                  className="text-red-600 hover:text-red-900"
-                                  title="Cancel"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              )}
-                              <button
-                                onClick={() => handleDelete(pkg.id)}
-                                className="text-red-600 hover:text-red-900"
-                                title="Delete"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Create/Edit Modal */}
-        <Modal
-          isOpen={showModal}
-          onClose={() => setShowModal(false)}
-          title={editingPackage ? 'Edit Scheduled Package' : 'Create Scheduled Package'}
-        >
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Customer *
-                </label>
-                <select
-                  name="user_id"
-                  value={formData.user_id}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select Customer</option>
-                  {users.map(user => (
-                    <option key={user.id} value={user.id}>
-                      {user.first_name} {user.last_name} - {user.email}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Package *
-                </label>
-                <select
-                  name="package_id"
-                  value={formData.package_id}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select Package</option>
-                  {packages.map(pkg => (
-                    <option key={pkg.id} value={pkg.id}>
-                      {pkg.name} - ${pkg.total_cost}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Caregiver (Optional)
-                </label>
-                <select
-                  name="caregiver_id"
-                  value={formData.caregiver_id}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">No preference</option>
-                  {caregivers.map(caregiver => (
-                    <option key={caregiver.id} value={caregiver.id}>
-                      {caregiver.first_name} {caregiver.last_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Status
-                </label>
-                <select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="active">Active</option>
-                  <option value="paused">Paused</option>
-                  <option value="cancelled">Cancelled</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Start Date *
-                </label>
-                <input
-                  type="date"
-                  value={formData.start_datetime.split('T')[0] || ''}
-                  onChange={(e) => {
-                    const time = formData.start_datetime.split('T')[1] || '09:00';
-                    setFormData(prev => ({
-                      ...prev,
-                      start_datetime: `${e.target.value}T${time}`
-                    }));
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Start Time *
-                </label>
-                <input
-                  type="time"
-                  value={formData.start_datetime.split('T')[1] || '09:00'}
-                  onChange={(e) => {
-                    const date = formData.start_datetime.split('T')[0] || new Date().toISOString().split('T')[0];
-                    setFormData(prev => ({
-                      ...prev,
-                      start_datetime: `${date}T${e.target.value}`
-                    }));
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-            </div>
-
+          <nav className="flex mb-4" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              <li className="inline-flex items-center">
+                <Link to="/admin" className="text-gray-700 hover:text-blue-600">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="mx-2 text-gray-400">/</span>
+                  <span className="text-gray-500">Scheduled Packages</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+          
+          <div className="flex justify-between items-center">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  Recurrence Pattern *
-                </label>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Scheduled Packages</h1>
+              <p className="text-gray-600">Manage recurring service packages and schedules</p>
+            </div>
+            {isAdmin && (
+              <button
+                onClick={openCreateModal}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                data-action="add-scheduled-package"
+              >
+                <Calendar className="h-4 w-4" />
+                <span>Schedule Package</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Dashboard Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Scheduled</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.total}</p>
+              </div>
+              <div className="p-3 rounded-full bg-blue-100">
+                <Calendar className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Active</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.active}</p>
+                <p className="text-sm text-green-600 mt-1">
+                  {metrics.total > 0 ? ((metrics.active / metrics.total) * 100).toFixed(1) : 0}% of total
+                </p>
+              </div>
+              <div className="p-3 rounded-full bg-green-100">
+                <Activity className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Revenue</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">${metrics.totalRevenue.toFixed(0)}</p>
+                <p className="text-sm text-purple-600 mt-1">Total value</p>
+              </div>
+              <div className="p-3 rounded-full bg-purple-100">
+                <DollarSign className="h-6 w-6 text-purple-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Avg Duration</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.averageDuration.toFixed(1)}h</p>
+                <p className="text-sm text-orange-600 mt-1">Per package</p>
+              </div>
+              <div className="p-3 rounded-full bg-orange-100">
+                <Clock className="h-6 w-6 text-orange-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Satisfaction</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.satisfactionRate}</p>
+                <p className="text-sm text-yellow-600 mt-1">out of 5</p>
+              </div>
+              <div className="p-3 rounded-full bg-yellow-100">
+                <Star className="h-6 w-6 text-yellow-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Filters and Search */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search scheduled packages..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                data-action="search"
+              />
+            </div>
+            <div>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="paused">Paused</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            <div className="text-right">
+              <span className="text-sm text-gray-600">
+                {filteredScheduledPackages.length} of {scheduledPackages.length} scheduled packages
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Scheduled Packages Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredScheduledPackages.map((scheduledPackage) => {
+            const customer = getCustomerById(scheduledPackage.user_id);
+            const caregiver = getCaregiverById(scheduledPackage.caregiver_id);
+            const pkg = getPackageById(scheduledPackage.package_id);
+            
+            return (
+              <div key={scheduledPackage.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div className="p-6">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center">
+                      <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                        <Calendar className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {pkg?.name || 'Unknown Package'}
+                        </h3>
+                        <p className="text-sm text-gray-500">ID: {scheduledPackage.id}</p>
+                      </div>
+                    </div>
+                    {getStatusBadge(scheduledPackage.status)}
+                  </div>
+
+                  {/* Package Info */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <User className="h-4 w-4 mr-2" />
+                      {customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown Customer'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <User className="h-4 w-4 mr-2" />
+                      {caregiver ? `${caregiver.first_name} ${caregiver.last_name}` : 'No Caregiver Assigned'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Clock className="h-4 w-4 mr-2" />
+                      {formatRRule(scheduledPackage.rrule)}
+                    </div>
+                    {pkg && (
+                      <div className="flex items-center text-sm text-green-600 font-semibold">
+                        <DollarSign className="h-4 w-4 mr-1" />
+                        ${pkg.total_cost}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={() => openEditModal(scheduledPackage)}
+                      className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
+                      title="Edit Scheduled Package"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(scheduledPackage.id)}
+                      className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
+                      title="Delete Scheduled Package"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {filteredScheduledPackages.length === 0 && (
+          <div className="text-center py-12">
+            <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-xl text-gray-500 mb-2">No scheduled packages found</p>
+            <p className="text-gray-400">Try adjusting your search or filters.</p>
+          </div>
+        )}
+
+        {/* Modal */}
+        {showModal && (
+          <Modal
+            isOpen={showModal}
+            onClose={() => setShowModal(false)}
+            title={editingPackage ? 'Edit Scheduled Package' : 'Schedule New Package'}
+          >
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Customer</label>
+                  <select
+                    name="user_id"
+                    value={formData.user_id}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="">Select Customer</option>
+                    {users.map(user => (
+                      <option key={user.id} value={user.id}>
+                        {user.first_name} {user.last_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Package</label>
+                  <select
+                    name="package_id"
+                    value={formData.package_id}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="">Select Package</option>
+                    {packages.map(pkg => (
+                      <option key={pkg.id} value={pkg.id}>
+                        {pkg.name} - ${pkg.total_cost}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Caregiver</label>
+                  <select
+                    name="caregiver_id"
+                    value={formData.caregiver_id}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="">Select Caregiver</option>
+                    {caregivers.map(caregiver => (
+                      <option key={caregiver.id} value={caregiver.user_id}>
+                        {caregiver.first_name} {caregiver.last_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Start Date & Time</label>
+                  <input
+                    type="datetime-local"
+                    name="start_datetime"
+                    value={formData.start_datetime}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">End Date</label>
+                  <input
+                    type="date"
+                    name="end_date"
+                    value={formData.end_date}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Status</label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="active">Active</option>
+                    <option value="paused">Paused</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-4">
                 <button
                   type="button"
-                  onClick={() => setShowRecurrenceBuilder(!showRecurrenceBuilder)}
-                  className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                 >
-                  {showRecurrenceBuilder ? 'Hide Builder' : 'Show Builder'}
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  data-action="save"
+                >
+                  {editingPackage ? 'Update' : 'Create'}
                 </button>
               </div>
-              
-              {showRecurrenceBuilder && (
-                <RecurrenceBuilder
-                  onRecurrenceChange={handleRecurrenceChange}
-                  initialValue={formData.rrule}
-                />
-              )}
-              
-              {formData.rrule && !showRecurrenceBuilder && (
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-blue-800 font-medium">Current Pattern:</p>
-                  <p className="text-blue-700">{formData.rrule}</p>
-                </div>
-              )}
-            </div>
-
-            <div className="flex justify-end space-x-3">
-              <button
-                type="button"
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                {editingPackage ? 'Update' : 'Create'}
-              </button>
-            </div>
-          </form>
-        </Modal>
-
-        {/* Calendar Preview Modal */}
-        <Modal
-          isOpen={showCalendarPreview}
-          onClose={() => setShowCalendarPreview(false)}
-          title="Schedule Preview"
-          size="lg"
-        >
-          {editingPackage && (
-            <CalendarPreview
-              rrule={editingPackage.rrule}
-              startDate={editingPackage.start_datetime}
-              exceptions={editingPackage.exceptions || []}
-              onExceptionChange={handleExceptionChange}
-            />
-          )}
-        </Modal>
+            </form>
+          </Modal>
+        )}
       </div>
     </div>
   );
