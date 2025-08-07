@@ -3,16 +3,20 @@ import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { 
   Home, Users, Calendar, Package, Settings, 
   LogOut, Menu, X, MessageSquare, BarChart3,
-  UserCheck, FileText, Heart, Shield, Building2
+  UserCheck, FileText, Heart, Shield, Building2,
+  Briefcase, TrendingUp, Activity, Star, DollarSign
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
+import KeyboardShortcuts from '../common/KeyboardShortcuts';
 
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userRole, setUserRole] = useState('admin'); // Default role, in real app this would come from auth context
+  const [showRoleSelector, setShowRoleSelector] = useState(false);
 
   const isActive = (path) => location.pathname === path;
 
@@ -39,23 +43,83 @@ const AdminLayout = () => {
     navigate('/admin/login');
   };
 
-  const navItems = [
-    { path: '/admin', label: 'Dashboard', icon: Home },
-    { path: '/admin/customers', label: 'Customers', icon: Users },
-    { path: '/admin/caregivers', label: 'Caregivers', icon: UserCheck },
-    { path: '/admin/employees', label: 'Employees', icon: Users },
-    { path: '/admin/roles', label: 'Roles', icon: Shield },
-    { path: '/admin/departments', label: 'Departments', icon: Building2 },
-    { path: '/admin/appointments', label: 'Appointments', icon: Calendar },
-    { path: '/admin/user-requests', label: 'User Requests', icon: MessageSquare },
-    { path: '/admin/services', label: 'Services', icon: Settings },
-    { path: '/admin/packages', label: 'Packages', icon: Package },
-    { path: '/admin/scheduled-packages', label: 'Scheduled Packages', icon: Calendar },
-    { path: '/admin/audit-logs', label: 'Audit Logs', icon: FileText },
-  ];
+  const handleRoleChange = (newRole) => {
+    setUserRole(newRole);
+    setShowRoleSelector(false);
+    toast.success(`Switched to ${newRole} view`);
+  };
+
+  // Role-based navigation items
+  const getNavItems = () => {
+    const baseItems = [
+      { path: '/admin', label: 'Dashboard', icon: Home, roles: ['admin', 'hr', 'operations', 'executive'] },
+    ];
+
+    const roleSpecificItems = {
+      admin: [
+        { path: '/admin/customers', label: 'Customers', icon: Users, roles: ['admin'] },
+        { path: '/admin/caregivers', label: 'Caregivers', icon: UserCheck, roles: ['admin'] },
+        { path: '/admin/employees', label: 'Employees', icon: Users, roles: ['admin'] },
+        { path: '/admin/roles', label: 'Roles', icon: Shield, roles: ['admin'] },
+        { path: '/admin/departments', label: 'Departments', icon: Building2, roles: ['admin'] },
+        { path: '/admin/appointments', label: 'Appointments', icon: Calendar, roles: ['admin'] },
+        { path: '/admin/user-requests', label: 'User Requests', icon: MessageSquare, roles: ['admin'] },
+        { path: '/admin/services', label: 'Services', icon: Settings, roles: ['admin'] },
+        { path: '/admin/packages', label: 'Packages', icon: Package, roles: ['admin'] },
+        { path: '/admin/scheduled-packages', label: 'Scheduled Packages', icon: Calendar, roles: ['admin'] },
+        { path: '/admin/audit-logs', label: 'Audit Logs', icon: FileText, roles: ['admin'] },
+      ],
+      hr: [
+        { path: '/admin/employees', label: 'Employees', icon: Users, roles: ['hr'] },
+        { path: '/admin/roles', label: 'Roles', icon: Shield, roles: ['hr'] },
+        { path: '/admin/departments', label: 'Departments', icon: Building2, roles: ['hr'] },
+        { path: '/admin/caregivers', label: 'Caregivers', icon: UserCheck, roles: ['hr'] },
+        { path: '/admin/user-requests', label: 'User Requests', icon: MessageSquare, roles: ['hr'] },
+      ],
+      operations: [
+        { path: '/admin/customers', label: 'Customers', icon: Users, roles: ['operations'] },
+        { path: '/admin/caregivers', label: 'Caregivers', icon: UserCheck, roles: ['operations'] },
+        { path: '/admin/appointments', label: 'Appointments', icon: Calendar, roles: ['operations'] },
+        { path: '/admin/services', label: 'Services', icon: Settings, roles: ['operations'] },
+        { path: '/admin/packages', label: 'Packages', icon: Package, roles: ['operations'] },
+        { path: '/admin/scheduled-packages', label: 'Scheduled Packages', icon: Calendar, roles: ['operations'] },
+      ],
+      executive: [
+        { path: '/admin/customers', label: 'Customers', icon: Users, roles: ['executive'] },
+        { path: '/admin/caregivers', label: 'Caregivers', icon: UserCheck, roles: ['executive'] },
+        { path: '/admin/appointments', label: 'Appointments', icon: Calendar, roles: ['executive'] },
+        { path: '/admin/audit-logs', label: 'Audit Logs', icon: FileText, roles: ['executive'] },
+      ]
+    };
+
+    return [...baseItems, ...(roleSpecificItems[userRole] || [])];
+  };
+
+  const navItems = getNavItems();
+
+  const getRoleDisplayName = (role) => {
+    const roleNames = {
+      admin: 'Administrator',
+      hr: 'HR Manager',
+      operations: 'Operations',
+      executive: 'Executive'
+    };
+    return roleNames[role] || role;
+  };
+
+  const getRoleIcon = (role) => {
+    const roleIcons = {
+      admin: Shield,
+      hr: Users,
+      operations: Briefcase,
+      executive: Star
+    };
+    return roleIcons[role] || Shield;
+  };
 
   return (
     <div className="h-screen bg-gray-50 flex overflow-hidden">
+      <KeyboardShortcuts />
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -83,6 +147,41 @@ const AdminLayout = () => {
             >
               <X className="h-5 w-5" />
             </button>
+          </div>
+
+          {/* Role Selector */}
+          <div className="px-4 py-3 border-b border-gray-200">
+            <div className="relative">
+              <button
+                onClick={() => setShowRoleSelector(!showRoleSelector)}
+                className="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <div className="flex items-center">
+                  {React.createElement(getRoleIcon(userRole), { className: "h-4 w-4 mr-2" })}
+                  <span>{getRoleDisplayName(userRole)}</span>
+                </div>
+                <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {showRoleSelector && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                  {['admin', 'hr', 'operations', 'executive'].map((role) => (
+                    <button
+                      key={role}
+                      onClick={() => handleRoleChange(role)}
+                      className={`w-full flex items-center px-3 py-2 text-sm hover:bg-gray-50 ${
+                        userRole === role ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                      }`}
+                    >
+                      {React.createElement(getRoleIcon(role), { className: "h-4 w-4 mr-2" })}
+                      {getRoleDisplayName(role)}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Navigation */}
@@ -140,7 +239,7 @@ const AdminLayout = () => {
 
             <div className="flex items-center space-x-4 flex-shrink-0">
               <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-600">
-                <span>Welcome, Admin</span>
+                <span>Welcome, {getRoleDisplayName(userRole)}</span>
               </div>
             </div>
           </div>

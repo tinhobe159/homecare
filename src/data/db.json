@@ -12,8 +12,8 @@
       "email_verified_at": null,
       "phone_verified_at": null,
       "last_login_at": null,
-      "created_at": null,
-      "updated_at": null
+      "created_at": "2025-01-15T10:00:00Z",
+      "updated_at": "2025-08-01T10:45:00Z"
     },
     {
       "id": 2,
@@ -27,8 +27,8 @@
       "email_verified_at": null,
       "phone_verified_at": null,
       "last_login_at": null,
-      "created_at": null,
-      "updated_at": null
+      "created_at": "2025-01-15T10:00:00Z",
+      "updated_at": "2025-08-01T10:45:00Z"
     },
     {
       "id": 3,
@@ -269,6 +269,21 @@
       "last_login_at": "2025-08-07T14:00:00Z",
       "created_at": "2025-04-01T10:00:00Z",
       "updated_at": "2025-08-07T14:00:00Z"
+    },
+    {
+      "id": 19,
+      "email": "maria.caregiver@homecare.com",
+      "password": "CaregiverP@ss2024!",
+      "phone_number": "555-0208",
+      "first_name": "Maria",
+      "last_name": "Garcia",
+      "avatar_url": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop",
+      "is_active": true,
+      "email_verified_at": null,
+      "phone_verified_at": null,
+      "last_login_at": "2025-08-08T15:30:00Z",
+      "created_at": "2025-04-15T11:20:00Z",
+      "updated_at": "2025-08-08T15:30:00Z"
     }
   ],
   "roles": [
@@ -443,6 +458,14 @@
       "user_id": 18,
       "role_id": 2,
       "assigned_at": "2025-04-01T10:00:00Z",
+      "assigned_by": 1,
+      "is_active": true
+    },
+    {
+      "id": 19,
+      "user_id": 19,
+      "role_id": 2,
+      "assigned_at": "2025-04-15T11:20:00Z",
       "assigned_by": 1,
       "is_active": true
     }
@@ -972,8 +995,8 @@
       "package_id": 1,
       "user_request_id": 1,
       "appointment_datetime_start": "2025-08-01T09:00:00Z",
-      "appointment_datetime_end": "2025-08-01T10:45:00Z",
-      "duration_minutes": 105,
+      "appointment_datetime_end": "2025-08-01T11:00:00Z",
+      "duration_minutes": 120,
       "status": "Confirmed",
       "booking_notes": "Customer prefers morning appointments",
       "total_cost": 38.0,
@@ -1432,27 +1455,27 @@
     },
     {
       "id": 21,
-      "caregiver_id": 18,
+      "user_id": 18,
       "skill_id": 8
     },
     {
       "id": 22,
-      "caregiver_id": 18,
+      "user_id": 18,
       "skill_id": 9
     },
     {
       "id": 23,
-      "caregiver_id": 19,
+      "user_id": 19,
       "skill_id": 4
     },
     {
       "id": 24,
-      "caregiver_id": 19,
+      "user_id": 19,
       "skill_id": 7
     },
     {
       "id": 25,
-      "caregiver_id": 19,
+      "user_id": 19,
       "skill_id": 9
     }
   ],
@@ -1626,6 +1649,26 @@
       "city": "Springfield",
       "state_province": "IL",
       "postal_code": "62708",
+      "country": "USA",
+      "is_primary": true
+    },
+    {
+      "id": 9,
+      "user_id": 10,
+      "street_address": "606 Walnut St",
+      "city": "Springfield",
+      "state_province": "IL",
+      "postal_code": "62709",
+      "country": "USA",
+      "is_primary": true
+    },
+    {
+      "id": 10,
+      "user_id": 11,
+      "street_address": "707 Chestnut St",
+      "city": "Springfield",
+      "state_province": "IL",
+      "postal_code": "62710",
       "country": "USA",
       "is_primary": true
     }
@@ -1929,16 +1972,9 @@
       "comment": "Great caregiver, very professional and knowledgeable.",
       "created_at": "2025-08-09T14:00:00Z"
     },
+
     {
       "id": 4,
-      "appointment_id": 3,
-      "user_id": 5,
-      "rating": 3,
-      "comment": "Service was okay, but caregiver seemed rushed.",
-      "created_at": "2025-08-03T17:00:00Z"
-    },
-    {
-      "id": 5,
       "appointment_id": 6,
       "user_id": 3,
       "rating": 4,
@@ -1946,7 +1982,7 @@
       "created_at": "2025-08-06T13:00:00Z"
     },
     {
-      "id": 6,
+      "id": 5,
       "appointment_id": 8,
       "user_id": 5,
       "rating": 5,
@@ -2014,9 +2050,9 @@
       "invoice_number": "INV-2025-0001",
       "billing_period_start": "2025-08-01",
       "billing_period_end": "2025-08-31",
-      "subtotal": 100.0,
-      "tax_amount": 10.0,
-      "total_amount": 110.0,
+      "subtotal": 58.0,
+      "tax_amount": 5.8,
+      "total_amount": 63.8,
       "status": "sent",
       "due_date": "2025-09-10",
       "issued_at": "2025-08-31T12:00:00Z",
@@ -2029,10 +2065,30 @@
       "invoice_id": 1,
       "appointment_id": 1,
       "service_name": "Bathing Assistance",
-      "quantity": 2,
+      "quantity": 1,
       "unit_rate": 20.0,
-      "total_amount": 40.0,
-      "description": "Morning and evening care"
+      "total_amount": 20.0,
+      "description": "Morning care"
+    },
+    {
+      "id": 2,
+      "invoice_id": 1,
+      "appointment_id": 1,
+      "service_name": "Dressing Assistance",
+      "quantity": 1,
+      "unit_rate": 18.0,
+      "total_amount": 18.0,
+      "description": "Morning care"
+    },
+    {
+      "id": 3,
+      "invoice_id": 1,
+      "appointment_id": 6,
+      "service_name": "Bathing Assistance",
+      "quantity": 1,
+      "unit_rate": 20.0,
+      "total_amount": 20.0,
+      "description": "Evening care"
     }
   ],
   "insurance_claims": [

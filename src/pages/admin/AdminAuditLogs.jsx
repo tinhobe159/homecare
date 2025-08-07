@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Settings, Calendar, User, Activity } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { 
+  Search, Filter, Eye, Calendar, Clock, 
+  Activity, Star, TrendingUp, BarChart3, 
+  Shield, Users, AlertTriangle
+} from 'lucide-react';
 import { auditLogsAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -10,12 +15,25 @@ const AdminAuditLogs = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterAction, setFilterAction] = useState('all');
   const [filterUser, setFilterUser] = useState('all');
+  const [selectedLog, setSelectedLog] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [metrics, setMetrics] = useState({
+    total: 0,
+    today: 0,
+    critical: 0,
+    averagePerDay: 0,
+    topAction: ''
+  });
 
   useEffect(() => {
-    fetchAuditLogs();
+    fetchData();
   }, []);
 
-  const fetchAuditLogs = async () => {
+  useEffect(() => {
+    calculateMetrics();
+  }, [auditLogs]);
+
+  const fetchData = async () => {
     try {
       const response = await auditLogsAPI.getAll();
       setAuditLogs(response.data);
@@ -27,81 +45,200 @@ const AdminAuditLogs = () => {
     }
   };
 
-  const getActionColor = (action) => {
-    switch (action.toLowerCase()) {
-      case 'create':
+  const calculateMetrics = () => {
+    const total = auditLogs.length;
+    const today = new Date().toDateString();
+    const todayLogs = auditLogs.filter(log => {
+      const logDate = new Date(log.timestamp).toDateString();
+      return logDate === today;
+    }).length;
+    
+    const critical = auditLogs.filter(log => 
+      log.action_type === 'DELETE' || log.action_type === 'SECURITY' || log.action_type === 'ERROR'
+    ).length;
+    
+    const averagePerDay = total > 0 ? Math.round(total / 30) : 0; // Assuming 30 days
+    
+    // Find most common action
+    const actionCounts = {};
+    auditLogs.forEach(log => {
+      actionCounts[log.action_type] = (actionCounts[log.action_type] || 0) + 1;
+    });
+    const topAction = Object.keys(actionCounts).reduce((a, b) => 
+      actionCounts[a] > actionCounts[b] ? a : b, ''
+    );
+
+    setMetrics({
+      total,
+      today: todayLogs,
+      critical,
+      averagePerDay,
+      topAction
+    });
+  };
+
+  const handleViewDetails = (log) => {
+    setSelectedLog(log);
+    setShowModal(true);
+  };
+
+  const formatTimestamp = (timestamp) => {
+    return new Date(timestamp).toLocaleString();
+  };
+
+  const getActionColor = (actionType) => {
+    switch (actionType) {
+      case 'CREATE':
         return 'bg-green-100 text-green-800';
-      case 'update':
+      case 'UPDATE':
         return 'bg-blue-100 text-blue-800';
-      case 'delete':
+      case 'DELETE':
         return 'bg-red-100 text-red-800';
-      case 'login':
+      case 'LOGIN':
         return 'bg-purple-100 text-purple-800';
-      case 'logout':
-        return 'bg-gray-100 text-gray-800';
+      case 'SECURITY':
+        return 'bg-orange-100 text-orange-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getActionIcon = (action) => {
-    switch (action.toLowerCase()) {
-      case 'create':
-        return '➕';
-      case 'update':
-        return '✏️';
-      case 'delete':
-        return '🗑️';
-      case 'login':
-        return '🔑';
-      case 'logout':
-        return '🚪';
+  const getActionIcon = (actionType) => {
+    switch (actionType) {
+      case 'CREATE':
+        return <Activity className="h-4 w-4" />;
+      case 'UPDATE':
+        return <TrendingUp className="h-4 w-4" />;
+      case 'DELETE':
+        return <AlertTriangle className="h-4 w-4" />;
+      case 'LOGIN':
+        return <Shield className="h-4 w-4" />;
+      case 'SECURITY':
+        return <AlertTriangle className="h-4 w-4" />;
       default:
-        return '📝';
+        return <Activity className="h-4 w-4" />;
     }
   };
 
-  const filteredAuditLogs = auditLogs.filter(log => {
-    const matchesSearch = (log.description || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         (log.user_id || '').toLowerCase().includes((searchTerm || '').toLowerCase());
-    const matchesAction = filterAction === 'all' || log.action === filterAction;
-    const matchesUser = filterUser === 'all' || log.user_id === filterUser;
+  const filteredLogs = auditLogs.filter(log => {
+    const matchesSearch = log.user_name.toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         log.action_type.toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         log.table_name.toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+                         log.description.toLowerCase().includes((searchTerm || '').toLowerCase());
+    const matchesAction = filterAction === 'all' || log.action_type === filterAction;
+    const matchesUser = filterUser === 'all' || log.user_name === filterUser;
     return matchesSearch && matchesAction && matchesUser;
   });
 
-  const uniqueActions = [...new Set(auditLogs.map(log => log.action))];
-  const uniqueUsers = [...new Set(auditLogs.map(log => log.user_id))];
+  const uniqueUsers = [...new Set(auditLogs.map(log => log.user_name))];
+  const uniqueActions = [...new Set(auditLogs.map(log => log.action_type))];
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header with Breadcrumb */}
+        <div className="mb-8">
+          <nav className="flex mb-4" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              <li className="inline-flex items-center">
+                <Link to="/admin" className="text-gray-700 hover:text-blue-600">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="mx-2 text-gray-400">/</span>
+                  <span className="text-gray-500">Audit Logs</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+          
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                <Settings className="h-6 w-6 mr-2" />
-                Audit Logs
-              </h1>
-              <p className="text-gray-600 mt-1">Track system activities and user actions</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Audit Logs</h1>
+              <p className="text-gray-600">Monitor system activities and security events</p>
             </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-blue-600">{auditLogs.length}</div>
-              <div className="text-sm text-gray-500">Total Logs</div>
+          </div>
+        </div>
+
+        {/* Dashboard Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Logs</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.total}</p>
+              </div>
+              <div className="p-3 rounded-full bg-blue-100">
+                <BarChart3 className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Today</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.today}</p>
+                <p className="text-sm text-green-600 mt-1">New entries</p>
+              </div>
+              <div className="p-3 rounded-full bg-green-100">
+                <Calendar className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Critical</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.critical}</p>
+                <p className="text-sm text-red-600 mt-1">Security events</p>
+              </div>
+              <div className="p-3 rounded-full bg-red-100">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Avg/Day</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.averagePerDay}</p>
+                <p className="text-sm text-purple-600 mt-1">Entries per day</p>
+              </div>
+              <div className="p-3 rounded-full bg-purple-100">
+                <TrendingUp className="h-6 w-6 text-purple-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Top Action</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.topAction}</p>
+                <p className="text-sm text-yellow-600 mt-1">Most common</p>
+              </div>
+              <div className="p-3 rounded-full bg-yellow-100">
+                <Activity className="h-6 w-6 text-yellow-600" />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -111,6 +248,7 @@ const AdminAuditLogs = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                data-action="search"
               />
             </div>
             <div>
@@ -132,21 +270,21 @@ const AdminAuditLogs = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Users</option>
-                {uniqueUsers.map(userId => (
-                  <option key={userId} value={userId}>{userId}</option>
+                {uniqueUsers.map(user => (
+                  <option key={user} value={user}>{user}</option>
                 ))}
               </select>
             </div>
             <div className="text-right">
               <span className="text-sm text-gray-600">
-                {filteredAuditLogs.length} of {auditLogs.length} logs
+                {filteredLogs.length} of {auditLogs.length} logs
               </span>
             </div>
           </div>
         </div>
 
-        {/* Audit Logs Table */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        {/* Audit Logs List */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -155,121 +293,177 @@ const AdminAuditLogs = () => {
                     Action
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Description
+                    User
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    User
+                    Table
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Description
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Timestamp
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    IP Address
+                    Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredAuditLogs.map((log) => (
+                {filteredLogs.map((log) => (
                   <tr key={log.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <span className="text-lg mr-2">{getActionIcon(log.action)}</span>
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getActionColor(log.action)}`}>
-                          {log.action}
-                        </span>
+                        <div className="flex-shrink-0 h-8 w-8">
+                          <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
+                            {getActionIcon(log.action_type)}
+                          </div>
+                        </div>
+                        <div className="ml-3">
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getActionColor(log.action_type)}`}>
+                            {log.action_type}
+                          </span>
+                        </div>
                       </div>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8">
+                          <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <Users className="h-4 w-4 text-blue-600" />
+                          </div>
+                        </div>
+                        <div className="ml-3">
+                          <div className="text-sm font-medium text-gray-900">{log.user_name}</div>
+                          <div className="text-sm text-gray-500">ID: {log.user_id}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{log.table_name}</div>
+                      <div className="text-sm text-gray-500">ID: {log.record_id}</div>
+                    </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900 max-w-xs truncate">
+                      <div className="text-sm text-gray-900 max-w-xs truncate" title={log.description}>
                         {log.description}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <User className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="text-sm text-gray-900">{log.user_id}</span>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock className="h-4 w-4 mr-2" />
+                        {formatTimestamp(log.timestamp)}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="text-sm text-gray-900">
-                          {new Date(log.timestamp).toLocaleString()}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {log.ip_address || 'N/A'}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button
+                        onClick={() => handleViewDetails(log)}
+                        className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
+                        title="View Details"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-
-          {/* Empty State */}
-          {filteredAuditLogs.length === 0 && (
-            <div className="text-center py-12">
-              <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No audit logs found</h3>
-              <p className="text-gray-600">Try adjusting your search criteria or filters.</p>
-            </div>
-          )}
         </div>
 
-        {/* Summary Stats */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <Activity className="h-8 w-8 text-blue-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Actions</p>
-                <p className="text-2xl font-semibold text-gray-900">{auditLogs.length}</p>
+        {filteredLogs.length === 0 && (
+          <div className="text-center py-12">
+            <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-xl text-gray-500 mb-2">No audit logs found</p>
+            <p className="text-gray-400">Try adjusting your search or filters.</p>
+          </div>
+        )}
+
+        {/* Modal */}
+        {showModal && selectedLog && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+              <div className="mt-3">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Audit Log Details</h3>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Action Type</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded-md">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getActionColor(selectedLog.action_type)}`}>
+                          {selectedLog.action_type}
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">User</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded-md">
+                        {selectedLog.user_name} (ID: {selectedLog.user_id})
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Table</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded-md">
+                        {selectedLog.table_name}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Record ID</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded-md">
+                        {selectedLog.record_id}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Timestamp</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded-md">
+                        {formatTimestamp(selectedLog.timestamp)}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">IP Address</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded-md">
+                        {selectedLog.ip_address || 'N/A'}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                    <div className="mt-1 p-3 bg-gray-50 rounded-md text-sm">
+                      {selectedLog.description}
+                    </div>
+                  </div>
+
+                  {selectedLog.old_values && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Old Values</label>
+                      <div className="mt-1 p-3 bg-gray-50 rounded-md text-sm font-mono">
+                        <pre className="whitespace-pre-wrap">{JSON.stringify(selectedLog.old_values, null, 2)}</pre>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedLog.new_values && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">New Values</label>
+                      <div className="mt-1 p-3 bg-gray-50 rounded-md text-sm font-mono">
+                        <pre className="whitespace-pre-wrap">{JSON.stringify(selectedLog.new_values, null, 2)}</pre>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex justify-end pt-4">
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <User className="h-8 w-8 text-green-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Unique Users</p>
-                <p className="text-2xl font-semibold text-gray-900">{uniqueUsers.length}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <Settings className="h-8 w-8 text-purple-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Action Types</p>
-                <p className="text-2xl font-semibold text-gray-900">{uniqueActions.length}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <Calendar className="h-8 w-8 text-orange-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Today's Logs</p>
-                <p className="text-2xl font-semibold text-gray-900">
-                  {auditLogs.filter(log => {
-                    const today = new Date().toDateString();
-                    const logDate = new Date(log.timestamp).toDateString();
-                    return logDate === today;
-                  }).length}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

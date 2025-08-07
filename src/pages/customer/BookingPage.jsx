@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard } from 'lucide-react';
+import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard, CheckCircle } from 'lucide-react';
 import { packagesAPI, userRequestsAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -391,27 +391,22 @@ const BookingPage = () => {
                           </p>
                           {/* Background Verification Status */}
                           <div className="flex items-center mt-1">
-                            <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium ${
-                              caregiver.background_check_status === 'verified' 
-                                ? 'bg-green-100 text-green-800' 
-                                : caregiver.background_check_status === 'pending'
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-red-100 text-red-800'
-                            }`}>
-                              {caregiver.background_check_status === 'verified' && (
-                                <span className="mr-1">✓</span>
-                              )}
-                              {caregiver.background_check_status === 'pending' && (
-                                <span className="mr-1">⏳</span>
-                              )}
-                              {caregiver.background_check_status === 'failed' && (
-                                <span className="mr-1">✗</span>
-                              )}
-                              {caregiver.background_check_status === 'verified' ? 'Background Verified' :
-                               caregiver.background_check_status === 'pending' ? 'Background Pending' :
-                               caregiver.background_check_status === 'failed' ? 'Background Failed' :
-                               'Background Unknown'}
-                            </span>
+                            {caregiver.background_check_status === 'verified' && (
+                              <div className="flex items-center space-x-1">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                <span className="text-xs text-green-600 font-medium">Background Verified</span>
+                              </div>
+                            )}
+                            {caregiver.background_check_status === 'pending' && (
+                              <div className="flex items-center space-x-1">
+                                <span className="text-xs text-yellow-600 font-medium">Background Pending</span>
+                              </div>
+                            )}
+                            {caregiver.background_check_status === 'failed' && (
+                              <div className="flex items-center space-x-1">
+                                <span className="text-xs text-red-600 font-medium">Background Failed</span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>

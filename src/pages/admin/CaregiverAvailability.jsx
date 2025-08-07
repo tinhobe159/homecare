@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock, Plus } from 'lucide-react';
+import { 
+  ArrowLeft, Calendar, Clock, Plus, Users, 
+  TrendingUp, Activity, Star, BarChart3,
+  Search, Filter, Eye, Edit, Trash2
+} from 'lucide-react';
 import { usersAPI, caregiverAvailabilityAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -10,10 +14,23 @@ const CaregiverAvailability = () => {
   const [caregiver, setCaregiver] = useState(null);
   const [availability, setAvailability] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [metrics, setMetrics] = useState({
+    totalSlots: 0,
+    availableSlots: 0,
+    totalHours: 0,
+    averageHoursPerWeek: 0,
+    availabilityRate: 0
+  });
 
   useEffect(() => {
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+    calculateMetrics();
+  }, [availability]);
 
   const fetchData = async () => {
     try {
@@ -32,26 +49,24 @@ const CaregiverAvailability = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  const calculateMetrics = () => {
+    const totalSlots = availability.length;
+    const availableSlots = availability.filter(slot => slot.is_available).length;
+    const totalHours = availability.reduce((sum, slot) => {
+      return sum + calculateDuration(slot.start_time, slot.end_time);
+    }, 0);
+    
+    const availabilityRate = totalSlots > 0 ? (availableSlots / totalSlots) * 100 : 0;
+    const averageHoursPerWeek = totalSlots > 0 ? totalHours / 4 : 0; // Assuming 4 weeks
 
-  if (!caregiver) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Caregiver Not Found</h1>
-          <Link to="/admin/caregivers" className="text-blue-600 hover:text-blue-700 font-medium">
-            ← Back to Caregivers
-          </Link>
-        </div>
-      </div>
-    );
-  }
+    setMetrics({
+      totalSlots,
+      availableSlots,
+      totalHours,
+      averageHoursPerWeek,
+      availabilityRate
+    });
+  };
 
   const formatTime = (timeString) => {
     if (!timeString || typeof timeString !== 'string') {
@@ -77,18 +92,64 @@ const CaregiverAvailability = () => {
     return duration;
   };
 
+  const filteredAvailability = availability.filter(slot => {
+    const matchesSearch = new Date(slot.date).toLocaleDateString().includes(searchTerm);
+    const matchesFilter = filterStatus === 'all' || 
+                         (filterStatus === 'available' && slot.is_available) ||
+                         (filterStatus === 'unavailable' && !slot.is_available);
+    return matchesSearch && matchesFilter;
+  });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (!caregiver) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Caregiver Not Found</h1>
+          <Link to="/admin/caregivers" className="text-blue-600 hover:text-blue-700 font-medium">
+            ← Back to Caregivers
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
+        {/* Header with Breadcrumb */}
         <div className="mb-8">
-          <Link
-            to="/admin/caregivers"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Caregivers
-          </Link>
+          <nav className="flex mb-4" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              <li className="inline-flex items-center">
+                <Link to="/admin" className="text-gray-700 hover:text-blue-600">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="mx-2 text-gray-400">/</span>
+                  <Link to="/admin/caregivers" className="text-gray-700 hover:text-blue-600">
+                    Caregivers
+                  </Link>
+                </div>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="mx-2 text-gray-400">/</span>
+                  <span className="text-gray-500">Availability</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+          
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -116,6 +177,108 @@ const CaregiverAvailability = () => {
                 {caregiver.first_name} {caregiver.last_name}
               </h2>
               <p className="text-gray-600">Background Check: {caregiver.backgroundCheckStatus}</p>
+              <p className="text-sm text-gray-500">ID: {caregiver.id}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Dashboard Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Slots</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.totalSlots}</p>
+              </div>
+              <div className="p-3 rounded-full bg-blue-100">
+                <Calendar className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Available</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.availableSlots}</p>
+                <p className="text-sm text-green-600 mt-1">
+                  {metrics.availabilityRate.toFixed(1)}% rate
+                </p>
+              </div>
+              <div className="p-3 rounded-full bg-green-100">
+                <Activity className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Hours</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.totalHours.toFixed(1)}h</p>
+                <p className="text-sm text-purple-600 mt-1">Scheduled</p>
+              </div>
+              <div className="p-3 rounded-full bg-purple-100">
+                <Clock className="h-6 w-6 text-purple-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Avg Hours/Week</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.averageHoursPerWeek.toFixed(1)}h</p>
+                <p className="text-sm text-orange-600 mt-1">Average</p>
+              </div>
+              <div className="p-3 rounded-full bg-orange-100">
+                <TrendingUp className="h-6 w-6 text-orange-600" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Availability</p>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{metrics.availabilityRate.toFixed(0)}%</p>
+                <p className="text-sm text-yellow-600 mt-1">Success rate</p>
+              </div>
+              <div className="p-3 rounded-full bg-yellow-100">
+                <Star className="h-6 w-6 text-yellow-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Filters and Search */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search by date..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Status</option>
+                <option value="available">Available</option>
+                <option value="unavailable">Unavailable</option>
+              </select>
+            </div>
+            <div className="text-right">
+              <span className="text-sm text-gray-600">
+                {filteredAvailability.length} of {availability.length} slots
+              </span>
             </div>
           </div>
         </div>
@@ -152,7 +315,7 @@ const CaregiverAvailability = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {availability.map((slot) => {
+                  {filteredAvailability.map((slot) => {
                     const duration = calculateDuration(slot.start_time, slot.end_time);
                     
                     return (
@@ -194,11 +357,11 @@ const CaregiverAvailability = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                          <button className="text-indigo-600 hover:text-indigo-900">
-                            Edit
+                          <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50" title="Edit">
+                            <Edit className="h-4 w-4" />
                           </button>
-                          <button className="text-red-600 hover:text-red-900">
-                            Delete
+                          <button className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50" title="Delete">
+                            <Trash2 className="h-4 w-4" />
                           </button>
                         </td>
                       </tr>

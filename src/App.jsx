@@ -24,7 +24,7 @@ import CaregiverDetailsPage from "./pages/customer/CaregiverDetailsPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminCustomers from "./pages/admin/AdminCustomers";
-import AdminCaregivers from "./pages/admin/AdminCaregivers";
+
 import AdminEmployees from "./pages/admin/AdminEmployees";
 import AdminRoles from "./pages/admin/AdminRoles";
 import AdminDepartments from "./pages/admin/AdminDepartments";
