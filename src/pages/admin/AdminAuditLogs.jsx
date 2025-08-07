@@ -5,12 +5,13 @@ import {
   Activity, Star, TrendingUp, BarChart3, 
   Shield, Users, AlertTriangle
 } from 'lucide-react';
-import { auditLogsAPI } from '../../services/api';
+import { auditLogsAPI, usersAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 
 const AdminAuditLogs = () => {
   const [auditLogs, setAuditLogs] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterAction, setFilterAction] = useState('all');
@@ -35,13 +36,34 @@ const AdminAuditLogs = () => {
 
   const fetchData = async () => {
     try {
-      const response = await auditLogsAPI.getAll();
-      setAuditLogs(response.data);
+      const [logsResponse, usersResponse] = await Promise.all([
+        auditLogsAPI.getAll(),
+        usersAPI.getAll()
+      ]);
+      setAuditLogs(logsResponse.data);
+      setUsers(usersResponse.data);
     } catch (error) {
       console.error('Error fetching audit logs:', error);
       toast.error('Failed to load audit logs');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getUserName = (userId) => {
+    const user = users.find(u => u.id === userId);
+    return user ? `${user.first_name} ${user.last_name}` : 'Unknown User';
+  };
+
+  // Utility to parse details JSON safely
+  const parseDetails = (details) => {
+    if (!details) return '';
+    try {
+      const parsed = JSON.parse(details);
+      // If details is an object, join key-value pairs for display
+      return Object.entries(parsed).map(([k, v]) => `${k}: ${v}`).join(', ');
+    } catch {
+      return details;
     }
   };
 
@@ -52,21 +74,21 @@ const AdminAuditLogs = () => {
       const logDate = new Date(log.timestamp || new Date()).toDateString();
       return logDate === today;
     }).length;
-    
+
     const critical = auditLogs.filter(log => {
-      const actionType = log.action_type || '';
+      const actionType = (log.action || '').toUpperCase();
       return actionType === 'DELETE' || actionType === 'SECURITY' || actionType === 'ERROR';
     }).length;
-    
+
     const averagePerDay = total > 0 ? Math.round(total / 30) : 0; // Assuming 30 days
-    
+
     // Find most common action
     const actionCounts = {};
     auditLogs.forEach(log => {
-      const actionType = log.action_type || 'UNKNOWN';
+      const actionType = (log.action || 'UNKNOWN').toUpperCase();
       actionCounts[actionType] = (actionCounts[actionType] || 0) + 1;
     });
-    const topAction = Object.keys(actionCounts).reduce((a, b) => 
+    const topAction = Object.keys(actionCounts).reduce((a, b) =>
       actionCounts[a] > actionCounts[b] ? a : b, 'UNKNOWN'
     );
 
@@ -89,7 +111,7 @@ const AdminAuditLogs = () => {
   };
 
   const getActionColor = (actionType) => {
-    switch (actionType) {
+    switch ((actionType || '').toUpperCase()) {
       case 'CREATE':
         return 'bg-green-100 text-green-800';
       case 'UPDATE':
@@ -106,7 +128,7 @@ const AdminAuditLogs = () => {
   };
 
   const getActionIcon = (actionType) => {
-    switch (actionType) {
+    switch ((actionType || '').toUpperCase()) {
       case 'CREATE':
         return <Activity className="h-4 w-4" />;
       case 'UPDATE':
@@ -123,17 +145,17 @@ const AdminAuditLogs = () => {
   };
 
   const filteredLogs = auditLogs.filter(log => {
-    const matchesSearch = (log.user_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         (log.action_type || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         (log.table_name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
-                         (log.description || '').toLowerCase().includes((searchTerm || '').toLowerCase());
-    const matchesAction = filterAction === 'all' || log.action_type === filterAction;
-    const matchesUser = filterUser === 'all' || log.user_name === filterUser;
+    const matchesSearch = getUserName(log.user_id).toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+      (log.action || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+      (log.entity || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+      (parseDetails(log.details) || '').toLowerCase().includes((searchTerm || '').toLowerCase());
+    const matchesAction = filterAction === 'all' || (log.action || '').toUpperCase() === filterAction;
+    const matchesUser = filterUser === 'all' || getUserName(log.user_id) === filterUser;
     return matchesSearch && matchesAction && matchesUser;
   });
 
-  const uniqueUsers = [...new Set(auditLogs.map(log => log.user_name).filter(Boolean))];
-  const uniqueActions = [...new Set(auditLogs.map(log => log.action_type).filter(Boolean))];
+  const uniqueUsers = [...new Set(auditLogs.map(log => getUserName(log.user_id)).filter(Boolean))];
+  const uniqueActions = [...new Set(auditLogs.map(log => (log.action || '').toUpperCase()).filter(Boolean))];
 
   if (loading) {
     return (
@@ -318,12 +340,12 @@ const AdminAuditLogs = () => {
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-8 w-8">
                           <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
-                            {getActionIcon(log.action_type)}
+                            {getActionIcon(log.action)}
                           </div>
                         </div>
                         <div className="ml-3">
-                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getActionColor(log.action_type)}`}>
-                            {log.action_type}
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getActionColor(log.action)}`}>
+                            {(log.action || '').toUpperCase()}
                           </span>
                         </div>
                       </div>
@@ -336,18 +358,18 @@ const AdminAuditLogs = () => {
                           </div>
                         </div>
                         <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">{log.user_name || 'Unknown User'}</div>
+                          <div className="text-sm font-medium text-gray-900">{getUserName(log.user_id)}</div>
                           <div className="text-sm text-gray-500">ID: {log.user_id || 'N/A'}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{log.table_name || 'Unknown Table'}</div>
-                      <div className="text-sm text-gray-500">ID: {log.record_id || 'N/A'}</div>
+                      <div className="text-sm text-gray-900">{log.entity || 'Unknown Table'}</div>
+                      <div className="text-sm text-gray-500">ID: {log.entity_id || 'N/A'}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900 max-w-xs truncate" title={log.description || 'No description'}>
-                        {log.description || 'No description'}
+                      <div className="text-sm text-gray-900 max-w-xs truncate" title={parseDetails(log.details) || 'No description'}>
+                        {parseDetails(log.details) || 'No description'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -391,27 +413,27 @@ const AdminAuditLogs = () => {
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Action Type</label>
                       <div className="mt-1 p-2 bg-gray-50 rounded-md">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getActionColor(selectedLog.action_type)}`}>
-                          {selectedLog.action_type}
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getActionColor(selectedLog.action)}`}>
+                          {(selectedLog.action || '').toUpperCase()}
                         </span>
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">User</label>
                       <div className="mt-1 p-2 bg-gray-50 rounded-md">
-                        {selectedLog.user_name} (ID: {selectedLog.user_id})
+                        {getUserName(selectedLog.user_id)} (ID: {selectedLog.user_id})
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Table</label>
                       <div className="mt-1 p-2 bg-gray-50 rounded-md">
-                        {selectedLog.table_name}
+                        {selectedLog.entity}
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Record ID</label>
                       <div className="mt-1 p-2 bg-gray-50 rounded-md">
-                        {selectedLog.record_id}
+                        {selectedLog.entity_id}
                       </div>
                     </div>
                     <div>
@@ -427,32 +449,13 @@ const AdminAuditLogs = () => {
                       </div>
                     </div>
                   </div>
-                  
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Description</label>
                     <div className="mt-1 p-3 bg-gray-50 rounded-md text-sm">
-                      {selectedLog.description}
+                      {parseDetails(selectedLog.details)}
                     </div>
                   </div>
-
-                  {selectedLog.old_values && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Old Values</label>
-                      <div className="mt-1 p-3 bg-gray-50 rounded-md text-sm font-mono">
-                        <pre className="whitespace-pre-wrap">{JSON.stringify(selectedLog.old_values, null, 2)}</pre>
-                      </div>
-                    </div>
-                  )}
-
-                  {selectedLog.new_values && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">New Values</label>
-                      <div className="mt-1 p-3 bg-gray-50 rounded-md text-sm font-mono">
-                        <pre className="whitespace-pre-wrap">{JSON.stringify(selectedLog.new_values, null, 2)}</pre>
-                      </div>
-                    </div>
-                  )}
-
+                  {/* old_values and new_values are not present in db.json, so skip them */}
                   <div className="flex justify-end pt-4">
                     <button
                       onClick={() => setShowModal(false)}
