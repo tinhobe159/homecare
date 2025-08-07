@@ -291,7 +291,7 @@ const AdminScheduledPackages = () => {
   };
 
   const getCaregiverById = (userId) => {
-    return caregivers.find(caregiver => caregiver.user_id === userId);
+    return caregivers.find(caregiver => parseInt(caregiver.user_id) === parseInt(userId));
   };
 
   const getPackageById = (packageId) => {
@@ -609,7 +609,7 @@ const AdminScheduledPackages = () => {
                     {/* No preference option */}
                     <div
                       className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
-                        formData.caregiver_id === ''
+                        parseInt(formData.caregiver_id) === 0
                           ? 'border-blue-500 bg-blue-50'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
@@ -642,13 +642,13 @@ const AdminScheduledPackages = () => {
                       <div
                         key={caregiver.id}
                         className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
-                          formData.caregiver_id === caregiver.user_id.toString()
+                          parseInt(formData.caregiver_id) === parseInt(caregiver.user_id)
                             ? 'border-blue-500 bg-blue-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                         onClick={() => setFormData(prev => ({
                           ...prev,
-                          caregiver_id: prev.caregiver_id === caregiver.user_id.toString() ? '' : caregiver.user_id.toString()
+                          caregiver_id: parseInt(prev.caregiver_id) === parseInt(caregiver.user_id) ? '' : caregiver.user_id.toString()
                         }))}
                       >
                         <div className="flex items-center space-x-3">
@@ -850,7 +850,7 @@ const AdminScheduledPackages = () => {
                       <p><span className="font-medium">Start Date:</span> {scheduledData.startDatetime.split('T')[0]}</p>
                       <p><span className="font-medium">Start Time:</span> {scheduledData.startDatetime.split('T')[1]}</p>
                       <p><span className="font-medium">Customer:</span> {users.find(u => u.id === parseInt(formData.user_id))?.first_name} {users.find(u => u.id === parseInt(formData.user_id))?.last_name}</p>
-                      <p><span className="font-medium">Caregiver:</span> {formData.caregiver_id ? caregivers.find(c => c.user_id === parseInt(formData.caregiver_id))?.first_name + ' ' + caregivers.find(c => c.user_id === parseInt(formData.caregiver_id))?.last_name : 'Auto-assign'}</p>
+                      <p><span className="font-medium">Caregiver:</span> {formData.caregiver_id ? caregivers.find(c => parseInt(c.user_id) === parseInt(formData.caregiver_id))?.first_name + ' ' + caregivers.find(c => parseInt(c.user_id) === parseInt(formData.caregiver_id))?.last_name : 'Auto-assign'}</p>
                     </div>
                   </div>
                 </div>
