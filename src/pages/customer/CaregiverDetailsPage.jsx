@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Clock, Mail, Phone, Star } from 'lucide-react';
-import { usersAPI, skillsAPI } from '../../services/api';
+import { caregiversAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 
@@ -9,6 +9,7 @@ const CaregiverDetailsPage = () => {
   const { id } = useParams();
   const [caregiver, setCaregiver] = useState(null);
   const [skills, setSkills] = useState([]);
+  const [caregiverSkills, setCaregiverSkills] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,16 +18,23 @@ const CaregiverDetailsPage = () => {
 
   const fetchData = async () => {
     try {
-      const [caregiverResponse, skillsResponse] = await Promise.all([
-        usersAPI.getById(id),
-        skillsAPI.getAll()
+      // Get the specific caregiver by ID
+      const [caregiverResponse, skillsResponse, caregiverSkillsResponse] = await Promise.all([
+        caregiversAPI.getById(id),
+        skillsAPI.getAll(),
+        caregiverSkillsAPI.getAll()
       ]);
       
       setCaregiver(caregiverResponse.data);
       setSkills(skillsResponse.data);
+      setCaregiverSkills(caregiverSkillsResponse.data);
     } catch (error) {
       console.error('Error fetching caregiver data:', error);
-      toast.error('Failed to load caregiver data');
+      if (error.message === 'User is not a caregiver' || error.message === 'Caregiver profile not found') {
+        toast.error('Caregiver not found');
+      } else {
+        toast.error('Failed to load caregiver data');
+      }
     } finally {
       setLoading(false);
     }
@@ -45,6 +53,7 @@ const CaregiverDetailsPage = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Caregiver Not Found</h1>
+          <p className="text-gray-600 mb-4">This caregiver profile does not exist or is not available.</p>
           <Link 
             to="/caregivers" 
             className="text-blue-600 hover:text-blue-700 font-medium"
@@ -56,9 +65,13 @@ const CaregiverDetailsPage = () => {
     );
   }
 
-  const caregiverSkills = skills.filter(skill => 
-    caregiver.skillIds && Array.isArray(caregiver.skillIds) && 
-    caregiver.skillIds.includes(skill.id)
+  // Get skills for this specific caregiver
+  const caregiverSkillIds = caregiverSkills
+    .filter(cs => Number(cs.user_id) === Number(caregiver.id))
+    .map(cs => Number(cs.skill_id));
+  
+  const caregiverSkillList = skills.filter(skill => 
+    caregiverSkillIds.includes(Number(skill.id))
   );
 
   return (
@@ -78,7 +91,7 @@ const CaregiverDetailsPage = () => {
           <div className="p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
               <img
-                src={caregiver.profilePicture}
+                src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/128'}
                 alt={`${caregiver.first_name} ${caregiver.last_name}`}
                 className="w-32 h-32 rounded-full object-cover mx-auto md:mx-0"
               />
@@ -91,10 +104,10 @@ const CaregiverDetailsPage = () => {
                 <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6 mb-4">
                   <div className="flex items-center justify-center md:justify-start space-x-2">
                     <Clock className="h-4 w-4 text-gray-500" />
-                    <span className="text-gray-600">{caregiver.yearsOfExperience} years experience</span>
+                    <span className="text-gray-600">{caregiver.years_experience || caregiver.yearsOfExperience} years experience</span>
                   </div>
                   
-                  {caregiver.backgroundCheckStatus === 'verified' && (
+                  {caregiver.background_check_status === 'verified' && (
                     <div className="flex items-center justify-center md:justify-start space-x-2">
                       <CheckCircle className="h-4 w-4 text-green-500" />
                       <span className="text-green-600 font-medium">Background Verified</span>
@@ -106,10 +119,10 @@ const CaregiverDetailsPage = () => {
                   <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 text-yellow-400 fill-current" />
                     <span className="font-medium text-gray-900">{caregiver.rating}</span>
-                    <span className="text-gray-500">({caregiver.totalReviews} reviews)</span>
+                    <span className="text-gray-500">({caregiver.total_reviews || caregiver.totalReviews} reviews)</span>
                   </div>
                   <div className="text-lg font-semibold text-green-600">
-                    ${caregiver.hourlyRate}/hr
+                    ${caregiver.hourly_rate || caregiver.hourlyRate}/hr
                   </div>
                 </div>
 
@@ -139,13 +152,16 @@ const CaregiverDetailsPage = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mt-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Skills & Certifications</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {caregiverSkills.map((skill) => (
+            {caregiverSkillList.map((skill) => (
               <div key={skill.id} className="p-4 border border-gray-200 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-2">{skill.name}</h3>
                 <p className="text-sm text-gray-600">{skill.description}</p>
               </div>
             ))}
           </div>
+          {caregiverSkillList.length === 0 && (
+            <p className="text-gray-500 text-center py-4">No skills listed for this caregiver.</p>
+          )}
         </div>
 
         {/* Contact Information */}

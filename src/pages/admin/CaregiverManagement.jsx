@@ -365,7 +365,7 @@ const CaregiverManagement = () => {
                     {caregiver.years_experience || caregiver.yearsOfExperience || caregiver.experience_years || 'N/A'} years experience
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
-                    <Star className="h-4 w-4 mr-2" />
+                    <Star className="h-4 w-4 mr-2 text-yellow-400 fill-current" />
                     Rating: {caregiver.rating || 'N/A'} ({caregiver.total_reviews || 0} reviews)
                   </div>
                 </div>

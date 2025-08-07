@@ -210,13 +210,13 @@ const CaregiverAvailability = () => {
                 <h2 className="text-xl font-semibold text-gray-900">
                   {caregiver.first_name} {caregiver.last_name}
                 </h2>
-                {getBackgroundCheckIcon(caregiver.background_check_status || caregiver.backgroundCheckStatus)}
+                {getBackgroundCheckIcon(caregiver.background_check_status)}
                 <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                  (caregiver.background_check_status || caregiver.backgroundCheckStatus) === 'verified' 
+                  caregiver.background_check_status === 'verified' 
                     ? 'bg-green-100 text-green-800' 
                     : 'bg-yellow-100 text-yellow-800'
                 }`}>
-                  {caregiver.background_check_status || caregiver.backgroundCheckStatus || 'Unknown'}
+                  {caregiver.background_check_status || 'Unknown'}
                 </span>
               </div>
               
@@ -224,7 +224,7 @@ const CaregiverAvailability = () => {
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4 text-gray-500" />
                   <span className="text-sm text-gray-600">
-                    {caregiver.years_experience || caregiver.yearsOfExperience || caregiver.experience_years || 'N/A'} years experience
+                    {caregiver.years_experience || 'N/A'} years experience
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
