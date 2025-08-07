@@ -56,7 +56,11 @@ const BookingPage = () => {
       ]);
       
       setPackages(packagesResponse.data);
-      setCaregivers(caregiversResponse.data);
+      // Filter to only show caregivers with verified background checks
+      const verifiedCaregivers = caregiversResponse.data.filter(caregiver => 
+        caregiver.background_check_status === 'verified'
+      );
+      setCaregivers(verifiedCaregivers);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load data');
@@ -385,6 +389,30 @@ const BookingPage = () => {
                           <p className="text-xs text-blue-600 font-medium mt-1">
                             ${caregiver.hourly_rate}/hr
                           </p>
+                          {/* Background Verification Status */}
+                          <div className="flex items-center mt-1">
+                            <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium ${
+                              caregiver.background_check_status === 'verified' 
+                                ? 'bg-green-100 text-green-800' 
+                                : caregiver.background_check_status === 'pending'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-red-100 text-red-800'
+                            }`}>
+                              {caregiver.background_check_status === 'verified' && (
+                                <span className="mr-1">✓</span>
+                              )}
+                              {caregiver.background_check_status === 'pending' && (
+                                <span className="mr-1">⏳</span>
+                              )}
+                              {caregiver.background_check_status === 'failed' && (
+                                <span className="mr-1">✗</span>
+                              )}
+                              {caregiver.background_check_status === 'verified' ? 'Background Verified' :
+                               caregiver.background_check_status === 'pending' ? 'Background Pending' :
+                               caregiver.background_check_status === 'failed' ? 'Background Failed' :
+                               'Background Unknown'}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       {caregiver.bio && (
@@ -397,7 +425,7 @@ const BookingPage = () => {
                 </div>
                 {caregivers.length === 0 && (
                   <p className="text-sm text-gray-500 text-center py-4">
-                    No caregivers available at the moment.
+                    No verified caregivers available at the moment. Please check back later or contact our support team.
                   </p>
                 )}
               </div>

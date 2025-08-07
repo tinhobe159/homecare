@@ -32,7 +32,7 @@ const AdminCaregivers = () => {
     email: '',
     phone_number: '',
     address: '',
-    status: 'active',
+    is_active: true,
     hourly_rate: '',
     experience_years: '',
     bio: '',
@@ -63,10 +63,10 @@ const AdminCaregivers = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: name === 'is_active' ? (value === 'true') : value
     }));
   };
 
@@ -89,7 +89,7 @@ const AdminCaregivers = () => {
         email: formData.email,
         phone_number: formData.phone_number,
         address: formData.address,
-        status: formData.status,
+        is_active: formData.is_active,
         hourly_rate: parseFloat(formData.hourly_rate),
         experience_years: parseInt(formData.experience_years),
         bio: formData.bio,
@@ -122,7 +122,7 @@ const AdminCaregivers = () => {
         email: '', 
         phone_number: '', 
         address: '', 
-        status: 'active',
+        is_active: true,
         hourly_rate: '',
         experience_years: '',
         bio: '',
@@ -143,7 +143,7 @@ const AdminCaregivers = () => {
       email: caregiver.email || '',
       phone_number: caregiver.phone_number || '',
       address: caregiver.address || '',
-      status: caregiver.status || 'active',
+      is_active: caregiver.is_active || true,
       hourly_rate: caregiver.hourly_rate?.toString() || '',
       experience_years: caregiver.experience_years?.toString() || '',
       bio: caregiver.bio || '',
@@ -206,7 +206,7 @@ const AdminCaregivers = () => {
                   email: '', 
                   phone_number: '', 
                   address: '', 
-                  status: 'active',
+                  is_active: true,
                   hourly_rate: '',
                   experience_years: '',
                   bio: '',
@@ -244,7 +244,6 @@ const AdminCaregivers = () => {
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
-                <option value="on_leave">On Leave</option>
               </select>
             </div>
             <div className="text-right">
@@ -398,14 +397,13 @@ const AdminCaregivers = () => {
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Status</label>
                       <select
-                        name="status"
-                        value={formData.status}
+                        name="is_active"
+                        value={formData.is_active.toString()}
                         onChange={handleInputChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="on_leave">On Leave</option>
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
                       </select>
                     </div>
                     <div>
