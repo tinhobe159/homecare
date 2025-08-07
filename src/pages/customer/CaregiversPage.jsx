@@ -23,16 +23,17 @@ const CaregiversPage = () => {
     } else {
       // Convert selectedSkill to number for comparison
       const skillId = Number(selectedSkill);
+      
       // Filter caregivers who have the selected skill
       const caregiversWithSkill = caregiverSkills
-        .filter(cs => cs.skill_id === skillId)
-        .map(cs => cs.user_id);
+        .filter(cs => Number(cs.skill_id) === skillId)
+        .map(cs => Number(cs.user_id));
       
-      setFilteredCaregivers(
-        caregivers.filter(caregiver => 
-          caregiversWithSkill.includes(caregiver.id)
-        )
+      const filtered = caregivers.filter(caregiver => 
+        caregiversWithSkill.includes(Number(caregiver.id))
       );
+      
+      setFilteredCaregivers(filtered);
     }
   }, [selectedSkill, caregivers, caregiverSkills]);
 
@@ -97,9 +98,9 @@ const CaregiversPage = () => {
             {skills.map((skill) => (
               <button
                 key={skill.id}
-                onClick={() => setSelectedSkill(skill.id)}
+                onClick={() => setSelectedSkill(Number(skill.id))}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedSkill === skill.id
+                  selectedSkill === Number(skill.id)
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
