@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Calendar, Clock, X, Plus, Minus } from 'lucide-react';
 
+/**
+ * CalendarPreview component for displaying recurring event occurrences
+ * @param {Object} props
+ * @param {string} props.rrule - The RRULE string defining the recurrence pattern
+ * @param {string} props.startDate - The start date in ISO format
+ * @param {string[]} [props.exceptions=[]] - Array of exception dates
+ * @param {function} [props.onExceptionChange] - Callback when exceptions change
+ */
 const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange }) => {
   const [occurrences, setOccurrences] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date());
@@ -170,14 +177,14 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
 
   const addException = () => {
     if (newExceptionDate && !exceptions.includes(newExceptionDate)) {
-      onExceptionChange([...exceptions, newExceptionDate]);
+      onExceptionChange && onExceptionChange([...exceptions, newExceptionDate]);
       setNewExceptionDate('');
       setShowAddException(false);
     }
   };
 
   const removeException = (date) => {
-    onExceptionChange(exceptions.filter(ex => ex !== date));
+    onExceptionChange && onExceptionChange(exceptions.filter(ex => ex !== date));
   };
 
   const getMonthName = (date) => {
@@ -338,13 +345,6 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
       </div>
     </div>
   );
-};
-
-CalendarPreview.propTypes = {
-  rrule: PropTypes.string.isRequired,
-  startDate: PropTypes.string.isRequired,
-  exceptions: PropTypes.arrayOf(PropTypes.string),
-  onExceptionChange: PropTypes.func.isRequired,
 };
 
 export default CalendarPreview; 
