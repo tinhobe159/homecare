@@ -220,6 +220,7 @@ const RecurrenceBuilder = ({ onRecurrenceChange, initialValue = null }) => {
             {frequencies.map((freq) => (
               <button
                 key={freq.value}
+                type="button"
                 onClick={() => handleFrequencyChange(freq.value)}
                 className={`p-4 border-2 rounded-lg text-left transition-all ${
                   recurrence.frequency === freq.value
