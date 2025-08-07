@@ -153,11 +153,11 @@ const Homepage = () => {
               return (
                 <div key={index} className="text-center group">
                   <div className="relative mb-6">
-                    <div className="w-16 h-16 bg-[#17407b] text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto group-hover:scale-110 transition-transform duration-200">
+                    <div className="w-12 h-12 bg-[#17407b] text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto group-hover:scale-110 transition-transform duration-200">
                       {item.step}
                     </div>
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                      <Icon className="h-6 w-6 text-[#17407b]" />
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                      <Icon className="h-5 w-5 text-[#17407b]" />
                     </div>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">{item.title}</h3>
@@ -302,13 +302,13 @@ const Homepage = () => {
                 <div key={pkg.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 overflow-hidden relative">
                   {/* Popular Badge */}
                   {pkg.popular && (
-                    <div className="absolute top-4 left-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold">
+                    <div className="absolute top-3 left-3 bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-full text-xs font-bold">
                       Most Popular
                     </div>
                   )}
                   
                   {/* VERON Badge */}
-                  <div className="absolute top-4 right-4 bg-[#17407b] text-white px-3 py-1 rounded-full text-xs font-medium">
+                  <div className="absolute top-3 right-3 bg-[#17407b] text-white px-2 py-0.5 rounded-full text-xs font-medium">
                     VERON
                   </div>
                   
