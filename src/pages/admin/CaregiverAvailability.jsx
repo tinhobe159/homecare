@@ -3,15 +3,17 @@ import { useParams, Link } from 'react-router-dom';
 import { 
   ArrowLeft, Calendar, Clock, Plus, Users, 
   TrendingUp, Activity, Star, BarChart3,
-  Search, Filter, Eye, Edit, Trash2
+  Search, Filter, Eye, Edit, Trash2, CheckCircle, XCircle
 } from 'lucide-react';
-import { usersAPI, caregiverAvailabilityAPI } from '../../services/api';
+import { caregiversAPI, skillsAPI, caregiverSkillsAPI, caregiverAvailabilityAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
 
 const CaregiverAvailability = () => {
   const { id } = useParams();
   const [caregiver, setCaregiver] = useState(null);
+  const [skills, setSkills] = useState([]);
+  const [caregiverSkills, setCaregiverSkills] = useState([]);
   const [availability, setAvailability] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,18 +36,47 @@ const CaregiverAvailability = () => {
 
   const fetchData = async () => {
     try {
-      const [caregiverResponse, availabilityResponse] = await Promise.all([
-        usersAPI.getById(id),
+      const [caregiverResponse, skillsResponse, caregiverSkillsResponse, availabilityResponse] = await Promise.all([
+        caregiversAPI.getById(id),
+        skillsAPI.getAll(),
+        caregiverSkillsAPI.getAll(),
         caregiverAvailabilityAPI.getByUserId(id)
       ]);
       
       setCaregiver(caregiverResponse.data);
+      setSkills(skillsResponse.data);
+      setCaregiverSkills(caregiverSkillsResponse.data);
       setAvailability(availabilityResponse.data);
     } catch (error) {
       console.error('Error fetching caregiver availability:', error);
       toast.error('Failed to load caregiver availability');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Get skills for this specific caregiver
+  const getCaregiverSkills = () => {
+    const caregiverSkillIds = caregiverSkills
+      .filter(cs => Number(cs.user_id) === Number(caregiver?.id))
+      .map(cs => Number(cs.skill_id));
+    
+    return skills.filter(skill => 
+      caregiverSkillIds.includes(Number(skill.id))
+    );
+  };
+
+  // Get background check icon
+  const getBackgroundCheckIcon = (status) => {
+    switch (status) {
+      case 'verified':
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case 'pending':
+        return <Clock className="h-4 w-4 text-yellow-500" />;
+      case 'failed':
+        return <XCircle className="h-4 w-4 text-red-500" />;
+      default:
+        return <XCircle className="h-4 w-4 text-gray-500" />;
     }
   };
 
@@ -121,6 +152,8 @@ const CaregiverAvailability = () => {
     );
   }
 
+  const caregiverSkillList = getCaregiverSkills();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -166,18 +199,73 @@ const CaregiverAvailability = () => {
 
         {/* Caregiver Info Card */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-start space-x-4">
             <img
               className="h-16 w-16 rounded-full object-cover"
-              src={caregiver.profilePicture}
+              src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/64'}
               alt={`${caregiver.first_name} ${caregiver.last_name}`}
             />
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900">
-                {caregiver.first_name} {caregiver.last_name}
-              </h2>
-              <p className="text-gray-600">Background Check: {caregiver.backgroundCheckStatus}</p>
-              <p className="text-sm text-gray-500">ID: {caregiver.id}</p>
+            <div className="flex-1">
+              <div className="flex items-center space-x-2 mb-2">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  {caregiver.first_name} {caregiver.last_name}
+                </h2>
+                {getBackgroundCheckIcon(caregiver.background_check_status || caregiver.backgroundCheckStatus)}
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                  (caregiver.background_check_status || caregiver.backgroundCheckStatus) === 'verified' 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-yellow-100 text-yellow-800'
+                }`}>
+                  {caregiver.background_check_status || caregiver.backgroundCheckStatus || 'Unknown'}
+                </span>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-4 w-4 text-gray-500" />
+                  <span className="text-sm text-gray-600">
+                    {caregiver.years_experience || caregiver.yearsOfExperience || caregiver.experience_years || 'N/A'} years experience
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                  <span className="text-sm text-gray-600">
+                    Rating: {caregiver.rating || 'N/A'} ({caregiver.total_reviews || 0} reviews)
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium text-green-600">
+                    ${caregiver.hourly_rate || 'N/A'}/hr
+                  </span>
+                </div>
+              </div>
+
+              {/* Skills Section */}
+              {caregiverSkillList.length > 0 && (
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-gray-900 mb-2">Skills:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {caregiverSkillList.slice(0, 5).map((skill) => (
+                      <span
+                        key={skill.id}
+                        className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                      >
+                        {skill.name}
+                      </span>
+                    ))}
+                    {caregiverSkillList.length > 5 && (
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                        +{caregiverSkillList.length - 5} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Bio */}
+              {caregiver.bio && (
+                <p className="text-gray-600 text-sm">{caregiver.bio}</p>
+              )}
             </div>
           </div>
         </div>

@@ -86,19 +86,30 @@ const CaregiverManagement = () => {
   };
 
   const getSkillNames = (caregiverId) => {
+    console.log('getSkillNames called with caregiverId:', caregiverId);
+    console.log('caregiverSkills array:', caregiverSkills);
+    console.log('skills array:', skills);
+    
     // Get skills for this specific caregiver
     const caregiverSkillIds = caregiverSkills
       .filter(cs => Number(cs.user_id) === Number(caregiverId))
       .map(cs => Number(cs.skill_id));
     
+    console.log('Filtered caregiverSkillIds:', caregiverSkillIds);
+    
     if (caregiverSkillIds.length === 0) {
+      console.log('No skills found for caregiver ID:', caregiverId);
       return 'No skills listed';
     }
     
-    return caregiverSkillIds.map(skillId => {
+    const skillNames = caregiverSkillIds.map(skillId => {
       const skill = skills.find(s => Number(s.id) === skillId);
+      console.log(`Looking for skill ID ${skillId}, found:`, skill);
       return skill ? skill.name : 'Unknown';
     }).join(', ');
+    
+    console.log('Final skill names:', skillNames);
+    return skillNames;
   };
 
   // Helper function to get caregiver skill IDs
