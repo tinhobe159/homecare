@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <Heart className="h-8 w-8 text-blue-400" />
-              <span className="text-2xl font-bold">HomeCare</span>
+              <span className="text-2xl font-bold">VeronCare</span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
               Providing compassionate, professional homecare services to help you maintain independence and quality of life in the comfort of your own home.
@@ -21,7 +21,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2 text-gray-300">
                 <Mail className="h-4 w-4" />
-                <span>info@homecare.com</span>
+                <span>info@veroncare.com</span>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@ const Footer = () => {
         
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2025 HomeCare Services. All rights reserved.
+            © 2025 VeronCare Services. All rights reserved.
           </p>
           <div className="flex items-center space-x-2 text-gray-400 text-sm mt-4 md:mt-0">
             <MapPin className="h-4 w-4" />

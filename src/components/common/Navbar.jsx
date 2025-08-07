@@ -43,7 +43,7 @@ const Navbar = () => {
             <div className="flex items-center">
               <Link to="/admin" className="flex items-center space-x-2">
                 <Heart className="h-8 w-8 text-blue-600" />
-                <span className="text-xl font-bold text-gray-900">HomeCare Admin</span>
+                <span className="text-xl font-bold text-gray-900">VeronCare Admin</span>
               </Link>
             </div>
             
@@ -63,7 +63,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to={isAdmin ? '/admin' : '/'} className="flex items-center space-x-2">
               <Heart className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">HomeCare</span>
+              <span className="text-xl font-bold text-gray-900">VeronCare</span>
             </Link>
           </div>
           

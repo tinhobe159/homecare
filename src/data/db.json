@@ -2,7 +2,7 @@
   "users": [
     {
       "id": 1,
-      "email": "admin@homecare.com",
+      "email": "admin@veroncare.com",
       "password": "AdminP@ss2024!@#",
       "phone_number": null,
       "first_name": "Emma",
@@ -17,7 +17,7 @@
     },
     {
       "id": 2,
-      "email": "daniel.harris@homecare.com",
+      "email": "daniel.harris@veroncare.com",
       "password": "SuperAdmin2024!@#",
       "phone_number": null,
       "first_name": "Daniel",
@@ -167,7 +167,7 @@
     },
     {
       "id": 12,
-      "email": "sarah.caregiver@homecare.com",
+      "email": "sarah.caregiver@veroncare.com",
       "password": "CaregiverP@ss2024!",
       "phone_number": "555-0201",
       "first_name": "Sarah",
@@ -182,7 +182,7 @@
     },
     {
       "id": 13,
-      "email": "michael.caregiver@homecare.com",
+      "email": "michael.caregiver@veroncare.com",
       "password": "CaregiverP@ss2024!",
       "phone_number": "555-0202",
       "first_name": "Michael",
@@ -197,7 +197,7 @@
     },
     {
       "id": 14,
-      "email": "lisa.caregiver@homecare.com",
+      "email": "lisa.caregiver@veroncare.com",
       "password": "CaregiverP@ss2024!",
       "phone_number": "555-0203",
       "first_name": "Lisa",
@@ -212,7 +212,7 @@
     },
     {
       "id": 15,
-      "email": "james.caregiver@homecare.com",
+      "email": "james.caregiver@veroncare.com",
       "password": "CaregiverP@ss2024!",
       "phone_number": "555-0204",
       "first_name": "James",
@@ -227,7 +227,7 @@
     },
     {
       "id": 16,
-      "email": "emma.caregiver@homecare.com",
+      "email": "emma.caregiver@veroncare.com",
       "password": "CaregiverP@ss2024!",
       "phone_number": "555-0205",
       "first_name": "Emma",
@@ -242,7 +242,7 @@
     },
     {
       "id": 17,
-      "email": "robert.caregiver@homecare.com",
+      "email": "robert.caregiver@veroncare.com",
       "password": "CaregiverP@ss2024!",
       "phone_number": "555-0206",
       "first_name": "Robert",
@@ -257,7 +257,7 @@
     },
     {
       "id": 18,
-      "email": "jennifer.caregiver@homecare.com",
+      "email": "jennifer.caregiver@veroncare.com",
       "password": "CaregiverP@ss2024!",
       "phone_number": "555-0207",
       "first_name": "Jennifer",
@@ -272,7 +272,7 @@
     },
     {
       "id": 19,
-      "email": "maria.caregiver@homecare.com",
+      "email": "maria.caregiver@veroncare.com",
       "password": "CaregiverP@ss2024!",
       "phone_number": "555-0208",
       "first_name": "Maria",
