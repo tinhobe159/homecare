@@ -131,19 +131,16 @@ const Homepage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                step: '1',
                 title: 'Contact Us',
                 description: 'Call or book online to discuss your care needs and schedule a consultation.',
                 icon: Phone
               },
               {
-                step: '2',
                 title: 'Custom Care Plan',
                 description: 'We create a personalized care plan tailored to your specific requirements.',
                 icon: Calendar
               },
               {
-                step: '3',
                 title: 'Begin Care',
                 description: 'Your licensed caregiver arrives and begins providing professional care services.',
                 icon: Heart
@@ -153,9 +150,6 @@ const Homepage = () => {
               return (
                 <div key={index} className="text-center group">
                   <div className="relative mb-6">
-                    <div className="w-12 h-12 bg-[#17407b] text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto group-hover:scale-110 transition-transform duration-200">
-                      {item.step}
-                    </div>
                     <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
                       <Icon className="h-5 w-5 text-[#17407b]" />
                     </div>
