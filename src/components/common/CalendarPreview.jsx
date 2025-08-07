@@ -67,32 +67,26 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
         }
         weekStart.setDate(weekStart.getDate() + interval * 7);
       }
-    } else if (parsed.FREQ === 'MONTHLY' && parsed.BYSETPOS && parsed.BYDAY) {
+    } else if (parsed.FREQ === 'MONTHLY' && (parsed.BYMONTHDAY || !parsed.BYSETPOS)) {
+      // Handle BYMONTHDAY or default to start date's day
       let interval = parseInt(parsed.INTERVAL) || 1;
       let currentMonth = new Date(start.getFullYear(), start.getMonth(), 1);
+      const dayOfMonth = parsed.BYMONTHDAY ? parseInt(parsed.BYMONTHDAY) : start.getDate();
       while (currentMonth <= monthEnd && count < maxCount && (!until || currentMonth <= until)) {
-        const bySetPos = parseInt(parsed.BYSETPOS);
-        const byDay = parsed.BYDAY;
-        const dayNames = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
-        let matchingDays = [];
-        for (let d = 1; d <= new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate(); d++) {
-          let date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
-          const dayOfWeek = dayNames[date.getDay()];
-          if (byDay.split(',').includes(dayOfWeek)) {
-            matchingDays.push(date);
-          }
-        }
-        let selectedDay = null;
-        if (bySetPos > 0 && matchingDays.length >= bySetPos) {
-          selectedDay = matchingDays[bySetPos - 1];
-        } else if (bySetPos < 0 && matchingDays.length >= Math.abs(bySetPos)) {
-          selectedDay = matchingDays[matchingDays.length + bySetPos];
-        }
-        if (selectedDay && selectedDay >= start && selectedDay >= monthStart && selectedDay <= monthEnd) {
-          const dateStr = selectedDay.toISOString().split('T')[0];
-          if ((!until || selectedDay <= until) && !exceptions.includes(dateStr)) {
-            generated.push(new Date(selectedDay));
+        // Try to create the date for this month
+        let occurrence = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), dayOfMonth);
+        // Only add if the day is valid for this month
+        if (
+          occurrence.getMonth() === currentMonth.getMonth() &&
+          occurrence >= start &&
+          occurrence >= monthStart &&
+          occurrence <= monthEnd
+        ) {
+          const dateStr = occurrence.toISOString().split('T')[0];
+          if ((!until || occurrence <= until) && !exceptions.includes(dateStr)) {
+            generated.push(new Date(occurrence));
             count++;
+            if (count >= maxCount) break;
           }
         }
         currentMonth.setMonth(currentMonth.getMonth() + interval);
@@ -247,6 +241,8 @@ const CalendarPreview = ({ rrule, startDate, exceptions = [], onExceptionChange 
               <div
                 key={getDayKey(date)}
                 className={`h-10 border border-gray-200 rounded flex items-center justify-center text-sm ${getDayClass(isOccurrence, isException)}`}
+                data-date={dateStr}
+                data-testid={isOccurrence ? 'occurrence-day' : 'calendar-day'}
               >
                 {i + 1}
               </div>
