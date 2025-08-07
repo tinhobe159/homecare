@@ -18,6 +18,7 @@ const CaregiverDetailsPage = () => {
 
   const fetchData = async () => {
     try {
+      console.log('Fetching caregiver data for ID:', id);
       // Get the specific caregiver by ID
       const [caregiverResponse, skillsResponse, caregiverSkillsResponse] = await Promise.all([
         caregiversAPI.getById(id),
@@ -25,6 +26,7 @@ const CaregiverDetailsPage = () => {
         caregiverSkillsAPI.getAll()
       ]);
       
+      console.log('Caregiver response:', caregiverResponse.data);
       setCaregiver(caregiverResponse.data);
       setSkills(skillsResponse.data);
       setCaregiverSkills(caregiverSkillsResponse.data);

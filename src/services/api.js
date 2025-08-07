@@ -148,14 +148,6 @@ export const caregiversAPI = {
       // Get the specific user
       const userResponse = await api.get(`/users/${id}`);
       
-      // Check if user has caregiver role
-      const rolesResponse = await api.get('/user_roles?role_id=2');
-      const caregiverUserIds = rolesResponse.data.map(role => role.user_id);
-      
-      if (!caregiverUserIds.includes(Number(id))) {
-        throw new Error('User is not a caregiver');
-      }
-      
       // Get caregiver profile (additional data)
       const profilesResponse = await api.get('/caregiver_profiles');
       const profile = profilesResponse.data.find(p => p.user_id === Number(id));
@@ -186,7 +178,7 @@ export const skillsAPI = {
 // Caregiver Availability
 export const caregiverAvailabilityAPI = {
   getAll: () => api.get('/caregiverAvailability'),
-  getByUserId: (userId) => api.get(`/caregiverAvailability?user_id=${userId}`),
+  getByUserId: (userId) => api.get(`/caregiverAvailability?caregiver_id=${userId}`),
   create: (data) => api.post('/caregiverAvailability', data),
   update: (id, data) => api.put(`/caregiverAvailability/${id}`, data),
   delete: (id) => api.delete(`/caregiverAvailability/${id}`),
