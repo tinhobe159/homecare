@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Clock, Mail, Phone, Star } from 'lucide-react';
 import { caregiversAPI, skillsAPI, caregiverSkillsAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Avatar from '../../components/common/Avatar';
 import { toast } from 'react-toastify';
 
 const CaregiverDetailsPage = () => {
@@ -92,10 +93,11 @@ const CaregiverDetailsPage = () => {
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
           <div className="p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
-              <img
-                src={caregiver.avatar_url || 'https://via.placeholder.com/128'}
-                alt={`${caregiver.first_name} ${caregiver.last_name}`}
-                className="w-32 h-32 rounded-full object-cover mx-auto md:mx-0"
+              <Avatar
+                src={caregiver.avatar_url}
+                name={`${caregiver.first_name} ${caregiver.last_name}`}
+                size="xl"
+                className="mx-auto md:mx-0"
               />
               
               <div className="flex-1 text-center md:text-left">

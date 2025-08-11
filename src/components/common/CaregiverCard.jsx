@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle, Clock, Star } from 'lucide-react';
+import Avatar from './Avatar';
 
 const CaregiverCard = ({ caregiver, skills, caregiverSkills }) => {
   // Get skills for this specific caregiver
@@ -15,10 +16,11 @@ const CaregiverCard = ({ caregiver, skills, caregiverSkills }) => {
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border border-gray-200">
       <div className="flex items-center mb-4">
-        <img
-          src={caregiver.avatar_url || 'https://via.placeholder.com/64'}
-          alt={`${caregiver.first_name} ${caregiver.last_name}`}
-          className="w-16 h-16 rounded-full object-cover mr-4"
+        <Avatar
+          src={caregiver.avatar_url}
+          name={`${caregiver.first_name} ${caregiver.last_name}`}
+          size="lg"
+          className="mr-4"
         />
         <div>
           <h3 className="text-xl font-semibold text-gray-900">

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { caregiversAPI, skillsAPI, caregiverSkillsAPI, caregiverAvailabilityAPI } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Avatar from '../../components/common/Avatar';
 import { toast } from 'react-toastify';
 
 const CaregiverAvailability = () => {
@@ -200,10 +201,11 @@ const CaregiverAvailability = () => {
         {/* Caregiver Info Card */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
           <div className="flex items-start space-x-4">
-            <img
-              className="h-16 w-16 rounded-full object-cover"
-              src={caregiver.avatar_url || 'https://via.placeholder.com/64'}
-              alt={`${caregiver.first_name} ${caregiver.last_name}`}
+            <Avatar
+              src={caregiver.avatar_url}
+              name={`${caregiver.first_name} ${caregiver.last_name}`}
+              size="lg"
+              className="flex-shrink-0"
             />
             <div className="flex-1">
               <div className="flex items-center space-x-2 mb-2">

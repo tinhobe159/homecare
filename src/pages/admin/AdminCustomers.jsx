@@ -20,6 +20,7 @@ import {
 import { customersAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Avatar from '../../components/common/Avatar';
 import { Link } from 'react-router-dom';
 
 const AdminCustomers = () => {
@@ -360,19 +361,12 @@ const AdminCustomers = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">
-                    <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
-                      {customer.avatar_url ? (
-                        <img
-                          src={customer.avatar_url}
-                          alt={getCustomerName(customer)}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-lg font-medium text-blue-600">
-                          {getCustomerInitial(customer)}
-                        </span>
-                      )}
-                    </div>
+                    <Avatar
+                      src={customer.avatar_url}
+                      name={getCustomerName(customer)}
+                      size="md"
+                      className="flex-shrink-0"
+                    />
                     <div className="ml-3">
                       <h3 className="text-lg font-semibold text-gray-900">{getCustomerName(customer)}</h3>
                       <p className="text-sm text-gray-500">ID: {customer.id}</p>

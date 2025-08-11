@@ -4,6 +4,7 @@ import { Calendar, Clock, User, Phone, Mail, MapPin, Package, CreditCard, CheckC
 import { packagesAPI, userRequestsAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Avatar from '../../components/common/Avatar';
 import { useAuth } from '../../contexts/AuthContext';
 
 const BookingPage = () => {
@@ -367,10 +368,10 @@ const BookingPage = () => {
                     >
                       <div className="flex items-center space-x-3">
                         <div className="flex-shrink-0">
-                          <img
-                            src={caregiver.avatar_url || 'https://via.placeholder.com/48'}
-                            alt={`${caregiver.first_name} ${caregiver.last_name}`}
-                            className="w-12 h-12 rounded-full object-cover"
+                          <Avatar
+                            src={caregiver.avatar_url}
+                            name={`${caregiver.first_name} ${caregiver.last_name}`}
+                            size="md"
                           />
                         </div>
                         <div className="flex-1 min-w-0">

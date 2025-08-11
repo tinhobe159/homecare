@@ -20,6 +20,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { appointmentsAPI, packagesAPI, userRequestsAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Avatar from '../../components/common/Avatar';
 
 const CustomerProfile = () => {
   const { currentUser, login } = useContext(AuthContext);
@@ -33,7 +34,8 @@ const CustomerProfile = () => {
     last_name: currentUser?.last_name || '',
     email: currentUser?.email || '',
     phone_number: currentUser?.phone_number || '',
-    address: currentUser?.address || ''
+    address: currentUser?.address || '',
+    avatar_url: currentUser?.avatar_url || ''
   });
 
   useEffect(() => {
@@ -98,7 +100,8 @@ const CustomerProfile = () => {
       last_name: currentUser?.last_name || '',
       email: currentUser?.email || '',
       phone_number: currentUser?.phone_number || '',
-      address: currentUser?.address || ''
+      address: currentUser?.address || '',
+      avatar_url: currentUser?.avatar_url || ''
     });
     setEditing(false);
   };
@@ -171,16 +174,30 @@ const CustomerProfile = () => {
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center">
-                <span className="text-2xl font-bold text-blue-600">
-                  {getCustomerInitial()}
-                </span>
-              </div>
+              <Avatar
+                src={currentUser.avatar_url}
+                name={getCustomerName()}
+                size="lg"
+                className="flex-shrink-0"
+              />
               <div className="ml-4">
                 <h1 className="text-2xl font-bold text-gray-900">{getCustomerName()}</h1>
                 <p className="text-gray-600">Customer Profile</p>
               </div>
             </div>
+            
+            {/* Avatar Preview when editing */}
+            {editing && (formData.first_name || formData.last_name || formData.avatar_url) && (
+              <div className="flex items-center space-x-3">
+                <span className="text-sm text-gray-500">Preview:</span>
+                <Avatar
+                  src={formData.avatar_url}
+                  name={`${formData.first_name} ${formData.last_name}`}
+                  size="md"
+                  className="border-2 border-gray-200"
+                />
+              </div>
+            )}
             <button
               onClick={() => setEditing(!editing)}
               className="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
@@ -266,6 +283,25 @@ const CustomerProfile = () => {
                     <div className="flex items-center text-gray-900">
                       <Phone className="h-4 w-4 mr-2 text-gray-400" />
                       {currentUser.phone_number}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Avatar URL</label>
+                  {editing ? (
+                    <input
+                      type="url"
+                      name="avatar_url"
+                      value={formData.avatar_url}
+                      onChange={handleInputChange}
+                      placeholder="https://example.com/avatar.jpg"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  ) : (
+                    <div className="flex items-center text-gray-900">
+                      <User className="h-4 w-4 mr-2 text-gray-400" />
+                      {currentUser.avatar_url ? 'Avatar set' : 'No avatar set'}
                     </div>
                   )}
                 </div>

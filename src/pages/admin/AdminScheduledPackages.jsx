@@ -8,6 +8,7 @@ import {
 import { scheduledPackagesAPI, packagesAPI, usersAPI, userRolesAPI, caregiversAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Avatar from '../../components/common/Avatar';
 import Modal from '../../components/common/Modal';
 import RecurrenceBuilder from '../../components/common/RecurrenceBuilder';
 import CalendarPreview from '../../components/common/CalendarPreview';
@@ -674,10 +675,10 @@ const AdminScheduledPackages = () => {
                       >
                         <div className="flex items-center space-x-3">
                           <div className="flex-shrink-0">
-                            <img
-                              src={caregiver.avatar_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop'}
-                              alt={`${caregiver.first_name} ${caregiver.last_name}`}
-                              className="w-12 h-12 rounded-full object-cover"
+                            <Avatar
+                              src={caregiver.avatar_url}
+                              name={`${caregiver.first_name} ${caregiver.last_name}`}
+                              size="md"
                             />
                           </div>
                           <div className="flex-1 min-w-0">

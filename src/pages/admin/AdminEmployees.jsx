@@ -25,6 +25,7 @@ import {
 import { usersAPI, userRolesAPI, departmentsAPI, administratorProfilesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Avatar from '../../components/common/Avatar';
 
 const AdminEmployees = () => {
   const [users, setUsers] = useState([]);
@@ -51,6 +52,7 @@ const AdminEmployees = () => {
     phone_number: '',
     password: '',
     department_id: '',
+    avatar_url: '',
     is_active: true
   });
 
@@ -132,6 +134,7 @@ const AdminEmployees = () => {
           last_name: formData.last_name,
           email: formData.email,
           phone_number: formData.phone_number,
+          avatar_url: formData.avatar_url,
           is_active: formData.is_active
         });
         userId = editingEmployee.id;
@@ -160,6 +163,7 @@ const AdminEmployees = () => {
           email: formData.email,
           phone_number: formData.phone_number,
           password: formData.password,
+          avatar_url: formData.avatar_url,
           is_active: formData.is_active
         });
         userId = userResponse.data.id;
@@ -183,6 +187,7 @@ const AdminEmployees = () => {
         phone_number: '', 
         password: '',
         department_id: '',
+        avatar_url: '',
         is_active: true 
       });
       fetchData();
@@ -202,6 +207,7 @@ const AdminEmployees = () => {
       phone_number: employee.phone_number || '',
       password: '',
       department_id: adminProfile ? adminProfile.department.toString() : '',
+      avatar_url: employee.avatar_url || '',
       is_active: employee.is_active || true
     });
     setShowModal(true);
@@ -305,6 +311,7 @@ const AdminEmployees = () => {
                   phone_number: '', 
                   password: '',
                   department_id: '',
+                  avatar_url: '',
                   is_active: true 
                 });
                 setShowModal(true);
@@ -440,11 +447,12 @@ const AdminEmployees = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">
-                    <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <span className="text-lg font-medium text-blue-600">
-                        {(employee.first_name || '').charAt(0).toUpperCase()}
-                      </span>
-                    </div>
+                    <Avatar
+                      src={employee.avatar_url}
+                      name={`${employee.first_name} ${employee.last_name}`}
+                      size="md"
+                      className="flex-shrink-0"
+                    />
                     <div className="ml-3">
                       <h3 className="text-lg font-semibold text-gray-900">
                         {employee.first_name} {employee.last_name}
@@ -516,6 +524,18 @@ const AdminEmployees = () => {
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   {editingEmployee ? 'Edit Employee' : 'Add New Employee'}
                 </h3>
+                
+                {/* Avatar Preview */}
+                {(formData.first_name || formData.last_name || formData.avatar_url) && (
+                  <div className="flex items-center justify-center mb-6">
+                    <Avatar
+                      src={formData.avatar_url}
+                      name={`${formData.first_name} ${formData.last_name}`}
+                      size="lg"
+                      className="border-4 border-gray-200"
+                    />
+                  </div>
+                )}
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -560,6 +580,17 @@ const AdminEmployees = () => {
                         onChange={handleInputChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Avatar URL</label>
+                      <input
+                        type="url"
+                        name="avatar_url"
+                        value={formData.avatar_url}
+                        onChange={handleInputChange}
+                        placeholder="https://example.com/avatar.jpg"
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                     {!editingEmployee && (
