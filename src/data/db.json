@@ -7,7 +7,7 @@
       "phone_number": "555-0001",
       "first_name": "Emma",
       "last_name": "White",
-      "avatar_url": null,
+      "avatar_url": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop",
       "is_active": true,
       "email_verified_at": null,
       "phone_verified_at": null,
@@ -22,7 +22,7 @@
       "phone_number": "555-0002",
       "first_name": "Daniel",
       "last_name": "Harris",
-      "avatar_url": null,
+      "avatar_url": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop",
       "is_active": true,
       "email_verified_at": null,
       "phone_verified_at": null,
@@ -172,7 +172,7 @@
       "phone_number": "555-0201",
       "first_name": "Sarah",
       "last_name": "Johnson",
-      "avatar_url": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop",
+      "avatar_url": "https://images.unsplash.com/photo-1542178243-bc20204b769f?w=200&h=200&fit=crop",
       "is_active": true,
       "email_verified_at": null,
       "phone_verified_at": null,
@@ -277,7 +277,7 @@
       "phone_number": "555-0208",
       "first_name": "Maria",
       "last_name": "Garcia",
-      "avatar_url": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop",
+      "avatar_url": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
       "is_active": true,
       "email_verified_at": null,
       "phone_verified_at": null,
@@ -1000,11 +1000,7 @@
       "status": "Confirmed",
       "booking_notes": "Customer prefers morning appointments",
       "total_cost": 38.0,
-      "created_at": "2025-07-25T10:00:00Z",
-      "feedback": {
-        "rating": 5,
-        "comment": "Excellent service, caregiver was very attentive and caring."
-      }
+      "created_at": "2025-07-25T10:00:00Z"
     },
     {
       "id": 2,

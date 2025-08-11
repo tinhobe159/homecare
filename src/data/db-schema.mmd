@@ -1,0 +1,350 @@
+erDiagram
+    USERS ||--o{ USER_ROLES : has
+    ROLES ||--o{ USER_ROLES : assigned_to
+
+    USERS ||--o{ CUSTOMER_PROFILES : has
+    USERS ||--o{ CAREGIVER_PROFILES : has
+    USERS ||--o{ ADMINISTRATOR_PROFILES : has
+
+    ADMINISTRATOR_PROFILES }o--|| DEPARTMENTS : belongs_to
+
+    USERS ||--o{ ALLERGIES : has
+    USERS ||--o{ MEDICATIONS : takes
+    USERS ||--o{ MEDICAL_CONDITIONS : diagnosed_with
+
+    PACKAGES ||--o{ PACKAGE_SERVICES : contains
+    SERVICES ||--o{ PACKAGE_SERVICES : part_of
+
+    USERS ||--o{ APPOINTMENTS : books
+    CAREGIVER_PROFILES ||--o{ APPOINTMENTS : assigned
+    PACKAGES ||--o{ APPOINTMENTS : includes
+    USER_REQUESTS ||--o{ APPOINTMENTS : converts_to
+
+    USERS ||--o{ SCHEDULED_PACKAGES : schedules
+    CAREGIVER_PROFILES ||--o{ SCHEDULED_PACKAGES : delivers
+    PACKAGES ||--o{ SCHEDULED_PACKAGES : planned_for
+
+    CAREGIVER_PROFILES ||--o{ CAREGIVER_AVAILABILITY : has
+
+    SKILLS ||--o{ CAREGIVER_SKILLS : linked
+    CAREGIVER_PROFILES ||--o{ CAREGIVER_SKILLS : has
+
+    APPOINTMENTS ||--o{ PAYMENTS : paid_by
+    USERS ||--o{ PAYMENTS : makes
+
+    USERS ||--o{ ADDRESSES : has
+    CAREGIVER_PROFILES ||--o{ ADDRESSES : has
+
+    APPOINTMENTS ||--o{ EVV_RECORDS : tracked_by
+    CAREGIVER_PROFILES ||--o{ EVV_RECORDS : completes
+
+    USERS ||--o{ AUDIT_LOGS : creates
+
+    USERS ||--o{ USER_REQUESTS : submits
+    PACKAGES ||--o{ USER_REQUESTS : requested_in
+
+    USERS ||--o{ FEEDBACK : leaves
+    APPOINTMENTS ||--o{ FEEDBACK : receives
+
+    USERS ||--o{ HEALTH_RECORDS : has
+    CAREGIVER_PROFILES ||--o{ HEALTH_RECORDS : records
+    ADMINISTRATOR_PROFILES ||--o{ HEALTH_RECORDS : verifies
+
+    USERS ||--o{ EMERGENCY_CONTACTS : has
+
+    USERS ||--o{ INVOICES : billed_to
+    INVOICES ||--o{ INVOICE_LINE_ITEMS : contains
+    APPOINTMENTS ||--o{ INVOICE_LINE_ITEMS : billed_for
+
+    USERS ||--o{ INSURANCE_CLAIMS : files
+
+    CAREGIVER_PROFILES ||--o{ TIME_OFF_REQUESTS : requests
+
+    USERS {
+        int id
+        string email
+        string password
+        string phone_number
+        string first_name
+        string last_name
+        string avatar_url
+        boolean is_active
+        datetime email_verified_at
+        datetime phone_verified_at
+        datetime last_login_at
+        datetime created_at
+        datetime updated_at
+    }
+    ROLES {
+        int id
+        string name
+        string description
+        string permissions
+        boolean is_active
+    }
+    USER_ROLES {
+        int id
+        int user_id
+        int role_id
+        datetime assigned_at
+        int assigned_by
+        boolean is_active
+    }
+    CUSTOMER_PROFILES {
+        int id
+        int user_id
+        date date_of_birth
+        string emergency_contact_name
+        string emergency_contact_phone
+        string insurance_provider
+        string insurance_policy_number
+        string special_instructions
+    }
+    CAREGIVER_PROFILES {
+        int id
+        int user_id
+        string license_number
+        date license_expiry
+        string background_check_status
+        datetime background_check_date
+        int years_experience
+        float hourly_rate
+        string bio
+        float rating
+        int total_reviews
+        string availability_type
+    }
+    ADMINISTRATOR_PROFILES {
+        int id
+        int user_id
+        int department
+    }
+    DEPARTMENTS {
+        int id
+        string name
+        string code
+    }
+    ALLERGIES {
+        int id
+        int user_id
+        string allergy
+    }
+    MEDICATIONS {
+        int id
+        int user_id
+        string medication
+    }
+    MEDICAL_CONDITIONS {
+        int id
+        int user_id
+        string condition
+    }
+    PACKAGES {
+        int id
+        string code
+        string name
+        float total_cost
+        string description
+        float duration_hours
+        boolean is_active
+    }
+    PACKAGE_SERVICES {
+        int id
+        int package_id
+        int service_id
+    }
+    SERVICES {
+        int id
+        string code
+        string name
+        float hourly_rate
+        int duration
+        string description
+        boolean is_active
+    }
+    APPOINTMENTS {
+        int id
+        int user_id
+        int caregiver_id
+        int package_id
+        int user_request_id
+        datetime appointment_datetime_start
+        datetime appointment_datetime_end
+        int duration_minutes
+        string status
+        string booking_notes
+        float total_cost
+        datetime created_at
+    }
+    SCHEDULED_PACKAGES {
+        int id
+        int user_id
+        int package_id
+        int caregiver_id
+        datetime start_datetime
+        string rrule
+        date end_date
+        string status
+        string exceptions
+        datetime created_at
+        datetime updated_at
+    }
+    CAREGIVER_AVAILABILITY {
+        int id
+        int caregiver_id
+        date date
+        string availability_type
+        string day_of_week
+        date specific_date
+        time start_time
+        time end_time
+        boolean is_available
+        int max_appointments
+        string notes
+        boolean is_active
+        datetime created_at
+    }
+    SKILLS {
+        int id
+        string name
+        string description
+    }
+    CAREGIVER_SKILLS {
+        int id
+        int user_id
+        int skill_id
+    }
+    PAYMENTS {
+        int id
+        int appointment_id
+        int user_id
+        float amount
+        datetime payment_date
+        string payment_method
+        string status
+    }
+    ADDRESSES {
+        int id
+        int user_id
+        int caregiver_id
+        string street_address
+        string city
+        string state_province
+        string postal_code
+        string country
+        boolean is_primary
+    }
+    EVV_RECORDS {
+        int id
+        int appointment_id
+        int caregiver_id
+        datetime check_in_time
+        datetime check_out_time
+        string status
+        string caregiver_notes
+        string patient_signature_url
+    }
+    AUDIT_LOGS {
+        int id
+        int user_id
+        string action
+        string entity
+        int entity_id
+        datetime timestamp
+        string details
+    }
+    USER_REQUESTS {
+        int id
+        int user_id
+        int package_id
+        string status
+        string preferred_contact_method
+        string notes
+        datetime created_at
+        datetime converted_at
+    }
+
+    FEEDBACK {
+        int id
+        int appointment_id
+        int user_id
+        int rating
+        string comment
+        datetime created_at
+    }
+
+    HEALTH_RECORDS {
+        int id
+        int customer_id
+        string record_type
+        int recorded_by
+        string data
+        datetime recorded_at
+        datetime verified_at
+        int verified_by
+    }
+
+    EMERGENCY_CONTACTS {
+        int id
+        int customer_id
+        string contact_type
+        string name
+        string relationship
+        string phone_primary
+        string phone_secondary
+        string email
+        string address
+        boolean is_primary
+        boolean can_make_decisions
+    }
+
+    INVOICES {
+        int id
+        int customer_id
+        string invoice_number
+        date billing_period_start
+        date billing_period_end
+        float subtotal
+        float tax_amount
+        float total_amount
+        string status
+        date due_date
+        datetime issued_at
+        datetime paid_at
+    }
+
+    INVOICE_LINE_ITEMS {
+        int id
+        int invoice_id
+        int appointment_id
+        string service_name
+        int quantity
+        float unit_rate
+        float total_amount
+        string description
+    }
+
+    INSURANCE_CLAIMS {
+        int id
+        int customer_id
+        string insurance_provider
+        string claim_number
+        date service_date
+        float amount_claimed
+        float amount_approved
+        string status
+        datetime submitted_at
+        datetime processed_at
+    }
+
+    TIME_OFF_REQUESTS {
+        int id
+        int caregiver_id
+        date start_date
+        date end_date
+        string reason
+        string status
+        datetime requested_at
+        int reviewed_by
+        datetime reviewed_at
+    }

@@ -368,7 +368,7 @@ const BookingPage = () => {
                       <div className="flex items-center space-x-3">
                         <div className="flex-shrink-0">
                           <img
-                            src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/48'}
+                            src={caregiver.avatar_url || 'https://via.placeholder.com/48'}
                             alt={`${caregiver.first_name} ${caregiver.last_name}`}
                             className="w-12 h-12 rounded-full object-cover"
                           />

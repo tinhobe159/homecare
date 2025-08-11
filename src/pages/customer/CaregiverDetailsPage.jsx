@@ -93,7 +93,7 @@ const CaregiverDetailsPage = () => {
           <div className="p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
               <img
-                src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/128'}
+                src={caregiver.avatar_url || 'https://via.placeholder.com/128'}
                 alt={`${caregiver.first_name} ${caregiver.last_name}`}
                 className="w-32 h-32 rounded-full object-cover mx-auto md:mx-0"
               />

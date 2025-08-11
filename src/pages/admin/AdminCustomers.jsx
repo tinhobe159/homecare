@@ -360,10 +360,18 @@ const AdminCustomers = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">
-                    <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <span className="text-lg font-medium text-blue-600">
-                        {getCustomerInitial(customer)}
-                      </span>
+                    <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                      {customer.avatar_url ? (
+                        <img
+                          src={customer.avatar_url}
+                          alt={getCustomerName(customer)}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-lg font-medium text-blue-600">
+                          {getCustomerInitial(customer)}
+                        </span>
+                      )}
                     </div>
                     <div className="ml-3">
                       <h3 className="text-lg font-semibold text-gray-900">{getCustomerName(customer)}</h3>

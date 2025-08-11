@@ -202,7 +202,7 @@ const CaregiverAvailability = () => {
           <div className="flex items-start space-x-4">
             <img
               className="h-16 w-16 rounded-full object-cover"
-              src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/64'}
+              src={caregiver.avatar_url || 'https://via.placeholder.com/64'}
               alt={`${caregiver.first_name} ${caregiver.last_name}`}
             />
             <div className="flex-1">

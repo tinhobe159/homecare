@@ -327,7 +327,7 @@ const CaregiverManagement = () => {
                     <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
                       <img
                         className="h-12 w-12 rounded-full object-cover"
-                        src={caregiver.avatar_url || caregiver.profilePicture || 'https://via.placeholder.com/48'}
+                        src={caregiver.avatar_url || 'https://via.placeholder.com/48'}
                         alt={caregiver.first_name}
                       />
                     </div>
