@@ -49,7 +49,7 @@ const AdminScheduledPackages = () => {
   // Scheduled package state for better UX
   const [scheduledData, setScheduledData] = useState({
     rrule: '',
-    startDatetime: '',
+    start_datetime: '',
     exceptions: []
   });
 
@@ -160,7 +160,7 @@ const AdminScheduledPackages = () => {
     });
     setScheduledData({
       rrule: '',
-      startDatetime: '',
+      start_datetime: '',
       exceptions: []
     });
     setShowRecurrenceBuilder(false);
@@ -200,7 +200,7 @@ const AdminScheduledPackages = () => {
     });
     setScheduledData({
       rrule: pkg.rrule || '',
-      startDatetime: parsedStartDatetime,
+      start_datetime: parsedStartDatetime,
       exceptions: pkg.exceptions || []
     });
     setShowRecurrenceBuilder(false);
@@ -214,8 +214,8 @@ const AdminScheduledPackages = () => {
     try {
       // Convert the local datetime to ISO format with timezone
       let formattedStartDatetime = formData.start_datetime;
-      if (scheduledData.startDatetime) {
-        const date = new Date(scheduledData.startDatetime);
+      if (scheduledData.start_datetime) {
+        const date = new Date(scheduledData.start_datetime);
         formattedStartDatetime = date.toISOString();
       }
       
@@ -308,12 +308,12 @@ const AdminScheduledPackages = () => {
     return 'Custom';
   };
 
-  const getCustomerById = (userId) => {
-    return users.find(user => user.id === userId);
+  const getCustomerById = (user_id) => {
+    return users.find(user => user.id === user_id);
   };
 
-  const getCaregiverById = (userId) => {
-    return caregivers.find(caregiver => parseInt(caregiver.user_id) === parseInt(userId));
+  const getCaregiverById = (user_id) => {
+    return caregivers.find(caregiver => parseInt(caregiver.user_id) === parseInt(user_id));
   };
 
   const getPackageById = (packageId) => {
@@ -725,13 +725,13 @@ const AdminScheduledPackages = () => {
                     </label>
                     <input
                       type="date"
-                      value={scheduledData.startDatetime.split('T')[0] || ''}
+                      value={scheduledData.start_datetime ? scheduledData.start_datetime.split('T')[0] : ''}
                       onChange={(e) => {
-                        const time = scheduledData.startDatetime.split('T')[1] || '09:00';
+                        const time = scheduledData.start_datetime ? scheduledData.start_datetime.split('T')[1] : '09:00';
                         const newStartDatetime = `${e.target.value}T${time}`;
                         setScheduledData(prev => ({
                           ...prev,
-                          startDatetime: newStartDatetime
+                          start_datetime: newStartDatetime
                         }));
                         setFormData(prev => ({
                           ...prev,
@@ -749,13 +749,13 @@ const AdminScheduledPackages = () => {
                     </label>
                     <input
                       type="time"
-                      value={scheduledData.startDatetime.split('T')[1] || '09:00'}
+                      value={scheduledData.start_datetime ? scheduledData.start_datetime.split('T')[1] : '09:00'}
                       onChange={(e) => {
-                        const date = scheduledData.startDatetime.split('T')[0] || new Date().toISOString().split('T')[0];
+                        const date = scheduledData.start_datetime ? scheduledData.start_datetime.split('T')[0] : new Date().toISOString().split('T')[0];
                         const newStartDatetime = `${date}T${e.target.value}`;
                         setScheduledData(prev => ({
                           ...prev,
-                          startDatetime: newStartDatetime
+                          start_datetime: newStartDatetime
                         }));
                         setFormData(prev => ({
                           ...prev,
@@ -797,7 +797,7 @@ const AdminScheduledPackages = () => {
                 </div>
 
                 {/* Calendar Preview */}
-                {scheduledData.rrule && scheduledData.startDatetime && (
+                {scheduledData.rrule && scheduledData.start_datetime && (
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold">Calendar Preview</h3>
@@ -813,7 +813,7 @@ const AdminScheduledPackages = () => {
                     {showCalendarPreview && (
                       <CalendarPreview
                         rrule={scheduledData.rrule}
-                        startDate={scheduledData.startDatetime}
+                        startDate={scheduledData.start_datetime}
                         exceptions={scheduledData.exceptions}
                         onExceptionChange={handleExceptionChange}
                       />
@@ -869,8 +869,8 @@ const AdminScheduledPackages = () => {
                       <p><span className="font-medium">Status:</span> {formData.status}</p>
                     </div>
                     <div>
-                      <p><span className="font-medium">Start Date:</span> {scheduledData.startDatetime.split('T')[0]}</p>
-                      <p><span className="font-medium">Start Time:</span> {scheduledData.startDatetime.split('T')[1]}</p>
+                      <p><span className="font-medium">Start Date:</span> {scheduledData.start_datetime ? scheduledData.start_datetime.split('T')[0] : ''}</p>
+                      <p><span className="font-medium">Start Time:</span> {scheduledData.start_datetime ? scheduledData.start_datetime.split('T')[1] : ''}</p>
                       <p><span className="font-medium">Customer:</span> {users.find(u => u.id === parseInt(formData.user_id))?.first_name} {users.find(u => u.id === parseInt(formData.user_id))?.last_name}</p>
                       <p><span className="font-medium">Caregiver:</span> {formData.caregiver_id ? caregivers.find(c => parseInt(c.user_id) === parseInt(formData.caregiver_id))?.first_name + ' ' + caregivers.find(c => parseInt(c.user_id) === parseInt(formData.caregiver_id))?.last_name : 'Auto-assign'}</p>
                     </div>

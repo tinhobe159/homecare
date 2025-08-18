@@ -50,8 +50,8 @@ const AdminAuditLogs = () => {
     }
   };
 
-  const getUserName = (userId) => {
-    const user = users.find(u => u.id === userId);
+  const getUserName = (user_id) => {
+    const user = users.find(u => u.id === user_id);
     return user ? `${user.first_name} ${user.last_name}` : 'Unknown User';
   };
 

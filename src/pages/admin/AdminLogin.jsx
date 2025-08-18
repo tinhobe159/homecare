@@ -24,8 +24,8 @@ const AdminLogin = () => {
           user_type: 'Admin',
           user_id: '550e8400-e29b-41d4-a716-446655440000'
         };
-        login(adminUser, true); // true for admin
-        toast.success('Login successful!');
+        login(adminUser, 'admin'); // admin login
+        toast.success('Welcome to VeronCare Admin!');
         navigate('/admin');
       } else {
         toast.error('Invalid credentials. Please try again.');

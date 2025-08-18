@@ -37,13 +37,13 @@ const CustomerLogin = () => {
     try {
       if (isLogin) {
         // Login logic
-        const [usersResponse, userRolesResponse] = await Promise.all([
+        const [usersResponse, user_roles_response] = await Promise.all([
           usersAPI.getAll(),
           userRolesAPI.getAll()
         ]);
         
         // Find user with customer role (role_id = 3)
-        const customerRoleIds = userRolesResponse.data
+        const customerRoleIds = user_roles_response.data
           .filter(role => role.role_id === 3)
           .map(role => role.user_id);
         
@@ -54,7 +54,7 @@ const CustomerLogin = () => {
         );
         
         if (customer) {
-          login(customer, false); // false for customer, not admin
+          login(customer, 'customer'); // false for customer, not admin
           toast.success('Login successful!');
           navigate(location.state?.from || '/');
         } else {
@@ -75,11 +75,11 @@ const CustomerLogin = () => {
         };
 
         const userResponse = await usersAPI.create(newUser);
-        const newUserId = userResponse.data.id;
+        const new_user_id = userResponse.data.id;
         
         // Assign customer role
         await userRolesAPI.create({
-          user_id: newUserId,
+          user_id: new_user_id,
           role_id: 3 // Customer role
         });
         

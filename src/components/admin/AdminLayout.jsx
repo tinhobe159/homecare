@@ -4,7 +4,8 @@ import {
   Home, Users, Calendar, Package, Settings, 
   LogOut, Menu, X, MessageSquare, BarChart3,
   UserCheck, FileText, Heart, Shield, Building2,
-  Briefcase, TrendingUp, Activity, Star, DollarSign
+  Briefcase, TrendingUp, Activity, Star, DollarSign,
+  CreditCard, Brain, Zap, Sparkles, Repeat, Wifi, Smartphone
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
@@ -67,6 +68,19 @@ const AdminLayout = () => {
         { path: '/admin/services', label: 'Services', icon: Settings, roles: ['admin'] },
         { path: '/admin/packages', label: 'Packages', icon: Package, roles: ['admin'] },
         { path: '/admin/scheduled-packages', label: 'Scheduled Packages', icon: Calendar, roles: ['admin'] },
+        { path: '/admin/supervisor-verification', label: 'EVV Verification', icon: Shield, roles: ['admin'] },
+        { path: '/admin/performance-dashboard', label: 'Performance', icon: TrendingUp, roles: ['admin'] },
+        { path: '/admin/payroll', label: 'Payroll', icon: DollarSign, roles: ['admin'] },
+        { path: '/admin/insurance-billing', label: 'Insurance & Billing', icon: CreditCard, roles: ['admin'] },
+        { path: '/admin/analytics', label: 'Advanced Analytics', icon: BarChart3, roles: ['admin'] },
+        { path: '/admin/reports', label: 'Custom Reports', icon: FileText, roles: ['admin'] },
+        { path: '/admin/quality-assurance', label: 'Quality Assurance', icon: Shield, roles: ['admin'] },
+        { path: '/admin/recurring-schedules', label: 'Recurring Schedules', icon: Repeat, roles: ['admin'] },
+        { path: '/admin/iot-dashboard', label: 'IoT Dashboard', icon: Wifi, roles: ['admin'] },
+        { path: '/admin/smart-health', label: 'Smart Health', icon: Smartphone, roles: ['admin'] },
+        { path: '/admin/ai-care-plans', label: 'AI Care Plans', icon: Brain, roles: ['admin'] },
+        { path: '/admin/ai-scheduling', label: 'AI Scheduling', icon: Zap, roles: ['admin'] },
+        { path: '/admin/ai-documentation', label: 'AI Documentation', icon: Sparkles, roles: ['admin'] },
         { path: '/admin/audit-logs', label: 'Audit Logs', icon: FileText, roles: ['admin'] },
       ],
       hr: [
@@ -74,6 +88,9 @@ const AdminLayout = () => {
         { path: '/admin/roles', label: 'Roles', icon: Shield, roles: ['hr'] },
         { path: '/admin/departments', label: 'Departments', icon: Building2, roles: ['hr'] },
         { path: '/admin/caregivers', label: 'Caregivers', icon: UserCheck, roles: ['hr'] },
+        { path: '/admin/performance-dashboard', label: 'Performance', icon: TrendingUp, roles: ['hr'] },
+        { path: '/admin/payroll', label: 'Payroll', icon: DollarSign, roles: ['hr'] },
+        { path: '/admin/insurance-billing', label: 'Insurance & Billing', icon: CreditCard, roles: ['hr'] },
         { path: '/admin/user-requests', label: 'User Requests', icon: MessageSquare, roles: ['hr'] },
       ],
       operations: [
@@ -83,11 +100,21 @@ const AdminLayout = () => {
         { path: '/admin/services', label: 'Services', icon: Settings, roles: ['operations'] },
         { path: '/admin/packages', label: 'Packages', icon: Package, roles: ['operations'] },
         { path: '/admin/scheduled-packages', label: 'Scheduled Packages', icon: Calendar, roles: ['operations'] },
+        { path: '/admin/supervisor-verification', label: 'EVV Verification', icon: Shield, roles: ['operations'] },
+        { path: '/admin/performance-dashboard', label: 'Performance', icon: TrendingUp, roles: ['operations'] },
       ],
       executive: [
         { path: '/admin/customers', label: 'Customers', icon: Users, roles: ['executive'] },
         { path: '/admin/caregivers', label: 'Caregivers', icon: UserCheck, roles: ['executive'] },
         { path: '/admin/appointments', label: 'Appointments', icon: Calendar, roles: ['executive'] },
+        { path: '/admin/performance-dashboard', label: 'Performance', icon: TrendingUp, roles: ['executive'] },
+        { path: '/admin/analytics', label: 'Advanced Analytics', icon: BarChart3, roles: ['executive'] },
+        { path: '/admin/reports', label: 'Custom Reports', icon: FileText, roles: ['executive'] },
+        { path: '/admin/quality-assurance', label: 'Quality Assurance', icon: Shield, roles: ['executive'] },
+        { path: '/admin/recurring-schedules', label: 'Recurring Schedules', icon: Repeat, roles: ['executive'] },
+        { path: '/admin/iot-dashboard', label: 'IoT Dashboard', icon: Wifi, roles: ['executive'] },
+        { path: '/admin/smart-health', label: 'Smart Health', icon: Smartphone, roles: ['executive'] },
+        { path: '/admin/ai-care-plans', label: 'AI Care Plans', icon: Brain, roles: ['executive'] },
         { path: '/admin/audit-logs', label: 'Audit Logs', icon: FileText, roles: ['executive'] },
       ]
     };

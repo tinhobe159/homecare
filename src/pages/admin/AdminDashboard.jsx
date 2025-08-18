@@ -125,16 +125,16 @@ const AdminDashboard = () => {
     }).length;
 
     // Active Users Analysis (users with appointments in last 30 days)
-    const activeUserIds = new Set(
+    const active_user_ids = new Set(
       appointments
         .filter(apt => new Date(apt.appointment_datetime_start) >= monthAgo)
         .map(apt => apt.user_id)
     );
-    const activeUsersCount = activeUserIds.size;
+    const activeUsersCount = active_user_ids.size;
     const activeUsersPercentage = users.length > 0 ? (activeUsersCount / users.length) * 100 : 0;
 
     // Churn Analysis (users active before but not in last 30 days)
-    const previouslyActiveUserIds = new Set(
+    const previously_active_user_ids = new Set(
       appointments
         .filter(apt => {
           const aptDate = new Date(apt.appointment_datetime_start);
@@ -143,18 +143,18 @@ const AdminDashboard = () => {
         .map(apt => apt.user_id)
     );
     
-    const churnedUserIds = Array.from(previouslyActiveUserIds).filter(
-      userId => !activeUserIds.has(userId)
+    const churned_user_ids = Array.from(previously_active_user_ids).filter(
+      user_id => !active_user_ids.has(user_id)
     );
-    const churnCount = churnedUserIds.length;
-    const churnPercentage = previouslyActiveUserIds.size > 0 ? (churnCount / previouslyActiveUserIds.size) * 100 : 0;
+    const churnCount = churned_user_ids.length;
+    const churnPercentage = previously_active_user_ids.size > 0 ? (churnCount / previously_active_user_ids.size) * 100 : 0;
 
     // Retention Analysis
     const usersFrom90DaysAgo = users.filter(u => new Date(u.created_at) <= new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000));
     const usersFrom30DaysAgo = users.filter(u => new Date(u.created_at) <= new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000));
     
-    const retained30Day = usersFrom30DaysAgo.filter(u => activeUserIds.has(u.id)).length;
-    const retained90Day = usersFrom90DaysAgo.filter(u => activeUserIds.has(u.id)).length;
+    const retained30Day = usersFrom30DaysAgo.filter(u => active_user_ids.has(u.id)).length;
+    const retained90Day = usersFrom90DaysAgo.filter(u => active_user_ids.has(u.id)).length;
     
     const retention30Day = usersFrom30DaysAgo.length > 0 ? (retained30Day / usersFrom30DaysAgo.length) * 100 : 0;
     const retention90Day = usersFrom90DaysAgo.length > 0 ? (retained90Day / usersFrom90DaysAgo.length) * 100 : 0;

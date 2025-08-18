@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { packagesAPI, servicesAPI } from '../../services/api';
+import { packagesAPI, servicesAPI, packageServicesAPI } from '../../services/api';
 import SearchBar from '../../components/common/SearchBar';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import { Clock, DollarSign, ArrowRight, Package } from 'lucide-react';
 const PackagesPage = () => {
   const [packages, setPackages] = useState([]);
   const [services, setServices] = useState([]);
+  const [packageServices, setPackageServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -18,13 +19,15 @@ const PackagesPage = () => {
 
   const fetchData = async () => {
     try {
-      const [packagesRes, servicesRes] = await Promise.all([
+      const [packagesRes, servicesRes, packageServicesRes] = await Promise.all([
         packagesAPI.getAll(),
-        servicesAPI.getAll()
+        servicesAPI.getAll(),
+        packageServicesAPI.getAll()
       ]);
 
       setPackages(packagesRes.data);
       setServices(servicesRes.data);
+      setPackageServices(packageServicesRes.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load packages');
@@ -34,11 +37,13 @@ const PackagesPage = () => {
   };
 
   const getPackageServices = (packageId) => {
-    const packageData = packages.find(pkg => pkg.id === packageId);
-    const serviceIds = packageData?.serviceIds || [];
+    // Get service IDs for this package from the package_services junction table
+    const serviceIds = packageServices
+      .filter(ps => ps.package_id === packageId)
+      .map(ps => ps.service_id);
+    
     return services.filter(service => 
-      serviceIds && Array.isArray(serviceIds) && 
-              serviceIds.includes(service.id) && service.is_active
+      serviceIds.includes(service.id) && service.is_active
     );
   };
 

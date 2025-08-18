@@ -29,7 +29,7 @@ const AdminAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [packages, setPackages] = useState([]);
   const [users, setUsers] = useState([]);
-  const [userRequests, setUserRequests] = useState([]);
+  const [user_requests, setUserRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -69,7 +69,7 @@ const AdminAppointments = () => {
 
   const fetchData = async () => {
     try {
-      const [appointmentsResponse, packagesResponse, usersResponse, userRequestsResponse] = await Promise.all([
+      const [appointmentsResponse, packagesResponse, usersResponse, user_requests_response] = await Promise.all([
         appointmentsAPI.getAll(),
         packagesAPI.getAll(),
         usersAPI.getAll(),
@@ -78,7 +78,7 @@ const AdminAppointments = () => {
       setAppointments(appointmentsResponse.data);
       setPackages(packagesResponse.data);
       setUsers(usersResponse.data);
-      setUserRequests(userRequestsResponse.data);
+      setUserRequests(user_requests_response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load appointments');
@@ -214,12 +214,12 @@ const AdminAppointments = () => {
     return packages.find(pkg => pkg.id === packageId);
   };
 
-  const getUserById = (userId) => {
-    return users.find(user => user.id === userId);
+  const getUserById = (user_id) => {
+    return users.find(user => user.id === user_id);
   };
 
   const getUserRequestById = (requestId) => {
-    return userRequests.find(req => req.id === requestId);
+    return user_requests.find(req => req.id === requestId);
   };
 
   const getStatusColor = (status) => {
@@ -620,7 +620,7 @@ const AdminAppointments = () => {
                       <option value="">Select Caregiver</option>
                       {users.map(user => (
                         <option key={user.id} value={user.id}>
-                          {user.first_name} {user.last_name} - ${user.hourlyRate}/hr
+                          {user.first_name} {user.last_name} - ${user.hourly_rate}/hr
                         </option>
                       ))}
                     </select>
@@ -868,7 +868,7 @@ const AdminAppointments = () => {
                             <p><span className="font-medium">Name:</span> {caregiver.first_name} {caregiver.last_name}</p>
                             <p><span className="font-medium">Email:</span> {caregiver.email}</p>
                             <p><span className="font-medium">Phone:</span> {caregiver.phone_number}</p>
-                            <p><span className="font-medium">Hourly Rate:</span> ${caregiver.hourlyRate}/hr</p>
+                            <p><span className="font-medium">Hourly Rate:</span> ${caregiver.hourly_rate}/hr</p>
                           </>
                         ) : (
                           <p className="text-gray-500">No caregiver assigned</p>

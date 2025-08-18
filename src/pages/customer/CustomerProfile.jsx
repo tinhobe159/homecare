@@ -26,7 +26,7 @@ const CustomerProfile = () => {
   const { currentUser, login } = useContext(AuthContext);
   const [appointments, setAppointments] = useState([]);
   const [packages, setPackages] = useState([]);
-  const [userRequests, setUserRequests] = useState([]);
+  const [user_requests, setUserRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ const CustomerProfile = () => {
 
   const fetchUserData = async () => {
     try {
-      const [appointmentsResponse, packagesResponse, userRequestsResponse] = await Promise.all([
+      const [appointmentsResponse, packagesResponse, user_requests_response] = await Promise.all([
         appointmentsAPI.getAll(),
         packagesAPI.getAll(),
         userRequestsAPI.getAll()
@@ -58,13 +58,13 @@ const CustomerProfile = () => {
       );
       
       // Filter user requests for current user
-      const userUserRequests = userRequestsResponse.data.filter(
+      const user_user_requests = user_requests_response.data.filter(
         req => req.user_id === currentUser.id
       );
       
       setAppointments(userAppointments);
       setPackages(packagesResponse.data);
-      setUserRequests(userUserRequests);
+      setUserRequests(user_user_requests);
     } catch (error) {
       console.error('Error fetching user data:', error);
       toast.error('Failed to load user data');
@@ -432,7 +432,7 @@ const CustomerProfile = () => {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">My Requests</h2>
             
-            {userRequests.length === 0 ? (
+            {user_requests.length === 0 ? (
               <div className="text-center py-8">
                 <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No requests yet</h3>
@@ -447,7 +447,7 @@ const CustomerProfile = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                {userRequests.map((request) => {
+                {user_requests.map((request) => {
                   const pkg = getPackageById(request.package_id);
                   return (
                     <div key={request.id} className="border border-gray-200 rounded-lg p-4">

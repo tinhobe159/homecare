@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 
 const AdminRoles = () => {
   const [roles, setRoles] = useState([]);
-  const [userRoles, setUserRoles] = useState([]);
+  const [user_roles, setUserRoles] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,17 +37,17 @@ const AdminRoles = () => {
 
   useEffect(() => {
     calculateMetrics();
-  }, [roles, userRoles]);
+  }, [roles, user_roles]);
 
   const fetchData = async () => {
     try {
-      const [rolesResponse, userRolesResponse, usersResponse] = await Promise.all([
+      const [rolesResponse, user_roles_response, usersResponse] = await Promise.all([
         rolesAPI.getAll(),
         userRolesAPI.getAll(),
         usersAPI.getAll()
       ]);
       setRoles(rolesResponse.data);
-      setUserRoles(userRolesResponse.data);
+      setUserRoles(user_roles_response.data);
       setUsers(usersResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -63,7 +63,7 @@ const AdminRoles = () => {
     
     // Calculate users per role
     const roleUserCounts = {};
-    userRoles.forEach(userRole => {
+    user_roles.forEach(userRole => {
       const roleId = userRole.role_id;
       roleUserCounts[roleId] = (roleUserCounts[roleId] || 0) + 1;
     });
@@ -151,7 +151,7 @@ const AdminRoles = () => {
   };
 
   const getUserCount = (roleId) => {
-    return userRoles.filter(userRole => userRole.role_id === roleId).length;
+    return user_roles.filter(userRole => userRole.role_id === roleId).length;
   };
 
   const filteredRoles = roles.filter(role => {

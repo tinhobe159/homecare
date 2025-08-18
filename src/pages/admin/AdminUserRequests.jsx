@@ -29,7 +29,7 @@ import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const AdminUserRequests = () => {
-  const [userRequests, setUserRequests] = useState([]);
+  const [user_requests, setUserRequests] = useState([]);
   const [users, setUsers] = useState([]);
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +69,7 @@ const AdminUserRequests = () => {
 
   useEffect(() => {
     calculateMetrics();
-  }, [userRequests]);
+  }, [user_requests]);
 
   const fetchData = async () => {
     try {
@@ -90,10 +90,10 @@ const AdminUserRequests = () => {
   };
 
   const calculateMetrics = () => {
-    const total = userRequests.length;
-    const pending = userRequests.filter(r => r.status === 'pending').length;
-    const approved = userRequests.filter(r => r.status === 'approved').length;
-    const rejected = userRequests.filter(r => r.status === 'rejected').length;
+    const total = user_requests.length;
+    const pending = user_requests.filter(r => r.status === 'pending').length;
+    const approved = user_requests.filter(r => r.status === 'approved').length;
+    const rejected = user_requests.filter(r => r.status === 'rejected').length;
     
     // Mock average response time (in hours)
     const averageResponseTime = 4.2;
@@ -218,7 +218,7 @@ const AdminUserRequests = () => {
 
   const handleConvertToAppointment = async (requestId) => {
     try {
-      const request = userRequests.find(req => req.id === requestId);
+      const request = user_requests.find(req => req.id === requestId);
       if (!request) {
         toast.error('Request not found');
         return;
@@ -274,8 +274,8 @@ const AdminUserRequests = () => {
     }
   };
 
-  const getCustomerById = (userId) => {
-    return users.find(user => user.id === userId);
+  const getCustomerById = (user_id) => {
+    return users.find(user => user.id === user_id);
   };
 
   const getPackageById = (packageId) => {
@@ -300,7 +300,7 @@ const AdminUserRequests = () => {
     }
   };
 
-  const filteredRequests = userRequests.filter(request => {
+  const filteredRequests = user_requests.filter(request => {
     const customer = getCustomerById(request.user_id);
     const pkg = getPackageById(request.package_id);
     
@@ -448,7 +448,7 @@ const AdminUserRequests = () => {
             </div>
             <div className="text-right">
               <span className="text-sm text-gray-600">
-                {filteredRequests.length} of {userRequests.length} requests
+                {filteredRequests.length} of {user_requests.length} requests
               </span>
             </div>
           </div>

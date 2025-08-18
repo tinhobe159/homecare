@@ -13,7 +13,8 @@
       "phone_verified_at": null,
       "last_login_at": null,
       "created_at": "2025-01-15T10:00:00Z",
-      "updated_at": "2025-08-01T10:45:00Z"
+      "updated_at": "2025-08-01T10:45:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -28,7 +29,8 @@
       "phone_verified_at": null,
       "last_login_at": null,
       "created_at": "2025-01-15T10:00:00Z",
-      "updated_at": "2025-08-01T10:45:00Z"
+      "updated_at": "2025-08-01T10:45:00Z",
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -43,7 +45,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-01T10:45:00Z",
       "created_at": "2025-01-15T10:00:00Z",
-      "updated_at": "2025-08-01T10:45:00Z"
+      "updated_at": "2025-08-01T10:45:00Z",
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -58,7 +61,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-02T12:00:00Z",
       "created_at": "2025-02-20T14:30:00Z",
-      "updated_at": "2025-08-02T12:00:00Z"
+      "updated_at": "2025-08-02T12:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -73,7 +77,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-03T10:30:00Z",
       "created_at": "2025-03-10T09:15:00Z",
-      "updated_at": "2025-08-03T10:30:00Z"
+      "updated_at": "2025-08-03T10:30:00Z",
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -88,7 +93,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-04T12:45:00Z",
       "created_at": "2025-04-05T16:45:00Z",
-      "updated_at": "2025-08-04T12:45:00Z"
+      "updated_at": "2025-08-04T12:45:00Z",
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -103,7 +109,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-07-15T09:00:00Z",
       "created_at": "2025-05-12T11:20:00Z",
-      "updated_at": "2025-07-15T09:00:00Z"
+      "updated_at": "2025-07-15T09:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 8,
@@ -118,7 +125,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-07-28T13:10:00Z",
       "created_at": "2025-07-28T13:10:00Z",
-      "updated_at": "2025-07-28T13:10:00Z"
+      "updated_at": "2025-07-28T13:10:00Z",
+      "deleted_at": null
     },
     {
       "id": 9,
@@ -133,7 +141,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-07-29T15:30:00Z",
       "created_at": "2025-07-29T15:30:00Z",
-      "updated_at": "2025-07-29T15:30:00Z"
+      "updated_at": "2025-07-29T15:30:00Z",
+      "deleted_at": null
     },
     {
       "id": 10,
@@ -148,7 +157,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-05T14:20:00Z",
       "created_at": "2025-06-10T09:45:00Z",
-      "updated_at": "2025-08-05T14:20:00Z"
+      "updated_at": "2025-08-05T14:20:00Z",
+      "deleted_at": null
     },
     {
       "id": 11,
@@ -163,7 +173,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-06T10:15:00Z",
       "created_at": "2025-05-22T11:10:00Z",
-      "updated_at": "2025-08-06T10:15:00Z"
+      "updated_at": "2025-08-06T10:15:00Z",
+      "deleted_at": null
     },
     {
       "id": 12,
@@ -178,7 +189,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-01T08:30:00Z",
       "created_at": "2025-01-10T09:00:00Z",
-      "updated_at": "2025-08-01T08:30:00Z"
+      "updated_at": "2025-08-01T08:30:00Z",
+      "deleted_at": null
     },
     {
       "id": 13,
@@ -193,7 +205,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-02T09:15:00Z",
       "created_at": "2025-01-15T10:30:00Z",
-      "updated_at": "2025-08-02T09:15:00Z"
+      "updated_at": "2025-08-02T09:15:00Z",
+      "deleted_at": null
     },
     {
       "id": 14,
@@ -208,7 +221,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-03T10:45:00Z",
       "created_at": "2025-02-01T14:15:00Z",
-      "updated_at": "2025-08-03T10:45:00Z"
+      "updated_at": "2025-08-03T10:45:00Z",
+      "deleted_at": null
     },
     {
       "id": 15,
@@ -223,7 +237,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-04T11:20:00Z",
       "created_at": "2025-02-10T11:45:00Z",
-      "updated_at": "2025-08-04T11:20:00Z"
+      "updated_at": "2025-08-04T11:20:00Z",
+      "deleted_at": null
     },
     {
       "id": 16,
@@ -238,7 +253,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-05T12:30:00Z",
       "created_at": "2025-03-05T16:20:00Z",
-      "updated_at": "2025-08-05T12:30:00Z"
+      "updated_at": "2025-08-05T12:30:00Z",
+      "deleted_at": null
     },
     {
       "id": 17,
@@ -253,7 +269,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-06T13:45:00Z",
       "created_at": "2025-03-15T13:10:00Z",
-      "updated_at": "2025-08-06T13:45:00Z"
+      "updated_at": "2025-08-06T13:45:00Z",
+      "deleted_at": null
     },
     {
       "id": 18,
@@ -268,7 +285,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-07T14:00:00Z",
       "created_at": "2025-04-01T10:00:00Z",
-      "updated_at": "2025-08-07T14:00:00Z"
+      "updated_at": "2025-08-07T14:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 19,
@@ -283,7 +301,8 @@
       "phone_verified_at": null,
       "last_login_at": "2025-08-08T15:30:00Z",
       "created_at": "2025-04-15T11:20:00Z",
-      "updated_at": "2025-08-08T15:30:00Z"
+      "updated_at": "2025-08-08T15:30:00Z",
+      "deleted_at": null
     }
   ],
   "roles": [
@@ -292,28 +311,40 @@
       "name": "admin",
       "description": "Administrator",
       "permissions": "{}",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-01T10:00:00Z",
+      "updated_at": "2025-01-01T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
       "name": "caregiver",
       "description": "Caregiver",
       "permissions": "{}",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-01T10:00:00Z",
+      "updated_at": "2025-01-01T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 3,
       "name": "customer",
       "description": "Customer",
       "permissions": "{}",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-01T10:00:00Z",
+      "updated_at": "2025-01-01T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 4,
-      "name": "family_member",
+      "name": "familyMember",
       "description": "Family Member",
       "permissions": "{}",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-01T10:00:00Z",
+      "updated_at": "2025-01-01T10:00:00Z",
+      "deleted_at": null
     }
   ],
   "user_roles": [
@@ -323,7 +354,8 @@
       "role_id": 1,
       "assigned_at": null,
       "assigned_by": null,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -331,7 +363,8 @@
       "role_id": 1,
       "assigned_at": null,
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -339,7 +372,8 @@
       "role_id": 3,
       "assigned_at": "2025-01-15T10:00:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -347,7 +381,8 @@
       "role_id": 3,
       "assigned_at": "2025-02-20T14:30:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -355,7 +390,8 @@
       "role_id": 3,
       "assigned_at": "2025-03-10T09:15:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -363,7 +399,8 @@
       "role_id": 3,
       "assigned_at": "2025-04-05T16:45:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -371,7 +408,8 @@
       "role_id": 3,
       "assigned_at": "2025-05-12T11:20:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 8,
@@ -379,7 +417,8 @@
       "role_id": 3,
       "assigned_at": "2025-07-28T13:10:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 9,
@@ -387,7 +426,8 @@
       "role_id": 3,
       "assigned_at": "2025-07-29T15:30:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 10,
@@ -395,7 +435,8 @@
       "role_id": 3,
       "assigned_at": "2025-06-10T09:45:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 11,
@@ -403,7 +444,8 @@
       "role_id": 3,
       "assigned_at": "2025-05-22T11:10:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 12,
@@ -411,7 +453,8 @@
       "role_id": 2,
       "assigned_at": "2025-01-10T09:00:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 13,
@@ -419,7 +462,8 @@
       "role_id": 2,
       "assigned_at": "2025-01-15T10:30:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 14,
@@ -427,7 +471,8 @@
       "role_id": 2,
       "assigned_at": "2025-02-01T14:15:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 15,
@@ -435,7 +480,8 @@
       "role_id": 2,
       "assigned_at": "2025-02-10T11:45:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 16,
@@ -443,7 +489,8 @@
       "role_id": 2,
       "assigned_at": "2025-03-05T16:20:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 17,
@@ -451,7 +498,8 @@
       "role_id": 2,
       "assigned_at": "2025-03-15T13:10:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 18,
@@ -459,7 +507,8 @@
       "role_id": 2,
       "assigned_at": "2025-04-01T10:00:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     },
     {
       "id": 19,
@@ -467,12 +516,27 @@
       "role_id": 2,
       "assigned_at": "2025-04-15T11:20:00Z",
       "assigned_by": 1,
-      "is_active": true
+      "is_active": true,
+      "deleted_at": null
     }
   ],
   "departments": [
-    { "id": 1, "name": "Operations", "code": "OPS" },
-    { "id": 2, "name": "Customer Service", "code": "CS" }
+    {
+      "id": 1,
+      "name": "Operations",
+      "code": "OPS",
+      "created_at": "2025-01-01T10:00:00Z",
+      "updated_at": "2025-01-01T10:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 2,
+      "name": "Customer Service",
+      "code": "CS",
+      "created_at": "2025-01-01T10:00:00Z",
+      "updated_at": "2025-01-01T10:00:00Z",
+      "deleted_at": null
+    }
   ],
   "customer_profiles": [
     {
@@ -483,7 +547,10 @@
       "emergency_contact_phone": "555-0102",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "created_at": "2025-01-15T10:00:00Z",
+      "updated_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -493,7 +560,8 @@
       "emergency_contact_phone": "555-0104",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -503,7 +571,8 @@
       "emergency_contact_phone": "555-0106",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -513,7 +582,8 @@
       "emergency_contact_phone": "555-0108",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -523,7 +593,8 @@
       "emergency_contact_phone": "555-0110",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -533,7 +604,8 @@
       "emergency_contact_phone": "555-0112",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -543,7 +615,8 @@
       "emergency_contact_phone": "555-0114",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "deleted_at": null
     },
     {
       "id": 8,
@@ -553,7 +626,8 @@
       "emergency_contact_phone": "555-0116",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "deleted_at": null
     },
     {
       "id": 9,
@@ -563,23 +637,72 @@
       "emergency_contact_phone": "555-0118",
       "insurance_provider": null,
       "insurance_policy_number": null,
-      "special_instructions": null
+      "special_instructions": null,
+      "deleted_at": null
     }
   ],
   "caregiver_profiles": [
     {
       "id": 1,
       "user_id": 12,
-      "license_number": null,
-      "license_expiry": null,
+      "license_number": "CNA-IL-789456",
+      "license_expiry": "2026-12-31",
       "background_check_status": "verified",
-      "background_check_date": null,
+      "background_check_date": "2025-01-15",
       "years_experience": 8,
       "hourly_rate": 25,
       "bio": "Experienced caregiver with 8 years of experience specializing in dementia care and medication management. Passionate about providing compassionate care to seniors.",
+      "specializations": [
+        "Dementia Care",
+        "Medication Management",
+        "Fall Prevention",
+        "Chronic Disease Support",
+        "Post-Surgery Recovery"
+      ],
+      "certifications": [
+        {
+          "name": "Certified Nursing Assistant (CNA)",
+          "issuer": "Illinois Department of Health",
+          "issued_date": "2017-03-15",
+          "expiry_date": "2026-12-31",
+          "credential_id": "CNA-IL-789456"
+        },
+        {
+          "name": "CPR/First Aid Certification",
+          "issuer": "American Red Cross",
+          "issued_date": "2024-08-01",
+          "expiry_date": "2026-08-01",
+          "credential_id": "CPR-ARC-2024-8901"
+        },
+        {
+          "name": "Dementia Care Specialist",
+          "issuer": "Alzheimer's Association",
+          "issued_date": "2023-06-10",
+          "expiry_date": "2026-06-10",
+          "credential_id": "DCS-AA-2023-4567"
+        },
+        {
+          "name": "Medication Administration Certification",
+          "issuer": "Illinois Board of Nursing",
+          "issued_date": "2022-11-20",
+          "expiry_date": "2025-11-20",
+          "credential_id": "MAC-IL-2022-1234"
+        }
+      ],
+      "availability_notes": "Available Monday through Friday, 7 AM to 7 PM. Weekend availability by special arrangement. Prefer assignments within 20 miles of Springfield. Not available during holiday weeks in December.",
+      "emergency_contact": {
+        "name": "John Connor",
+        "relationship": "Spouse",
+        "phone": "(217) 555-9876",
+        "email": "john.connor@email.com"
+      },
+      "total_clients": 8,
+      "total_hours": 156.5,
+      "average_rating": 4.8,
       "rating": 4.8,
       "total_reviews": 127,
-      "availability_type": null
+      "availability_type": "full_time",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -593,7 +716,8 @@
       "bio": "Certified nursing assistant with 5 years of experience in home care. Specializes in mobility assistance and personal care services.",
       "rating": 4.6,
       "total_reviews": 89,
-      "availability_type": null
+      "availability_type": null,
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -607,7 +731,8 @@
       "bio": "Licensed practical nurse with 10 years of experience. Expert in wound care, medication administration, and chronic disease management.",
       "rating": 4.9,
       "total_reviews": 203,
-      "availability_type": null
+      "availability_type": null,
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -621,7 +746,8 @@
       "bio": "Physical therapy assistant with 6 years of experience. Specializes in rehabilitation exercises and mobility training for seniors.",
       "rating": 4.7,
       "total_reviews": 156,
-      "availability_type": null
+      "availability_type": null,
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -635,7 +761,8 @@
       "bio": "Certified home health aide with 7 years of experience. Provides comprehensive personal care and companionship services.",
       "rating": 4.5,
       "total_reviews": 94,
-      "availability_type": null
+      "availability_type": null,
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -649,7 +776,8 @@
       "bio": "Registered nurse with 12 years of experience in geriatric care. Expert in medication management and health monitoring.",
       "rating": 4.9,
       "total_reviews": 178,
-      "availability_type": null
+      "availability_type": null,
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -663,7 +791,8 @@
       "bio": "Bilingual caregiver with 6 years of experience. Specializes in Alzheimer's care and end-of-life support.",
       "rating": 4.7,
       "total_reviews": 112,
-      "availability_type": null
+      "availability_type": null,
+      "deleted_at": null
     },
     {
       "id": 8,
@@ -677,117 +806,148 @@
       "bio": "Certified occupational therapy assistant with 9 years of experience. Focuses on improving daily living skills for seniors.",
       "rating": 4.8,
       "total_reviews": 145,
-      "availability_type": null
+      "availability_type": null,
+      "deleted_at": null
     }
   ],
   "administrator_profiles": [
-    { "id": 1, "user_id": 1, "department": 1 },
-    { "id": 2, "user_id": 2, "department": 2 }
+    {
+      "id": 1,
+      "user_id": 1,
+      "department": 1,
+      "deleted_at": null
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "department": 2,
+      "deleted_at": null
+    }
   ],
   "allergies": [
     {
       "id": 1,
       "user_id": 3,
-      "allergy": "Penicillin"
+      "allergy": "Penicillin",
+      "deleted_at": null
     },
     {
       "id": 2,
       "user_id": 5,
-      "allergy": "Shellfish"
+      "allergy": "Shellfish",
+      "deleted_at": null
     },
     {
       "id": 3,
       "user_id": 7,
-      "allergy": "Nuts"
+      "allergy": "Nuts",
+      "deleted_at": null
     },
     {
       "id": 4,
       "user_id": 9,
-      "allergy": "Latex"
+      "allergy": "Latex",
+      "deleted_at": null
     },
     {
       "id": 5,
       "user_id": 10,
-      "allergy": "Sulfa"
+      "allergy": "Sulfa",
+      "deleted_at": null
     }
   ],
   "medications": [
     {
       "id": 1,
       "user_id": 3,
-      "medication": "Aspirin"
+      "medication": "Aspirin",
+      "deleted_at": null
     },
     {
       "id": 2,
       "user_id": 4,
-      "medication": "Metformin"
+      "medication": "Metformin",
+      "deleted_at": null
     },
     {
       "id": 3,
       "user_id": 6,
-      "medication": "Lisinopril"
+      "medication": "Lisinopril",
+      "deleted_at": null
     },
     {
       "id": 4,
       "user_id": 8,
-      "medication": "Metoprolol"
+      "medication": "Metoprolol",
+      "deleted_at": null
     },
     {
       "id": 5,
       "user_id": 9,
-      "medication": "Warfarin"
+      "medication": "Warfarin",
+      "deleted_at": null
     },
     {
       "id": 6,
       "user_id": 10,
-      "medication": "Atorvastatin"
+      "medication": "Atorvastatin",
+      "deleted_at": null
     },
     {
       "id": 7,
       "user_id": 11,
-      "medication": "Levothyroxine"
+      "medication": "Levothyroxine",
+      "deleted_at": null
     }
   ],
   "medical_conditions": [
     {
       "id": 1,
       "user_id": 3,
-      "condition": "Hypertension"
+      "condition": "Hypertension",
+      "deleted_at": null
     },
     {
       "id": 2,
       "user_id": 4,
-      "condition": "Diabetes"
+      "condition": "Diabetes",
+      "deleted_at": null
     },
     {
       "id": 3,
       "user_id": 5,
-      "condition": "Arthritis"
+      "condition": "Arthritis",
+      "deleted_at": null
     },
     {
       "id": 4,
       "user_id": 6,
-      "condition": "Hypertension"
+      "condition": "Hypertension",
+      "deleted_at": null
     },
     {
       "id": 5,
       "user_id": 8,
-      "condition": "Heart Disease"
+      "condition": "Heart Disease",
+      "deleted_at": null
     },
     {
       "id": 6,
       "user_id": 9,
-      "condition": "Blood Clot Disorder"
+      "condition": "Blood Clot Disorder",
+      "deleted_at": null
     },
     {
       "id": 7,
       "user_id": 10,
-      "condition": "High Cholesterol"
+      "condition": "High Cholesterol",
+      "deleted_at": null
     },
     {
       "id": 8,
       "user_id": 11,
-      "condition": "Hypothyroidism"
+      "condition": "Hypothyroidism",
+      "deleted_at": null
     }
   ],
   "packages": [
@@ -795,113 +955,147 @@
       "id": 1,
       "code": "PC001",
       "name": "Basic Personal Care",
-      "total_cost": 38.0,
+      "total_cost": 38,
       "description": "Daily personal care services including bathing and dressing assistance for independent living support.",
       "duration_hours": 2,
       "is_active": true,
-      "serviceIds": [1, 2]
+      "created_at": "2025-01-15T10:00:00Z",
+      "updated_at": "2025-08-01T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
       "code": "PC002",
       "name": "Mobility Support",
-      "total_cost": 45.0,
+      "total_cost": 45,
       "description": "Comprehensive assistance with mobility and daily activities, including meal preparation and safe transfers.",
       "duration_hours": 2.5,
       "is_active": true,
-      "serviceIds": [3, 4]
+      "created_at": "2025-01-15T10:00:00Z",
+      "updated_at": "2025-08-01T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 3,
       "code": "PC003",
       "name": "Comprehensive Care",
-      "total_cost": 60.0,
+      "total_cost": 60,
       "description": "Full range of personal and medical support services for individuals requiring extensive daily assistance.",
       "duration_hours": 3,
       "is_active": true,
-      "serviceIds": [1, 2, 5]
+      "created_at": "2025-01-15T10:00:00Z",
+      "updated_at": "2025-08-01T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 4,
       "code": "PC004",
       "name": "Memory Care",
-      "total_cost": 55.0,
+      "total_cost": 55,
       "description": "Specialized care for individuals with dementia or Alzheimer's, including cognitive stimulation activities.",
       "duration_hours": 2.5,
       "is_active": true,
-      "serviceIds": [1, 3, 8]
+      "created_at": "2025-01-15T10:00:00Z",
+      "updated_at": "2025-08-01T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 5,
       "code": "PC005",
       "name": "Respite Care",
-      "total_cost": 50.0,
+      "total_cost": 50,
       "description": "Temporary relief for family caregivers, providing companionship and basic care services.",
       "duration_hours": 2.5,
       "is_active": true,
-      "serviceIds": [1, 8]
+      "created_at": "2025-01-15T10:00:00Z",
+      "updated_at": "2025-08-01T10:00:00Z",
+      "deleted_at": null
     }
   ],
-  "packageServices": [
+  "package_services": [
     {
       "id": 1,
       "package_id": 1,
-      "service_id": 1
+      "service_id": 1,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
       "package_id": 1,
-      "service_id": 2
+      "service_id": 2,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 3,
       "package_id": 2,
-      "service_id": 3
+      "service_id": 3,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 4,
       "package_id": 2,
-      "service_id": 4
+      "service_id": 4,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 5,
       "package_id": 3,
-      "service_id": 1
+      "service_id": 1,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 6,
       "package_id": 3,
-      "service_id": 2
+      "service_id": 2,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 7,
       "package_id": 3,
-      "service_id": 5
+      "service_id": 5,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 8,
       "package_id": 4,
-      "service_id": 1
+      "service_id": 1,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 9,
       "package_id": 4,
-      "service_id": 3
+      "service_id": 3,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 10,
       "package_id": 4,
-      "service_id": 8
+      "service_id": 8,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 11,
       "package_id": 5,
-      "service_id": 1
+      "service_id": 1,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 12,
       "package_id": 5,
-      "service_id": 8
+      "service_id": 8,
+      "created_at": "2025-01-15T10:00:00Z",
+      "deleted_at": null
     }
   ],
   "services": [
@@ -909,82 +1103,109 @@
       "id": 1,
       "code": "SVC001",
       "name": "Bathing Assistance",
-      "hourly_rate": 20.0,
+      "hourly_rate": 20,
       "duration": 60,
       "description": "Professional assistance with bathing and personal hygiene",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-01-10T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
       "code": "SVC002",
       "name": "Dressing Assistance",
-      "hourly_rate": 18.0,
+      "hourly_rate": 18,
       "duration": 45,
       "description": "Help with dressing and grooming activities",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-01-10T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 3,
       "code": "SVC003",
       "name": "Mobility Assistance",
-      "hourly_rate": 25.0,
+      "hourly_rate": 25,
       "duration": 60,
       "description": "Support with walking, transfers, and mobility exercises",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-01-10T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 4,
       "code": "SVC004",
       "name": "Meal Preparation",
-      "hourly_rate": 20.0,
+      "hourly_rate": 20,
       "duration": 60,
       "description": "Preparing nutritious meals according to dietary requirements",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-01-10T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 5,
       "code": "SVC005",
       "name": "Medication Reminders",
-      "hourly_rate": 15.0,
+      "hourly_rate": 15,
       "duration": 30,
       "description": "Ensuring timely medication intake and monitoring",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-01-10T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 6,
       "code": "SVC006",
       "name": "Light Housekeeping",
-      "hourly_rate": 22.0,
+      "hourly_rate": 22,
       "duration": 60,
       "description": "Basic cleaning and organization of living spaces",
-      "is_active": false
+      "is_active": false,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-06-15T14:30:00Z",
+      "deleted_at": null
     },
     {
       "id": 7,
       "code": "SVC007",
       "name": "Transportation Assistance",
-      "hourly_rate": 25.0,
+      "hourly_rate": 25,
       "duration": 60,
       "description": "Help with transportation to appointments and errands",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-01-10T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 8,
       "code": "SVC008",
       "name": "Companionship",
-      "hourly_rate": 18.0,
+      "hourly_rate": 18,
       "duration": 60,
       "description": "Social interaction and emotional support",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-01-10T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 9,
       "code": "SVC009",
       "name": "Overnight Care",
-      "hourly_rate": 30.0,
+      "hourly_rate": 30,
       "duration": 480,
       "description": "Overnight supervision and assistance",
-      "is_active": true
+      "is_active": true,
+      "created_at": "2025-01-10T10:00:00Z",
+      "updated_at": "2025-01-10T10:00:00Z",
+      "deleted_at": null
     }
   ],
   "appointments": [
@@ -997,10 +1218,11 @@
       "appointment_datetime_start": "2025-08-01T09:00:00Z",
       "appointment_datetime_end": "2025-08-01T11:00:00Z",
       "duration_minutes": 120,
-      "status": "Confirmed",
+      "status": "confirmed",
       "booking_notes": "Customer prefers morning appointments",
-      "total_cost": 38.0,
-      "created_at": "2025-07-25T10:00:00Z"
+      "total_cost": 38,
+      "created_at": "2025-07-25T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -1010,11 +1232,11 @@
       "appointment_datetime_start": "2025-08-02T10:00:00Z",
       "appointment_datetime_end": "2025-08-02T12:00:00Z",
       "duration_minutes": 120,
-      "status": "Pending",
+      "status": "pending",
       "booking_notes": "",
-      "total_cost": 45.0,
+      "total_cost": 45,
       "created_at": "2025-07-26T09:30:00Z",
-      "feedback": null
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -1024,11 +1246,11 @@
       "appointment_datetime_start": "2025-08-03T08:00:00Z",
       "appointment_datetime_end": "2025-08-03T10:30:00Z",
       "duration_minutes": 150,
-      "status": "Confirmed",
+      "status": "confirmed",
       "booking_notes": "Needs wheelchair assistance",
-      "total_cost": 60.0,
+      "total_cost": 60,
       "created_at": "2025-07-27T11:15:00Z",
-      "feedback": null
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -1038,14 +1260,11 @@
       "appointment_datetime_start": "2025-08-04T11:00:00Z",
       "appointment_datetime_end": "2025-08-04T12:45:00Z",
       "duration_minutes": 105,
-      "status": "Completed",
+      "status": "completed",
       "booking_notes": "",
-      "total_cost": 38.0,
+      "total_cost": 38,
       "created_at": "2025-07-28T08:45:00Z",
-      "feedback": {
-        "rating": 4,
-        "comment": "Good service, but caregiver could have been more punctual."
-      }
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -1055,11 +1274,11 @@
       "appointment_datetime_start": "2025-08-05T09:00:00Z",
       "appointment_datetime_end": "2025-08-05T11:00:00Z",
       "duration_minutes": 120,
-      "status": "Cancelled",
+      "status": "cancelled",
       "booking_notes": "Customer cancelled due to hospital visit",
-      "total_cost": 45.0,
+      "total_cost": 45,
       "created_at": "2025-07-29T16:20:00Z",
-      "feedback": null
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -1069,11 +1288,11 @@
       "appointment_datetime_start": "2025-08-06T10:00:00Z",
       "appointment_datetime_end": "2025-08-06T12:30:00Z",
       "duration_minutes": 150,
-      "status": "Rescheduled",
+      "status": "rescheduled",
       "booking_notes": "Rescheduled to afternoon",
-      "total_cost": 60.0,
+      "total_cost": 60,
       "created_at": "2025-07-30T10:00:00Z",
-      "feedback": null
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -1083,11 +1302,11 @@
       "appointment_datetime_start": "2025-08-07T08:00:00Z",
       "appointment_datetime_end": "2025-08-07T09:45:00Z",
       "duration_minutes": 105,
-      "status": "Pending",
+      "status": "pending",
       "booking_notes": "",
-      "total_cost": 38.0,
+      "total_cost": 38,
       "created_at": "2025-07-31T08:00:00Z",
-      "feedback": null
+      "deleted_at": null
     },
     {
       "id": 8,
@@ -1097,11 +1316,11 @@
       "appointment_datetime_start": "2025-08-08T11:00:00Z",
       "appointment_datetime_end": "2025-08-08T13:00:00Z",
       "duration_minutes": 120,
-      "status": "Confirmed",
+      "status": "confirmed",
       "booking_notes": "",
-      "total_cost": 45.0,
+      "total_cost": 45,
       "created_at": "2025-08-01T11:00:00Z",
-      "feedback": null
+      "deleted_at": null
     },
     {
       "id": 9,
@@ -1111,14 +1330,11 @@
       "appointment_datetime_start": "2025-08-09T09:00:00Z",
       "appointment_datetime_end": "2025-08-09T11:30:00Z",
       "duration_minutes": 150,
-      "status": "Completed",
+      "status": "completed",
       "booking_notes": "Customer satisfied with service",
-      "total_cost": 60.0,
+      "total_cost": 60,
       "created_at": "2025-08-02T09:00:00Z",
-      "feedback": {
-        "rating": 5,
-        "comment": "Great caregiver, very professional and knowledgeable."
-      }
+      "deleted_at": null
     },
     {
       "id": 10,
@@ -1128,11 +1344,11 @@
       "appointment_datetime_start": "2025-08-10T10:00:00Z",
       "appointment_datetime_end": "2025-08-10T11:45:00Z",
       "duration_minutes": 105,
-      "status": "Pending",
+      "status": "pending",
       "booking_notes": "",
-      "total_cost": 38.0,
+      "total_cost": 38,
       "created_at": "2025-08-03T10:00:00Z",
-      "feedback": null
+      "deleted_at": null
     },
     {
       "id": 11,
@@ -1142,11 +1358,11 @@
       "appointment_datetime_start": "2025-08-11T13:00:00Z",
       "appointment_datetime_end": "2025-08-11T15:30:00Z",
       "duration_minutes": 150,
-      "status": "Confirmed",
+      "status": "confirmed",
       "booking_notes": "Patient has early-stage dementia",
-      "total_cost": 55.0,
+      "total_cost": 55,
       "created_at": "2025-08-04T14:00:00Z",
-      "feedback": null
+      "deleted_at": null
     },
     {
       "id": 12,
@@ -1156,14 +1372,238 @@
       "appointment_datetime_start": "2025-08-12T14:00:00Z",
       "appointment_datetime_end": "2025-08-12T16:30:00Z",
       "duration_minutes": 150,
-      "status": "Confirmed",
+      "status": "confirmed",
       "booking_notes": "Respite care for family caregiver",
-      "total_cost": 50.0,
+      "total_cost": 50,
       "created_at": "2025-08-05T09:30:00Z",
-      "feedback": null
+      "deleted_at": null
+    },
+    {
+      "id": 13,
+      "user_id": 3,
+      "caregiver_id": 12,
+      "package_id": 1,
+      "appointment_datetime_start": "2025-08-18T09:00:00Z",
+      "appointment_datetime_end": "2025-08-18T11:00:00Z",
+      "duration_minutes": 120,
+      "status": "confirmed",
+      "booking_notes": "Regular morning care routine",
+      "total_cost": 38,
+      "created_at": "2025-08-10T10:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 14,
+      "user_id": 4,
+      "caregiver_id": 12,
+      "package_id": 2,
+      "appointment_datetime_start": "2025-08-18T14:00:00Z",
+      "appointment_datetime_end": "2025-08-18T16:00:00Z",
+      "duration_minutes": 120,
+      "status": "confirmed",
+      "booking_notes": "Diabetes management and medication reminder",
+      "total_cost": 52,
+      "created_at": "2025-08-11T09:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 15,
+      "user_id": 6,
+      "caregiver_id": 12,
+      "package_id": 3,
+      "appointment_datetime_start": "2025-08-19T10:00:00Z",
+      "appointment_datetime_end": "2025-08-19T13:00:00Z",
+      "duration_minutes": 180,
+      "status": "confirmed",
+      "booking_notes": "Memory care assistance and cognitive exercises",
+      "total_cost": 72,
+      "created_at": "2025-08-12T11:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 16,
+      "user_id": 5,
+      "caregiver_id": 12,
+      "package_id": 2,
+      "appointment_datetime_start": "2025-08-19T15:30:00Z",
+      "appointment_datetime_end": "2025-08-19T17:30:00Z",
+      "duration_minutes": 120,
+      "status": "pending",
+      "booking_notes": "Weekly grocery shopping and meal prep",
+      "total_cost": 48,
+      "created_at": "2025-08-13T14:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 17,
+      "user_id": 3,
+      "caregiver_id": 12,
+      "package_id": 1,
+      "appointment_datetime_start": "2025-08-20T09:00:00Z",
+      "appointment_datetime_end": "2025-08-20T11:00:00Z",
+      "duration_minutes": 120,
+      "status": "confirmed",
+      "booking_notes": "Follow-up care session",
+      "total_cost": 48,
+      "created_at": "2025-08-14T10:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 18,
+      "user_id": 4,
+      "caregiver_id": 12,
+      "package_id": 2,
+      "appointment_datetime_start": "2025-08-21T08:30:00Z",
+      "appointment_datetime_end": "2025-08-21T11:30:00Z",
+      "duration_minutes": 180,
+      "status": "confirmed",
+      "booking_notes": "Extended morning care including physical therapy assistance",
+      "total_cost": 72,
+      "created_at": "2025-08-15T09:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 19,
+      "user_id": 6,
+      "caregiver_id": 12,
+      "package_id": 4,
+      "appointment_datetime_start": "2025-08-22T13:00:00Z",
+      "appointment_datetime_end": "2025-08-22T16:00:00Z",
+      "duration_minutes": 180,
+      "status": "confirmed",
+      "booking_notes": "Specialized dementia care with family meeting",
+      "total_cost": 90,
+      "created_at": "2025-08-16T12:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 20,
+      "user_id": 7,
+      "caregiver_id": 12,
+      "package_id": 5,
+      "appointment_datetime_start": "2025-08-23T10:00:00Z",
+      "appointment_datetime_end": "2025-08-23T14:00:00Z",
+      "duration_minutes": 240,
+      "status": "confirmed",
+      "booking_notes": "Respite care - family attending medical appointment",
+      "total_cost": 96,
+      "created_at": "2025-08-17T08:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 21,
+      "user_id": 3,
+      "caregiver_id": 12,
+      "package_id": 1,
+      "appointment_datetime_start": "2025-08-19T08:00:00Z",
+      "appointment_datetime_end": "2025-08-19T10:00:00Z",
+      "duration_minutes": 120,
+      "status": "confirmed",
+      "booking_notes": "Morning personal care routine - bathing and dressing assistance",
+      "total_cost": 38,
+      "created_at": "2025-08-18T09:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 22,
+      "user_id": 4,
+      "caregiver_id": 12,
+      "package_id": 2,
+      "appointment_datetime_start": "2025-08-19T14:00:00Z",
+      "appointment_datetime_end": "2025-08-19T17:00:00Z",
+      "duration_minutes": 180,
+      "status": "confirmed",
+      "booking_notes": "Diabetes management visit - blood sugar monitoring and meal prep",
+      "total_cost": 75,
+      "created_at": "2025-08-18T10:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 23,
+      "user_id": 5,
+      "caregiver_id": 12,
+      "package_id": 4,
+      "appointment_datetime_start": "2025-08-20T09:00:00Z",
+      "appointment_datetime_end": "2025-08-20T13:00:00Z",
+      "duration_minutes": 240,
+      "status": "confirmed",
+      "booking_notes": "Companionship and light housekeeping - weekly deep clean day",
+      "total_cost": 100,
+      "created_at": "2025-08-18T11:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 24,
+      "user_id": 6,
+      "caregiver_id": 12,
+      "package_id": 3,
+      "appointment_datetime_start": "2025-08-21T10:00:00Z",
+      "appointment_datetime_end": "2025-08-21T12:00:00Z",
+      "duration_minutes": 120,
+      "status": "confirmed",
+      "booking_notes": "Memory care session - cognitive activities and safety check",
+      "total_cost": 60,
+      "created_at": "2025-08-18T12:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 25,
+      "user_id": 7,
+      "caregiver_id": 12,
+      "package_id": 5,
+      "appointment_datetime_start": "2025-08-22T15:00:00Z",
+      "appointment_datetime_end": "2025-08-22T18:00:00Z",
+      "duration_minutes": 180,
+      "status": "pending",
+      "booking_notes": "Follow-up emotional support session - progress evaluation",
+      "total_cost": 75,
+      "created_at": "2025-08-18T13:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 26,
+      "user_id": 8,
+      "caregiver_id": 12,
+      "package_id": 5,
+      "appointment_datetime_start": "2025-08-23T08:30:00Z",
+      "appointment_datetime_end": "2025-08-23T12:30:00Z",
+      "duration_minutes": 240,
+      "status": "confirmed",
+      "booking_notes": "Physical therapy support - end of week assessment and exercise routine",
+      "total_cost": 100,
+      "created_at": "2025-08-18T14:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 27,
+      "user_id": 3,
+      "caregiver_id": 12,
+      "package_id": 1,
+      "appointment_datetime_start": "2025-08-25T08:00:00Z",
+      "appointment_datetime_end": "2025-08-25T10:00:00Z",
+      "duration_minutes": 120,
+      "status": "confirmed",
+      "booking_notes": "Monday morning routine - start of new week care plan",
+      "total_cost": 50,
+      "created_at": "2025-08-18T15:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 28,
+      "user_id": 4,
+      "caregiver_id": 12,
+      "package_id": 2,
+      "appointment_datetime_start": "2025-08-26T11:00:00Z",
+      "appointment_datetime_end": "2025-08-26T14:00:00Z",
+      "duration_minutes": 180,
+      "status": "pending",
+      "booking_notes": "Mid-week diabetes check - medication review needed",
+      "total_cost": 75,
+      "created_at": "2025-08-18T16:00:00Z",
+      "deleted_at": null
     }
   ],
-  "scheduledPackages": [
+  "scheduled_packages": [
     {
       "id": 1,
       "user_id": 3,
@@ -1175,7 +1615,8 @@
       "status": "active",
       "exceptions": [],
       "created_at": "2025-07-25T10:00:00Z",
-      "updated_at": "2025-07-25T10:00:00Z"
+      "updated_at": "2025-07-25T10:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -1186,9 +1627,13 @@
       "rrule": "FREQ=DAILY;INTERVAL=1;COUNT=30",
       "end_date": null,
       "status": "active",
-      "exceptions": ["2025-08-15", "2025-08-22"],
+      "exceptions": [
+        "2025-08-15",
+        "2025-08-22"
+      ],
       "created_at": "2025-07-26T09:30:00Z",
-      "updated_at": "2025-07-26T09:30:00Z"
+      "updated_at": "2025-07-26T09:30:00Z",
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -1201,7 +1646,8 @@
       "status": "active",
       "exceptions": [],
       "created_at": "2025-07-27T11:15:00Z",
-      "updated_at": "2025-07-27T11:15:00Z"
+      "updated_at": "2025-07-27T11:15:00Z",
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -1214,7 +1660,8 @@
       "status": "active",
       "exceptions": [],
       "created_at": "2025-07-28T08:45:00Z",
-      "updated_at": "2025-07-28T08:45:00Z"
+      "updated_at": "2025-07-28T08:45:00Z",
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -1225,254 +1672,227 @@
       "rrule": "FREQ=WEEKLY;BYDAY=MO,WE,FR;COUNT=20",
       "end_date": null,
       "status": "paused",
-      "exceptions": ["2025-08-19", "2025-08-21"],
+      "exceptions": [
+        "2025-08-19",
+        "2025-08-21"
+      ],
       "created_at": "2025-07-29T16:20:00Z",
-      "updated_at": "2025-08-01T10:00:00Z"
-    }
-  ],
-  "caregiverAvailability": [
-    {
-      "id": 1,
-      "caregiver_id": 12,
-      "date": "2025-08-01",
-      "start_time": "08:00:00",
-      "end_time": "12:00:00",
-      "is_available": true
-    },
-    {
-      "id": 2,
-      "caregiver_id": 13,
-      "date": "2025-08-02",
-      "start_time": "09:00:00",
-      "end_time": "13:00:00",
-      "is_available": true
-    },
-    {
-      "id": 3,
-      "caregiver_id": 14,
-      "date": "2025-08-03",
-      "start_time": "07:00:00",
-      "end_time": "11:00:00",
-      "is_available": true
-    },
-    {
-      "id": 4,
-      "caregiver_id": 15,
-      "date": "2025-08-04",
-      "start_time": "10:00:00",
-      "end_time": "14:00:00",
-      "is_available": true
-    },
-    {
-      "id": 5,
-      "caregiver_id": 12,
-      "date": "2025-08-05",
-      "start_time": "08:00:00",
-      "end_time": "12:00:00",
-      "is_available": true
-    },
-    {
-      "id": 6,
-      "caregiver_id": 16,
-      "date": "2025-08-06",
-      "start_time": "09:00:00",
-      "end_time": "15:00:00",
-      "is_available": true
-    },
-    {
-      "id": 7,
-      "caregiver_id": 17,
-      "date": "2025-08-07",
-      "start_time": "08:00:00",
-      "end_time": "16:00:00",
-      "is_available": true
-    },
-    {
-      "id": 8,
-      "caregiver_id": 18,
-      "date": "2025-08-08",
-      "start_time": "10:00:00",
-      "end_time": "18:00:00",
-      "is_available": true
+      "updated_at": "2025-08-01T10:00:00Z",
+      "deleted_at": null
     }
   ],
   "skills": [
     {
       "id": 1,
       "name": "Personal Care",
-      "description": "Assistance with bathing, dressing, and grooming"
+      "description": "Assistance with bathing, dressing, and grooming",
+      "deleted_at": null
     },
     {
       "id": 2,
       "name": "Medication Management",
-      "description": "Administering and monitoring medications"
+      "description": "Administering and monitoring medications",
+      "deleted_at": null
     },
     {
       "id": 3,
       "name": "Dementia Care",
-      "description": "Specialized care for patients with dementia"
+      "description": "Specialized care for patients with dementia",
+      "deleted_at": null
     },
     {
       "id": 4,
       "name": "Mobility Assistance",
-      "description": "Help with walking, transfers, and exercises"
+      "description": "Help with walking, transfers, and exercises",
+      "deleted_at": null
     },
     {
       "id": 5,
       "name": "Meal Preparation",
-      "description": "Preparing nutritious meals and dietary planning"
+      "description": "Preparing nutritious meals and dietary planning",
+      "deleted_at": null
     },
     {
       "id": 6,
       "name": "Wound Care",
-      "description": "Basic wound care and dressing changes"
+      "description": "Basic wound care and dressing changes",
+      "deleted_at": null
     },
     {
       "id": 7,
       "name": "Physical Therapy",
-      "description": "Rehabilitation exercises and mobility training"
+      "description": "Rehabilitation exercises and mobility training",
+      "deleted_at": null
     },
     {
       "id": 8,
       "name": "Companionship",
-      "description": "Social interaction and emotional support"
+      "description": "Social interaction and emotional support",
+      "deleted_at": null
     },
     {
       "id": 9,
       "name": "Health Monitoring",
-      "description": "Vital signs monitoring and health assessments"
+      "description": "Vital signs monitoring and health assessments",
+      "deleted_at": null
     },
     {
       "id": 10,
       "name": "Palliative Care",
-      "description": "Comfort-focused care for serious illnesses"
+      "description": "Comfort-focused care for serious illnesses",
+      "deleted_at": null
     }
   ],
-  "caregiverSkills": [
+  "caregiver_skills": [
     {
       "id": 1,
       "user_id": 12,
-      "skill_id": 1
+      "skill_id": 1,
+      "deleted_at": null
     },
     {
       "id": 2,
       "user_id": 12,
-      "skill_id": 2
+      "skill_id": 2,
+      "deleted_at": null
     },
     {
       "id": 3,
       "user_id": 12,
-      "skill_id": 3
+      "skill_id": 3,
+      "deleted_at": null
     },
     {
       "id": 4,
       "user_id": 13,
-      "skill_id": 1
+      "skill_id": 1,
+      "deleted_at": null
     },
     {
       "id": 5,
       "user_id": 13,
-      "skill_id": 4
+      "skill_id": 4,
+      "deleted_at": null
     },
     {
       "id": 6,
       "user_id": 13,
-      "skill_id": 5
+      "skill_id": 5,
+      "deleted_at": null
     },
     {
       "id": 7,
       "user_id": 14,
-      "skill_id": 2
+      "skill_id": 2,
+      "deleted_at": null
     },
     {
       "id": 8,
       "user_id": 14,
-      "skill_id": 3
+      "skill_id": 3,
+      "deleted_at": null
     },
     {
       "id": 9,
       "user_id": 14,
-      "skill_id": 6
+      "skill_id": 6,
+      "deleted_at": null
     },
     {
       "id": 10,
       "user_id": 15,
-      "skill_id": 4
+      "skill_id": 4,
+      "deleted_at": null
     },
     {
       "id": 11,
       "user_id": 15,
-      "skill_id": 5
+      "skill_id": 5,
+      "deleted_at": null
     },
     {
       "id": 12,
       "user_id": 15,
-      "skill_id": 7
+      "skill_id": 7,
+      "deleted_at": null
     },
     {
       "id": 13,
       "user_id": 16,
-      "skill_id": 1
+      "skill_id": 1,
+      "deleted_at": null
     },
     {
       "id": 14,
       "user_id": 16,
-      "skill_id": 2
+      "skill_id": 2,
+      "deleted_at": null
     },
     {
       "id": 15,
       "user_id": 16,
-      "skill_id": 8
+      "skill_id": 8,
+      "deleted_at": null
     },
     {
       "id": 16,
       "user_id": 17,
-      "skill_id": 2
+      "skill_id": 2,
+      "deleted_at": null
     },
     {
       "id": 17,
       "user_id": 17,
-      "skill_id": 3
+      "skill_id": 3,
+      "deleted_at": null
     },
     {
       "id": 18,
       "user_id": 17,
-      "skill_id": 6
+      "skill_id": 6,
+      "deleted_at": null
     },
     {
       "id": 19,
       "user_id": 17,
-      "skill_id": 9
+      "skill_id": 9,
+      "deleted_at": null
     },
     {
       "id": 20,
       "user_id": 18,
-      "skill_id": 3
+      "skill_id": 3,
+      "deleted_at": null
     },
     {
       "id": 21,
       "user_id": 18,
-      "skill_id": 8
+      "skill_id": 8,
+      "deleted_at": null
     },
     {
       "id": 22,
       "user_id": 18,
-      "skill_id": 9
+      "skill_id": 9,
+      "deleted_at": null
     },
     {
       "id": 23,
       "user_id": 19,
-      "skill_id": 4
+      "skill_id": 4,
+      "deleted_at": null
     },
     {
       "id": 24,
       "user_id": 19,
-      "skill_id": 7
+      "skill_id": 7,
+      "deleted_at": null
     },
     {
       "id": 25,
       "user_id": 19,
-      "skill_id": 9
+      "skill_id": 9,
+      "deleted_at": null
     }
   ],
   "payments": [
@@ -1480,91 +1900,101 @@
       "id": 1,
       "appointment_id": 1,
       "user_id": 3,
-      "amount": 38.0,
+      "amount": 38,
       "payment_date": "2025-07-31T00:00:00Z",
       "payment_method": "Credit Card",
-      "status": "Completed"
+      "status": "completed",
+      "deleted_at": null
     },
     {
       "id": 2,
       "appointment_id": 2,
       "user_id": 4,
-      "amount": 45.0,
+      "amount": 45,
       "payment_date": null,
       "payment_method": "Pending",
-      "status": "Pending"
+      "status": "pending",
+      "deleted_at": null
     },
     {
       "id": 3,
       "appointment_id": 3,
       "user_id": 5,
-      "amount": 60.0,
+      "amount": 60,
       "payment_date": "2025-08-02T00:00:00Z",
       "payment_method": "Credit Card",
-      "status": "Completed"
+      "status": "completed",
+      "deleted_at": null
     },
     {
       "id": 4,
       "appointment_id": 4,
       "user_id": 6,
-      "amount": 38.0,
+      "amount": 38,
       "payment_date": "2025-08-03T00:00:00Z",
       "payment_method": "Credit Card",
-      "status": "Completed"
+      "status": "completed",
+      "deleted_at": null
     },
     {
       "id": 5,
       "appointment_id": 5,
       "user_id": 7,
-      "amount": 45.0,
+      "amount": 45,
       "payment_date": null,
       "payment_method": "Pending",
-      "status": "Cancelled"
+      "status": "cancelled",
+      "deleted_at": null
     },
     {
       "id": 6,
       "appointment_id": 6,
       "user_id": 3,
-      "amount": 60.0,
+      "amount": 60,
       "payment_date": "2025-08-05T00:00:00Z",
       "payment_method": "Credit Card",
-      "status": "Completed"
+      "status": "completed",
+      "deleted_at": null
     },
     {
       "id": 7,
       "appointment_id": 7,
       "user_id": 4,
-      "amount": 38.0,
+      "amount": 38,
       "payment_date": null,
       "payment_method": "Pending",
-      "status": "Pending"
+      "status": "pending",
+      "deleted_at": null
     },
     {
       "id": 8,
       "appointment_id": 8,
       "user_id": 5,
-      "amount": 45.0,
+      "amount": 45,
       "payment_date": "2025-08-07T00:00:00Z",
       "payment_method": "Credit Card",
-      "status": "Completed"
+      "status": "completed",
+      "deleted_at": null
     },
     {
       "id": 9,
       "appointment_id": 9,
       "user_id": 6,
-      "amount": 60.0,
+      "amount": 60,
       "payment_date": "2025-08-09T00:00:00Z",
       "payment_method": "Credit Card",
-      "status": "Completed"
+      "status": "completed",
+      "deleted_at": null
     },
     {
       "id": 10,
       "appointment_id": 10,
       "user_id": 7,
-      "amount": 38.0,
+      "amount": 38,
       "payment_date": null,
       "payment_method": "Pending",
-      "status": "Pending"
+      "status": "pending",
+      "deleted_at": null
     }
   ],
   "addresses": [
@@ -1576,7 +2006,8 @@
       "state_province": "IL",
       "postal_code": "62701",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -1586,7 +2017,8 @@
       "state_province": "IL",
       "postal_code": "62702",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -1596,7 +2028,8 @@
       "state_province": "IL",
       "postal_code": "62703",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -1606,7 +2039,8 @@
       "state_province": "IL",
       "postal_code": "62704",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -1616,7 +2050,8 @@
       "state_province": "IL",
       "postal_code": "62705",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -1626,7 +2061,8 @@
       "state_province": "IL",
       "postal_code": "62706",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -1636,7 +2072,8 @@
       "state_province": "IL",
       "postal_code": "62707",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 8,
@@ -1646,7 +2083,8 @@
       "state_province": "IL",
       "postal_code": "62708",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 9,
@@ -1656,7 +2094,8 @@
       "state_province": "IL",
       "postal_code": "62709",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     },
     {
       "id": 10,
@@ -1666,19 +2105,60 @@
       "state_province": "IL",
       "postal_code": "62710",
       "country": "USA",
-      "is_primary": true
+      "is_primary": true,
+      "deleted_at": null
     }
   ],
-  "evvRecords": [
+  "evv_records": [
     {
       "id": 1,
       "appointment_id": 1,
       "caregiver_id": 12,
       "check_in_time": "2025-08-01T09:00:00Z",
       "check_out_time": "2025-08-01T10:45:00Z",
-      "status": "Completed",
+      "status": "completed",
       "caregiver_notes": "All tasks completed successfully",
-      "patient_signature_url": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200&h=100&fit=crop"
+      "patient_signature_url": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.7817,
+        "longitude": -89.6501,
+        "address": "123 Main St, Springfield, IL",
+        "accuracy": 5
+      },
+      "check_out_location": {
+        "latitude": 39.7817,
+        "longitude": -89.6501,
+        "address": "123 Main St, Springfield, IL",
+        "accuracy": 3
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_bathing_001",
+          "task_name": "Bathing Assistance",
+          "completed": true,
+          "notes": "Assisted with shower, no issues",
+          "completed_at": "2025-08-01T09:30:00Z"
+        },
+        {
+          "task_id": "task_dressing_001",
+          "task_name": "Dressing Assistance",
+          "completed": true,
+          "notes": "Patient dressed independently with supervision",
+          "completed_at": "2025-08-01T10:15:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 2,
+        "verified_at": "2025-08-01T11:00:00Z",
+        "notes": "All documentation complete"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_12345",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -1686,9 +2166,15 @@
       "caregiver_id": 13,
       "check_in_time": null,
       "check_out_time": null,
-      "status": "Pending",
+      "status": "pending",
       "caregiver_notes": "",
-      "patient_signature_url": null
+      "patient_signature_url": null,
+      "check_in_location": null,
+      "check_out_location": null,
+      "tasks_completed": [],
+      "supervisor_verification": null,
+      "device_info": null,
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -1696,9 +2182,56 @@
       "caregiver_id": 14,
       "check_in_time": "2025-08-03T08:00:00Z",
       "check_out_time": "2025-08-03T10:30:00Z",
-      "status": "Completed",
+      "status": "completed",
       "caregiver_notes": "Wheelchair assistance provided as requested",
-      "patient_signature_url": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=100&fit=crop"
+      "patient_signature_url": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.785,
+        "longitude": -89.642,
+        "address": "789 Oak St, Springfield, IL",
+        "accuracy": 4
+      },
+      "check_out_location": {
+        "latitude": 39.785,
+        "longitude": -89.642,
+        "address": "789 Oak St, Springfield, IL",
+        "accuracy": 6
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_mobility_001",
+          "task_name": "Mobility Assistance",
+          "completed": true,
+          "notes": "Wheelchair transfer successful, patient comfortable",
+          "completed_at": "2025-08-03T08:45:00Z"
+        },
+        {
+          "task_id": "task_meal_001",
+          "task_name": "Meal Preparation",
+          "completed": true,
+          "notes": "Prepared breakfast according to dietary restrictions",
+          "completed_at": "2025-08-03T09:30:00Z"
+        },
+        {
+          "task_id": "task_medication_001",
+          "task_name": "Medication Reminders",
+          "completed": true,
+          "notes": "Administered morning medications",
+          "completed_at": "2025-08-03T10:00:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 2,
+        "verified_at": "2025-08-03T11:15:00Z",
+        "notes": "Excellent care provided"
+      },
+      "device_info": {
+        "device_id": "mobile_app_android_67890",
+        "version": "v1.2.1",
+        "platform": "Android"
+      },
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -1706,9 +2239,49 @@
       "caregiver_id": 15,
       "check_in_time": "2025-08-04T11:00:00Z",
       "check_out_time": "2025-08-04T12:45:00Z",
-      "status": "Completed",
+      "status": "completed",
       "caregiver_notes": "No issues, customer satisfied with service",
-      "patient_signature_url": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=100&fit=crop"
+      "patient_signature_url": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.78,
+        "longitude": -89.652,
+        "address": "101 Pine St, Springfield, IL",
+        "accuracy": 8
+      },
+      "check_out_location": {
+        "latitude": 39.78,
+        "longitude": -89.652,
+        "address": "101 Pine St, Springfield, IL",
+        "accuracy": 5
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_bathing_002",
+          "task_name": "Bathing Assistance",
+          "completed": true,
+          "notes": "Patient independent with minimal assistance",
+          "completed_at": "2025-08-04T11:30:00Z"
+        },
+        {
+          "task_id": "task_dressing_002",
+          "task_name": "Dressing Assistance",
+          "completed": true,
+          "notes": "Helped with button closure",
+          "completed_at": "2025-08-04T12:00:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 1,
+        "verified_at": "2025-08-04T13:00:00Z",
+        "notes": "Standard care completed"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_54321",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -1716,9 +2289,15 @@
       "caregiver_id": 12,
       "check_in_time": null,
       "check_out_time": null,
-      "status": "Cancelled",
+      "status": "cancelled",
       "caregiver_notes": "",
-      "patient_signature_url": null
+      "patient_signature_url": null,
+      "check_in_location": null,
+      "check_out_location": null,
+      "tasks_completed": [],
+      "supervisor_verification": null,
+      "device_info": null,
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -1726,9 +2305,56 @@
       "caregiver_id": 13,
       "check_in_time": "2025-08-06T10:00:00Z",
       "check_out_time": "2025-08-06T12:30:00Z",
-      "status": "Completed",
+      "status": "completed",
       "caregiver_notes": "Rescheduled appointment went well",
-      "patient_signature_url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=100&fit=crop"
+      "patient_signature_url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.7817,
+        "longitude": -89.6501,
+        "address": "123 Main St, Springfield, IL",
+        "accuracy": 7
+      },
+      "check_out_location": {
+        "latitude": 39.7817,
+        "longitude": -89.6501,
+        "address": "123 Main St, Springfield, IL",
+        "accuracy": 4
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_bathing_003",
+          "task_name": "Bathing Assistance",
+          "completed": true,
+          "notes": "Full assistance required",
+          "completed_at": "2025-08-06T10:45:00Z"
+        },
+        {
+          "task_id": "task_meal_002",
+          "task_name": "Meal Preparation",
+          "completed": true,
+          "notes": "Prepared lunch and snacks",
+          "completed_at": "2025-08-06T11:30:00Z"
+        },
+        {
+          "task_id": "task_medication_002",
+          "task_name": "Medication Reminders",
+          "completed": true,
+          "notes": "All medications taken on schedule",
+          "completed_at": "2025-08-06T12:00:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 1,
+        "verified_at": "2025-08-06T13:00:00Z",
+        "notes": "Care plan executed properly"
+      },
+      "device_info": {
+        "device_id": "mobile_app_android_98765",
+        "version": "v1.2.1",
+        "platform": "Android"
+      },
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -1736,9 +2362,15 @@
       "caregiver_id": 14,
       "check_in_time": null,
       "check_out_time": null,
-      "status": "Pending",
+      "status": "pending",
       "caregiver_notes": "",
-      "patient_signature_url": null
+      "patient_signature_url": null,
+      "check_in_location": null,
+      "check_out_location": null,
+      "tasks_completed": [],
+      "supervisor_verification": null,
+      "device_info": null,
+      "deleted_at": null
     },
     {
       "id": 8,
@@ -1746,12 +2378,775 @@
       "caregiver_id": 15,
       "check_in_time": "2025-08-08T11:00:00Z",
       "check_out_time": "2025-08-08T13:00:00Z",
-      "status": "Completed",
+      "status": "completed",
       "caregiver_notes": "Patient was in good spirits today",
-      "patient_signature_url": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=100&fit=crop"
+      "patient_signature_url": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.789,
+        "longitude": -89.638,
+        "address": "789 Oak St, Springfield, IL",
+        "accuracy": 6
+      },
+      "check_out_location": {
+        "latitude": 39.789,
+        "longitude": -89.638,
+        "address": "789 Oak St, Springfield, IL",
+        "accuracy": 4
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_mobility_002",
+          "task_name": "Mobility Assistance",
+          "completed": true,
+          "notes": "Physical therapy exercises completed",
+          "completed_at": "2025-08-08T11:45:00Z"
+        },
+        {
+          "task_id": "task_meal_003",
+          "task_name": "Meal Preparation",
+          "completed": true,
+          "notes": "Heart-healthy lunch prepared",
+          "completed_at": "2025-08-08T12:30:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": false,
+        "verified_by": null,
+        "verified_at": null,
+        "notes": "Pending supervisor review"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_11111",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
+    },
+    {
+      "id": 13,
+      "appointment_id": 13,
+      "caregiver_id": 12,
+      "check_in_time": "2025-08-18T08:00:00Z",
+      "check_out_time": "2025-08-18T10:00:00Z",
+      "status": "completed",
+      "caregiver_notes": "Excellent session with Mrs. Johnson. She was very cooperative and seemed in good spirits.",
+      "patient_signature_url": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.7817,
+        "longitude": -89.6501,
+        "address": "456 Elm St, Springfield, IL",
+        "accuracy": 3
+      },
+      "check_out_location": {
+        "latitude": 39.7817,
+        "longitude": -89.6501,
+        "address": "456 Elm St, Springfield, IL",
+        "accuracy": 4
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_companionship_001",
+          "task_name": "Companionship",
+          "completed": true,
+          "notes": "Had a wonderful conversation about her grandchildren",
+          "completed_at": "2025-08-18T08:30:00Z"
+        },
+        {
+          "task_id": "task_light_housekeeping_001",
+          "task_name": "Light Housekeeping",
+          "completed": true,
+          "notes": "Cleaned kitchen and living room",
+          "completed_at": "2025-08-18T09:30:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 2,
+        "verified_at": "2025-08-18T10:30:00Z",
+        "notes": "Great work by Sarah"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_sarah123",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
+    },
+    {
+      "id": 14,
+      "appointment_id": 14,
+      "caregiver_id": 12,
+      "check_in_time": "2025-08-19T14:00:00Z",
+      "check_out_time": "2025-08-19T17:00:00Z",
+      "status": "completed",
+      "caregiver_notes": "Mr. Smith needed extra help today with mobility. Took extra time to ensure safety.",
+      "patient_signature_url": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.785,
+        "longitude": -89.642,
+        "address": "789 Maple Ave, Springfield, IL",
+        "accuracy": 2
+      },
+      "check_out_location": {
+        "latitude": 39.785,
+        "longitude": -89.642,
+        "address": "789 Maple Ave, Springfield, IL",
+        "accuracy": 3
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_mobility_002",
+          "task_name": "Mobility Assistance",
+          "completed": true,
+          "notes": "Assisted with walker, practiced stairs safely",
+          "completed_at": "2025-08-19T14:45:00Z"
+        },
+        {
+          "task_id": "task_physical_therapy_001",
+          "task_name": "Physical Therapy Support",
+          "completed": true,
+          "notes": "Completed prescribed exercises, good progress",
+          "completed_at": "2025-08-19T15:30:00Z"
+        },
+        {
+          "task_id": "task_meal_003",
+          "task_name": "Meal Preparation",
+          "completed": true,
+          "notes": "Prepared dinner according to dietary restrictions",
+          "completed_at": "2025-08-19T16:30:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 1,
+        "verified_at": "2025-08-19T17:30:00Z",
+        "notes": "Excellent care provided"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_sarah123",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
+    },
+    {
+      "id": 15,
+      "appointment_id": 15,
+      "caregiver_id": 12,
+      "check_in_time": "2025-08-20T09:00:00Z",
+      "check_out_time": "2025-08-20T13:00:00Z",
+      "status": "completed",
+      "caregiver_notes": "Ms. Davis had a good day. Completed all daily tasks and enjoyed our activities together.",
+      "patient_signature_url": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.78,
+        "longitude": -89.652,
+        "address": "321 Oak Dr, Springfield, IL",
+        "accuracy": 5
+      },
+      "check_out_location": {
+        "latitude": 39.78,
+        "longitude": -89.652,
+        "address": "321 Oak Dr, Springfield, IL",
+        "accuracy": 4
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_bathing_004",
+          "task_name": "Bathing Assistance",
+          "completed": true,
+          "notes": "Full assistance provided, patient comfortable",
+          "completed_at": "2025-08-20T09:45:00Z"
+        },
+        {
+          "task_id": "task_dressing_002",
+          "task_name": "Dressing Assistance",
+          "completed": true,
+          "notes": "Helped select comfortable clothes for the day",
+          "completed_at": "2025-08-20T10:15:00Z"
+        },
+        {
+          "task_id": "task_medication_003",
+          "task_name": "Medication Management",
+          "completed": true,
+          "notes": "All medications administered on schedule",
+          "completed_at": "2025-08-20T11:00:00Z"
+        },
+        {
+          "task_id": "task_companionship_002",
+          "task_name": "Companionship",
+          "completed": true,
+          "notes": "Played cards and listened to music together",
+          "completed_at": "2025-08-20T12:30:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 2,
+        "verified_at": "2025-08-20T13:30:00Z",
+        "notes": "Comprehensive care provided"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_sarah123",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
+    },
+    {
+      "id": 16,
+      "appointment_id": 16,
+      "caregiver_id": 12,
+      "check_in_time": "2025-08-21T10:30:00Z",
+      "check_out_time": "2025-08-21T12:30:00Z",
+      "status": "completed",
+      "caregiver_notes": "Mr. Brown was in great spirits today. We had a productive session.",
+      "patient_signature_url": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.788,
+        "longitude": -89.635,
+        "address": "654 Pine Rd, Springfield, IL",
+        "accuracy": 6
+      },
+      "check_out_location": {
+        "latitude": 39.788,
+        "longitude": -89.635,
+        "address": "654 Pine Rd, Springfield, IL",
+        "accuracy": 5
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_light_housekeeping_002",
+          "task_name": "Light Housekeeping",
+          "completed": true,
+          "notes": "Organized bedroom and bathroom areas",
+          "completed_at": "2025-08-21T11:00:00Z"
+        },
+        {
+          "task_id": "task_companionship_003",
+          "task_name": "Companionship",
+          "completed": true,
+          "notes": "Discussed his garden plans and watched nature documentaries",
+          "completed_at": "2025-08-21T12:00:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 1,
+        "verified_at": "2025-08-21T13:00:00Z",
+        "notes": "Good quality care"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_sarah123",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
+    },
+    {
+      "id": 17,
+      "appointment_id": 17,
+      "caregiver_id": 12,
+      "check_in_time": "2025-08-22T15:00:00Z",
+      "check_out_time": "2025-08-22T18:00:00Z",
+      "status": "completed",
+      "caregiver_notes": "Mrs. Wilson needed extra emotional support today. Spent quality time listening to her concerns.",
+      "patient_signature_url": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.775,
+        "longitude": -89.658,
+        "address": "987 Cedar St, Springfield, IL",
+        "accuracy": 4
+      },
+      "check_out_location": {
+        "latitude": 39.775,
+        "longitude": -89.658,
+        "address": "987 Cedar St, Springfield, IL",
+        "accuracy": 3
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_companionship_004",
+          "task_name": "Companionship",
+          "completed": true,
+          "notes": "Provided emotional support and active listening",
+          "completed_at": "2025-08-22T15:45:00Z"
+        },
+        {
+          "task_id": "task_meal_004",
+          "task_name": "Meal Preparation",
+          "completed": true,
+          "notes": "Prepared her favorite comfort food - soup and sandwiches",
+          "completed_at": "2025-08-22T16:30:00Z"
+        },
+        {
+          "task_id": "task_light_housekeeping_003",
+          "task_name": "Light Housekeeping",
+          "completed": true,
+          "notes": "Light tidying to help her feel more comfortable",
+          "completed_at": "2025-08-22T17:30:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 2,
+        "verified_at": "2025-08-22T18:30:00Z",
+        "notes": "Excellent emotional care provided"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_sarah123",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
+    },
+    {
+      "id": 18,
+      "appointment_id": 18,
+      "caregiver_id": 12,
+      "check_in_time": "2025-08-23T08:30:00Z",
+      "check_out_time": "2025-08-23T12:30:00Z",
+      "status": "completed",
+      "caregiver_notes": "Final appointment of the week with Mr. Taylor. He's making great progress with his recovery.",
+      "patient_signature_url": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200&h=100&fit=crop",
+      "check_in_location": {
+        "latitude": 39.792,
+        "longitude": -89.628,
+        "address": "147 Birch Ln, Springfield, IL",
+        "accuracy": 2
+      },
+      "check_out_location": {
+        "latitude": 39.792,
+        "longitude": -89.628,
+        "address": "147 Birch Ln, Springfield, IL",
+        "accuracy": 3
+      },
+      "tasks_completed": [
+        {
+          "task_id": "task_physical_therapy_002",
+          "task_name": "Physical Therapy Support",
+          "completed": true,
+          "notes": "Excellent progress with mobility exercises",
+          "completed_at": "2025-08-23T09:15:00Z"
+        },
+        {
+          "task_id": "task_bathing_005",
+          "task_name": "Bathing Assistance",
+          "completed": true,
+          "notes": "Patient showed increased independence",
+          "completed_at": "2025-08-23T10:00:00Z"
+        },
+        {
+          "task_id": "task_medication_004",
+          "task_name": "Medication Management",
+          "completed": true,
+          "notes": "All medications taken as prescribed",
+          "completed_at": "2025-08-23T11:00:00Z"
+        },
+        {
+          "task_id": "task_meal_005",
+          "task_name": "Meal Preparation",
+          "completed": true,
+          "notes": "Prepared nutritious lunch focused on recovery diet",
+          "completed_at": "2025-08-23T12:00:00Z"
+        }
+      ],
+      "supervisor_verification": {
+        "verified": true,
+        "verified_by": 1,
+        "verified_at": "2025-08-23T13:00:00Z",
+        "notes": "Outstanding care and progress monitoring"
+      },
+      "device_info": {
+        "device_id": "mobile_app_ios_sarah123",
+        "version": "v1.2.3",
+        "platform": "iOS"
+      },
+      "deleted_at": null
     }
   ],
-  "auditLogs": [
+  "task_packages": [
+    {
+      "id": 1,
+      "customer_id": 3,
+      "name": "Post-Surgery Recovery Plan",
+      "description": "Comprehensive care plan for knee surgery recovery including mobility assistance and daily living support",
+      "status": "active",
+      "goals": "Assist with daily activities during knee surgery rehab; improve mobility and independence",
+      "priority": "high",
+      "created_by": 2,
+      "created_at": "2025-07-28T08:00:00Z",
+      "updated_at": "2025-08-01T10:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 2,
+      "customer_id": 4,
+      "name": "Diabetes Management Support",
+      "description": "Daily care tasks focused on diabetes management and general wellness support",
+      "status": "active",
+      "goals": "Monitor blood sugar levels, medication reminders, and healthy meal preparation",
+      "priority": "medium",
+      "created_by": 2,
+      "created_at": "2025-08-01T09:00:00Z",
+      "updated_at": "2025-08-01T09:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 3,
+      "customer_id": 6,
+      "name": "Memory Care Assistance",
+      "description": "Specialized care tasks for clients with dementia including cognitive stimulation and safety monitoring",
+      "status": "active",
+      "goals": "Maintain cognitive function and ensure safety during daily activities",
+      "priority": "high",
+      "created_by": 2,
+      "created_at": "2025-08-02T10:30:00Z",
+      "updated_at": "2025-08-02T10:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 4,
+      "customer_id": 5,
+      "name": "Companionship & Light Assistance",
+      "description": "Regular companionship services with light housekeeping and meal preparation for elderly client",
+      "status": "active",
+      "goals": "Provide social interaction, light household support, and nutritious meal preparation",
+      "priority": "medium",
+      "created_by": 2,
+      "created_at": "2025-08-18T07:00:00Z",
+      "updated_at": "2025-08-18T07:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 5,
+      "customer_id": 7,
+      "name": "Emotional Support & Recovery",
+      "description": "Specialized care plan focusing on emotional wellbeing and recovery support during difficult period",
+      "status": "active",
+      "goals": "Provide emotional support, companionship, and assistance with daily tasks during recovery",
+      "priority": "high",
+      "created_by": 2,
+      "created_at": "2025-08-22T14:00:00Z",
+      "updated_at": "2025-08-22T14:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 6,
+      "customer_id": 8,
+      "name": "Physical Therapy Support Plan",
+      "description": "Comprehensive care plan supporting physical therapy goals and mobility improvement",
+      "status": "active",
+      "goals": "Support physical therapy exercises, monitor progress, and assist with mobility activities",
+      "priority": "high",
+      "created_by": 2,
+      "created_at": "2025-08-23T07:30:00Z",
+      "updated_at": "2025-08-23T07:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 7,
+      "customer_id": 3,
+      "name": "Weekly Routine Maintenance",
+      "description": "Ongoing care plan for consistent daily personal care and routine establishment",
+      "status": "active",
+      "goals": "Maintain independence with personal care, establish consistent daily routines, monitor health indicators",
+      "priority": "medium",
+      "created_by": 2,
+      "created_at": "2025-08-18T16:00:00Z",
+      "updated_at": "2025-08-18T16:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 8,
+      "customer_id": 4,
+      "name": "Diabetes Monitoring & Education",
+      "description": "Enhanced diabetes management with education components and family involvement",
+      "status": "active",
+      "goals": "Stabilize blood sugar levels, educate on self-management, involve family in care plan",
+      "priority": "high",
+      "created_by": 2,
+      "created_at": "2025-08-18T17:00:00Z",
+      "updated_at": "2025-08-18T17:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 9,
+      "customer_id": 5,
+      "name": "Independence & Social Engagement",
+      "description": "Care plan focused on maintaining independence while providing social interaction and light support",
+      "status": "active",
+      "goals": "Encourage independence in ADLs, provide social companionship, maintain household organization",
+      "priority": "medium",
+      "created_by": 2,
+      "created_at": "2025-08-18T18:00:00Z",
+      "updated_at": "2025-08-18T18:00:00Z",
+      "deleted_at": null
+    }
+  ],
+  "task_package_services": [
+    {
+      "id": 1,
+      "task_package_id": 1,
+      "service_id": 1,
+      "frequency": "daily",
+      "instructions": "Use walk-in shower, patient prefers morning hours",
+      "is_required": true,
+      "created_at": "2025-07-28T08:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 2,
+      "task_package_id": 1,
+      "service_id": 3,
+      "frequency": "daily",
+      "instructions": "Focus on knee exercises and walker training",
+      "is_required": true,
+      "created_at": "2025-07-28T08:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 3,
+      "task_package_id": 1,
+      "service_id": 4,
+      "frequency": "daily",
+      "instructions": "Low-sodium diet for blood pressure management",
+      "is_required": false,
+      "created_at": "2025-07-28T08:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 4,
+      "task_package_id": 2,
+      "service_id": 5,
+      "frequency": "twice_daily",
+      "instructions": "Blood sugar monitoring before breakfast and dinner",
+      "is_required": true,
+      "created_at": "2025-08-01T09:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 5,
+      "task_package_id": 2,
+      "service_id": 4,
+      "frequency": "daily",
+      "instructions": "Diabetic-friendly meals with carb counting",
+      "is_required": true,
+      "created_at": "2025-08-01T09:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 6,
+      "task_package_id": 3,
+      "service_id": 1,
+      "frequency": "daily",
+      "instructions": "Extra patience required, use familiar routines",
+      "is_required": true,
+      "created_at": "2025-08-02T10:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 7,
+      "task_package_id": 3,
+      "service_id": 8,
+      "frequency": "daily",
+      "instructions": "Engage in memory games and familiar conversation topics",
+      "is_required": false,
+      "created_at": "2025-08-02T10:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 8,
+      "task_package_id": 4,
+      "service_id": 8,
+      "frequency": "daily",
+      "instructions": "Focus on positive social interaction and conversation",
+      "is_required": true,
+      "created_at": "2025-08-18T07:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 9,
+      "task_package_id": 4,
+      "service_id": 6,
+      "frequency": "weekly",
+      "instructions": "Light cleaning only - dusting, organizing, basic tidying",
+      "is_required": false,
+      "created_at": "2025-08-18T07:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 10,
+      "task_package_id": 4,
+      "service_id": 4,
+      "frequency": "daily",
+      "instructions": "Simple, nutritious meals preferred, check dietary restrictions",
+      "is_required": true,
+      "created_at": "2025-08-18T07:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 11,
+      "task_package_id": 5,
+      "service_id": 8,
+      "frequency": "daily",
+      "instructions": "Active listening and emotional support prioritized",
+      "is_required": true,
+      "created_at": "2025-08-22T14:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 12,
+      "task_package_id": 5,
+      "service_id": 4,
+      "frequency": "daily",
+      "instructions": "Comfort foods and favorite meals to boost morale",
+      "is_required": true,
+      "created_at": "2025-08-22T14:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 13,
+      "task_package_id": 5,
+      "service_id": 6,
+      "frequency": "as_needed",
+      "instructions": "Light housekeeping to maintain comfortable environment",
+      "is_required": false,
+      "created_at": "2025-08-22T14:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 14,
+      "task_package_id": 6,
+      "service_id": 3,
+      "frequency": "daily",
+      "instructions": "Support physical therapy exercises and mobility goals",
+      "is_required": true,
+      "created_at": "2025-08-23T07:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 15,
+      "task_package_id": 6,
+      "service_id": 1,
+      "frequency": "daily",
+      "instructions": "Focus on safety during bathing with mobility limitations",
+      "is_required": true,
+      "created_at": "2025-08-23T07:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 16,
+      "task_package_id": 6,
+      "service_id": 5,
+      "frequency": "daily",
+      "instructions": "Monitor medication schedule, especially pain management",
+      "is_required": true,
+      "created_at": "2025-08-23T07:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 17,
+      "task_package_id": 6,
+      "service_id": 4,
+      "frequency": "daily",
+      "instructions": "High protein meals to support recovery and healing",
+      "is_required": true,
+      "created_at": "2025-08-23T07:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 18,
+      "task_package_id": 7,
+      "service_id": 1,
+      "frequency": "daily",
+      "instructions": "Consistent morning bathing routine, track independence progress",
+      "is_required": true,
+      "created_at": "2025-08-18T16:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 19,
+      "task_package_id": 7,
+      "service_id": 2,
+      "frequency": "daily",
+      "instructions": "Assist with clothing selection and dressing as needed",
+      "is_required": true,
+      "created_at": "2025-08-18T16:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 20,
+      "task_package_id": 7,
+      "service_id": 5,
+      "frequency": "daily",
+      "instructions": "Monitor vital signs and medication adherence",
+      "is_required": true,
+      "created_at": "2025-08-18T16:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 21,
+      "task_package_id": 8,
+      "service_id": 5,
+      "frequency": "twice_daily",
+      "instructions": "Blood glucose monitoring before meals and at bedtime",
+      "is_required": true,
+      "created_at": "2025-08-18T17:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 22,
+      "task_package_id": 8,
+      "service_id": 4,
+      "frequency": "daily",
+      "instructions": "Carb-controlled meal preparation with patient education",
+      "is_required": true,
+      "created_at": "2025-08-18T17:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 23,
+      "task_package_id": 8,
+      "service_id": 8,
+      "frequency": "weekly",
+      "instructions": "Education sessions on diabetes self-management",
+      "is_required": false,
+      "created_at": "2025-08-18T17:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 24,
+      "task_package_id": 9,
+      "service_id": 8,
+      "frequency": "daily",
+      "instructions": "Social interaction and emotional support conversations",
+      "is_required": true,
+      "created_at": "2025-08-18T18:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 25,
+      "task_package_id": 9,
+      "service_id": 6,
+      "frequency": "weekly",
+      "instructions": "Light housekeeping to maintain organized living space",
+      "is_required": false,
+      "created_at": "2025-08-18T18:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 26,
+      "task_package_id": 9,
+      "service_id": 4,
+      "frequency": "as_needed",
+      "instructions": "Meal preparation assistance when requested",
+      "is_required": false,
+      "created_at": "2025-08-18T18:00:00Z",
+      "deleted_at": null
+    }
+  ],
+  "audit_logs": [
     {
       "id": 1,
       "user_id": 1,
@@ -1759,7 +3154,8 @@
       "entity": "package",
       "entity_id": 1,
       "timestamp": "2025-07-25T12:00:00Z",
-      "details": "{\"name\": \"Basic Personal Care\", \"code\": \"PC001\"}"
+      "details": "{\"name\": \"Basic Personal Care\", \"code\": \"PC001\"}",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -1768,7 +3164,8 @@
       "entity": "service",
       "entity_id": 1,
       "timestamp": "2025-07-25T12:15:00Z",
-      "details": "{\"name\": \"Bathing Assistance\", \"code\": \"SVC001\"}"
+      "details": "{\"name\": \"Bathing Assistance\", \"code\": \"SVC001\"}",
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -1777,7 +3174,8 @@
       "entity": "appointment",
       "entity_id": 1,
       "timestamp": "2025-07-25T12:30:00Z",
-      "details": "{\"package_id\": \"Basic Personal Care\", \"date\": \"2025-08-01\"}"
+      "details": "{\"packageId\": \"Basic Personal Care\", \"date\": \"2025-08-01\"}",
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -1786,7 +3184,8 @@
       "entity": "appointment",
       "entity_id": 5,
       "timestamp": "2025-07-25T13:00:00Z",
-      "details": "{\"status\": \"cancelled\", \"reason\": \"Customer hospital visit\"}"
+      "details": "{\"status\": \"cancelled\", \"reason\": \"Customer hospital visit\"}",
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -1795,7 +3194,8 @@
       "entity": "caregiver",
       "entity_id": 1,
       "timestamp": "2025-07-25T13:00:00Z",
-      "details": "{\"name\": \"Alice Taylor\"}"
+      "details": "{\"name\": \"Alice Taylor\"}",
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -1804,7 +3204,8 @@
       "entity": "customer",
       "entity_id": 1,
       "timestamp": "2025-07-25T13:30:00Z",
-      "details": "{\"phone_number\": \"555-0101\"}"
+      "details": "{\"phoneNumber\": \"555-0101\"}",
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -1813,7 +3214,8 @@
       "entity": "recurringSchedule",
       "entity_id": 1,
       "timestamp": "2025-07-25T14:00:00Z",
-      "details": "{\"package_id\": \"Basic Personal Care\", \"start_date\": \"2025-08-01\"}"
+      "details": "{\"packageId\": \"Basic Personal Care\", \"startDate\": \"2025-08-01\"}",
+      "deleted_at": null
     },
     {
       "id": 9,
@@ -1822,7 +3224,8 @@
       "entity": "service",
       "entity_id": 6,
       "timestamp": "2025-07-25T14:30:00Z",
-      "details": "{\"name\": \"Light Housekeeping\", \"reason\": \"Inactive\"}"
+      "details": "{\"name\": \"Light Housekeeping\", \"reason\": \"Inactive\"}",
+      "deleted_at": null
     },
     {
       "id": 10,
@@ -1831,7 +3234,8 @@
       "entity": "appointment",
       "entity_id": 6,
       "timestamp": "2025-07-25T15:00:00Z",
-      "details": "{\"status\": \"Rescheduled\", \"newTime\": \"Afternoon\"}"
+      "details": "{\"status\": \"Rescheduled\", \"newTime\": \"Afternoon\"}",
+      "deleted_at": null
     },
     {
       "id": 11,
@@ -1840,7 +3244,8 @@
       "entity": "customer",
       "entity_id": 8,
       "timestamp": "2025-06-10T09:45:00Z",
-      "details": "{\"name\": \"Elizabeth Taylor\"}"
+      "details": "{\"name\": \"Elizabeth Taylor\"}",
+      "deleted_at": null
     },
     {
       "id": 12,
@@ -1849,7 +3254,8 @@
       "entity": "caregiver",
       "entity_id": 7,
       "timestamp": "2025-06-15T11:20:00Z",
-      "details": "{\"name\": \"Maria Garcia\"}"
+      "details": "{\"name\": \"Maria Garcia\"}",
+      "deleted_at": null
     },
     {
       "id": 13,
@@ -1858,10 +3264,11 @@
       "entity": "package",
       "entity_id": 4,
       "timestamp": "2025-06-20T14:00:00Z",
-      "details": "{\"name\": \"Memory Care\", \"code\": \"PC004\"}"
+      "details": "{\"name\": \"Memory Care\", \"code\": \"PC004\"}",
+      "deleted_at": null
     }
   ],
-  "userRequests": [
+  "user_requests": [
     {
       "id": 1,
       "user_id": 3,
@@ -1870,7 +3277,8 @@
       "preferred_contact_method": "phone",
       "notes": "Need help with bathing 3x/week for my mother who has mobility issues. Prefer morning appointments.",
       "created_at": "2025-07-25T10:00:00Z",
-      "converted_at": "2025-07-25T14:00:00Z"
+      "converted_at": "2025-07-25T14:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -1880,7 +3288,8 @@
       "preferred_contact_method": "email",
       "notes": "Looking for meal preparation and mobility assistance for my father. He has diabetes and needs help with daily activities.",
       "created_at": "2025-07-26T09:30:00Z",
-      "converted_at": null
+      "converted_at": null,
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -1890,7 +3299,8 @@
       "preferred_contact_method": "phone",
       "notes": "Interested in home care services but not sure which package is best. Need someone to help with medication reminders and light housekeeping.",
       "created_at": "2025-07-27T11:15:00Z",
-      "converted_at": null
+      "converted_at": null,
+      "deleted_at": null
     },
     {
       "id": 4,
@@ -1900,7 +3310,8 @@
       "preferred_contact_method": "email",
       "notes": "Need comprehensive care for my grandmother who has dementia. Looking for experienced caregiver with dementia care training.",
       "created_at": "2025-07-28T08:45:00Z",
-      "converted_at": null
+      "converted_at": null,
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -1910,7 +3321,8 @@
       "preferred_contact_method": "phone",
       "notes": "Need basic personal care for my wife who recently had surgery. Looking for 2-3 hours per day.",
       "created_at": "2025-07-29T16:20:00Z",
-      "converted_at": null
+      "converted_at": null,
+      "deleted_at": null
     },
     {
       "id": 6,
@@ -1920,7 +3332,8 @@
       "preferred_contact_method": "email",
       "notes": "Looking for memory care services for my father with Alzheimer's. Need someone with experience in cognitive stimulation.",
       "created_at": "2025-08-01T10:30:00Z",
-      "converted_at": null
+      "converted_at": null,
+      "deleted_at": null
     },
     {
       "id": 7,
@@ -1930,7 +3343,8 @@
       "preferred_contact_method": "phone",
       "notes": "Need respite care for my mother while I attend a family event out of town.",
       "created_at": "2025-08-02T14:15:00Z",
-      "converted_at": null
+      "converted_at": null,
+      "deleted_at": null
     },
     {
       "id": 8,
@@ -1940,7 +3354,16 @@
       "preferred_contact_method": "email",
       "notes": "Exploring options for long-term care for my husband who has Parkinson's disease.",
       "created_at": "2025-08-03T09:45:00Z",
-      "converted_at": null
+      "converted_at": null,
+      "deleted_at": null
+    },
+    {
+      "user_id": 3,
+      "package_id": 1,
+      "status": "new",
+      "preferred_contact_method": "email",
+      "notes": "Customer: John Doe (john.doe@example.com)\nPhone: 555-0101\nAddress: \nPreferred Date: 2025-08-21\nPreferred Time: 19:23\nDuration: \nSpecial Instructions: \nEmergency Contact:  ()",
+      "id": 9
     }
   ],
   "feedback": [
@@ -1950,7 +3373,8 @@
       "user_id": 3,
       "rating": 5,
       "comment": "Excellent service, caregiver was very attentive and caring.",
-      "created_at": "2025-08-01T15:00:00Z"
+      "created_at": "2025-08-01T15:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -1958,7 +3382,8 @@
       "user_id": 6,
       "rating": 4,
       "comment": "Good service, but caregiver could have been more punctual.",
-      "created_at": "2025-08-04T16:30:00Z"
+      "created_at": "2025-08-04T16:30:00Z",
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -1966,16 +3391,17 @@
       "user_id": 6,
       "rating": 5,
       "comment": "Great caregiver, very professional and knowledgeable.",
-      "created_at": "2025-08-09T14:00:00Z"
+      "created_at": "2025-08-09T14:00:00Z",
+      "deleted_at": null
     },
-
     {
       "id": 4,
       "appointment_id": 6,
       "user_id": 3,
       "rating": 4,
       "comment": "Good care provided, would recommend.",
-      "created_at": "2025-08-06T13:00:00Z"
+      "created_at": "2025-08-06T13:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 5,
@@ -1983,19 +3409,24 @@
       "user_id": 5,
       "rating": 5,
       "comment": "Caregiver was wonderful with my father, very patient and kind.",
-      "created_at": "2025-08-08T18:00:00Z"
+      "created_at": "2025-08-08T18:00:00Z",
+      "deleted_at": null
     }
   ],
   "health_records": [
     {
       "id": 1,
       "customer_id": 3,
-      "record_type": "vital_signs",
+      "record_type": "vitalSigns",
       "recorded_by": 12,
-      "data": { "blood_pressure": "120/80", "pulse": 72 },
+      "data": {
+        "blood_pressure": "120/80",
+        "pulse": 72
+      },
       "recorded_at": "2025-08-10T09:00:00Z",
       "verified_at": "2025-08-10T10:00:00Z",
-      "verified_by": 1
+      "verified_by": 1,
+      "deleted_at": null
     }
   ],
   "emergency_contacts": [
@@ -2010,7 +3441,8 @@
       "email": "jane.doe@example.com",
       "address": "123 Main St, Springfield, IL 62701, USA",
       "is_primary": true,
-      "can_make_decisions": true
+      "can_make_decisions": true,
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -2023,7 +3455,8 @@
       "email": "tom.doe@example.com",
       "address": "456 Elm St, Springfield, IL 62702, USA",
       "is_primary": false,
-      "can_make_decisions": false
+      "can_make_decisions": false,
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -2036,7 +3469,8 @@
       "email": "dr.smith@clinic.com",
       "address": "789 Oak St, Springfield, IL 62703, USA",
       "is_primary": false,
-      "can_make_decisions": true
+      "can_make_decisions": true,
+      "deleted_at": null
     }
   ],
   "invoices": [
@@ -2046,13 +3480,14 @@
       "invoice_number": "INV-2025-0001",
       "billing_period_start": "2025-08-01",
       "billing_period_end": "2025-08-31",
-      "subtotal": 58.0,
+      "subtotal": 58,
       "tax_amount": 5.8,
       "total_amount": 63.8,
       "status": "sent",
       "due_date": "2025-09-10",
       "issued_at": "2025-08-31T12:00:00Z",
-      "paid_at": null
+      "paid_at": null,
+      "deleted_at": null
     }
   ],
   "invoice_line_items": [
@@ -2062,9 +3497,10 @@
       "appointment_id": 1,
       "service_name": "Bathing Assistance",
       "quantity": 1,
-      "unit_rate": 20.0,
-      "total_amount": 20.0,
-      "description": "Morning care"
+      "unit_rate": 20,
+      "total_amount": 20,
+      "description": "Morning care",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -2072,9 +3508,10 @@
       "appointment_id": 1,
       "service_name": "Dressing Assistance",
       "quantity": 1,
-      "unit_rate": 18.0,
-      "total_amount": 18.0,
-      "description": "Morning care"
+      "unit_rate": 18,
+      "total_amount": 18,
+      "description": "Morning care",
+      "deleted_at": null
     },
     {
       "id": 3,
@@ -2082,9 +3519,10 @@
       "appointment_id": 6,
       "service_name": "Bathing Assistance",
       "quantity": 1,
-      "unit_rate": 20.0,
-      "total_amount": 20.0,
-      "description": "Evening care"
+      "unit_rate": 20,
+      "total_amount": 20,
+      "description": "Evening care",
+      "deleted_at": null
     }
   ],
   "insurance_claims": [
@@ -2094,11 +3532,12 @@
       "insurance_provider": "Aetna",
       "claim_number": "CLM-2025-0001",
       "service_date": "2025-08-10",
-      "amount_claimed": 110.0,
-      "amount_approved": 100.0,
+      "amount_claimed": 110,
+      "amount_approved": 100,
       "status": "processed",
       "submitted_at": "2025-08-11T10:00:00Z",
-      "processed_at": "2025-08-15T10:00:00Z"
+      "processed_at": "2025-08-15T10:00:00Z",
+      "deleted_at": null
     }
   ],
   "caregiver_availability": [
@@ -2113,7 +3552,8 @@
       "max_appointments": 3,
       "notes": "Prefers morning shifts",
       "is_active": true,
-      "created_at": "2025-08-01T08:00:00Z"
+      "created_at": "2025-08-01T08:00:00Z",
+      "deleted_at": null
     },
     {
       "id": 2,
@@ -2126,7 +3566,8 @@
       "max_appointments": 0,
       "notes": "On leave",
       "is_active": false,
-      "created_at": "2025-08-10T08:00:00Z"
+      "created_at": "2025-08-10T08:00:00Z",
+      "deleted_at": null
     }
   ],
   "time_off_requests": [
@@ -2139,7 +3580,763 @@
       "status": "approved",
       "requested_at": "2025-08-10T09:00:00Z",
       "reviewed_by": 1,
-      "reviewed_at": "2025-08-11T10:00:00Z"
+      "reviewed_at": "2025-08-11T10:00:00Z",
+      "deleted_at": null
+    }
+  ],
+  "performance_metrics": [
+    {
+      "id": 1,
+      "caregiver_id": 12,
+      "reporting_period": "2025-07",
+      "total_appointments": 8,
+      "completed_appointments": 7,
+      "cancelled_appointments": 1,
+      "late_arrivals": 1,
+      "average_task_completion_rate": 95.5,
+      "customer_satisfaction_score": 4.8,
+      "evv_compliance_rate": 100,
+      "location_accuracy_average": 6.2,
+      "time_punctuality": 92.3,
+      "overall_rating": 4.7,
+      "supervisor_notes": "Excellent caregiver with high customer satisfaction. Minor punctuality issues addressed.",
+      "calculated_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 2,
+      "caregiver_id": 13,
+      "reporting_period": "2025-07",
+      "total_appointments": 6,
+      "completed_appointments": 6,
+      "cancelled_appointments": 0,
+      "late_arrivals": 0,
+      "average_task_completion_rate": 98.2,
+      "customer_satisfaction_score": 4.6,
+      "evv_compliance_rate": 100,
+      "location_accuracy_average": 5.8,
+      "time_punctuality": 100,
+      "overall_rating": 4.8,
+      "supervisor_notes": "Reliable and punctual caregiver with excellent compliance record.",
+      "calculated_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 3,
+      "caregiver_id": 14,
+      "reporting_period": "2025-07",
+      "total_appointments": 10,
+      "completed_appointments": 9,
+      "cancelled_appointments": 1,
+      "late_arrivals": 0,
+      "average_task_completion_rate": 97.8,
+      "customer_satisfaction_score": 4.9,
+      "evv_compliance_rate": 100,
+      "location_accuracy_average": 4.5,
+      "time_punctuality": 98.5,
+      "overall_rating": 4.9,
+      "supervisor_notes": "Outstanding performance across all metrics. Highly recommended caregiver.",
+      "calculated_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 4,
+      "caregiver_id": 15,
+      "reporting_period": "2025-07",
+      "total_appointments": 7,
+      "completed_appointments": 7,
+      "cancelled_appointments": 0,
+      "late_arrivals": 2,
+      "average_task_completion_rate": 93.1,
+      "customer_satisfaction_score": 4.7,
+      "evv_compliance_rate": 100,
+      "location_accuracy_average": 7.1,
+      "time_punctuality": 85.7,
+      "overall_rating": 4.5,
+      "supervisor_notes": "Good caregiver but needs improvement in punctuality. Location accuracy could be better.",
+      "calculated_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 5,
+      "caregiver_id": 16,
+      "reporting_period": "2025-07",
+      "total_appointments": 5,
+      "completed_appointments": 5,
+      "cancelled_appointments": 0,
+      "late_arrivals": 0,
+      "average_task_completion_rate": 96.4,
+      "customer_satisfaction_score": 4.5,
+      "evv_compliance_rate": 100,
+      "location_accuracy_average": 5.2,
+      "time_punctuality": 100,
+      "overall_rating": 4.7,
+      "supervisor_notes": "Consistent performance with room for improvement in customer engagement.",
+      "calculated_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 6,
+      "caregiver_id": 17,
+      "reporting_period": "2025-07",
+      "total_appointments": 9,
+      "completed_appointments": 9,
+      "cancelled_appointments": 0,
+      "late_arrivals": 1,
+      "average_task_completion_rate": 99.1,
+      "customer_satisfaction_score": 4.9,
+      "evv_compliance_rate": 100,
+      "location_accuracy_average": 3.8,
+      "time_punctuality": 94.4,
+      "overall_rating": 4.8,
+      "supervisor_notes": "Excellent clinical skills and customer rapport. Minor punctuality issue noted.",
+      "calculated_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 7,
+      "caregiver_id": 18,
+      "reporting_period": "2025-07",
+      "total_appointments": 6,
+      "completed_appointments": 6,
+      "cancelled_appointments": 0,
+      "late_arrivals": 0,
+      "average_task_completion_rate": 94.7,
+      "customer_satisfaction_score": 4.7,
+      "evv_compliance_rate": 100,
+      "location_accuracy_average": 6,
+      "time_punctuality": 100,
+      "overall_rating": 4.6,
+      "supervisor_notes": "Bilingual skills valuable for diverse client base. Good overall performance.",
+      "calculated_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": 8,
+      "caregiver_id": 19,
+      "reporting_period": "2025-07",
+      "total_appointments": 8,
+      "completed_appointments": 8,
+      "cancelled_appointments": 0,
+      "late_arrivals": 0,
+      "average_task_completion_rate": 98.5,
+      "customer_satisfaction_score": 4.8,
+      "evv_compliance_rate": 100,
+      "location_accuracy_average": 4.1,
+      "time_punctuality": 100,
+      "overall_rating": 4.9,
+      "supervisor_notes": "Outstanding OT skills and client outcomes. Highly professional approach.",
+      "calculated_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    }
+  ],
+  "pay_periods": [
+    {
+      "id": "pp_001",
+      "name": "Pay Period 1 - January 2025",
+      "start_date": "2025-01-01",
+      "end_date": "2025-01-14",
+      "status": "closed",
+      "approved_by": 1,
+      "approved_at": "2025-01-15T17:00:00Z",
+      "created_at": "2025-01-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "pp_002",
+      "name": "Pay Period 2 - January 2025",
+      "start_date": "2025-01-15",
+      "end_date": "2025-01-28",
+      "status": "closed",
+      "approved_by": 1,
+      "approved_at": "2025-01-29T17:00:00Z",
+      "created_at": "2025-01-15T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "pp_003",
+      "name": "Pay Period 3 - February 2025",
+      "start_date": "2025-02-01",
+      "end_date": "2025-02-14",
+      "status": "closed",
+      "approved_by": 1,
+      "approved_at": "2025-02-15T17:00:00Z",
+      "created_at": "2025-02-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "pp_004",
+      "name": "Pay Period 4 - August 2025",
+      "start_date": "2025-08-01",
+      "end_date": "2025-08-14",
+      "status": "pending_approval",
+      "approved_by": null,
+      "approved_at": null,
+      "created_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "pp_005",
+      "name": "Pay Period 5 - August 2025",
+      "start_date": "2025-08-15",
+      "end_date": "2025-08-28",
+      "status": "active",
+      "approved_by": null,
+      "approved_at": null,
+      "created_at": "2025-08-15T00:00:00Z",
+      "deleted_at": null
+    }
+  ],
+  "time_sheets": [
+    {
+      "id": "ts_001",
+      "caregiver_id": 11,
+      "pay_period_id": "pp_004",
+      "regular_hours": 78.5,
+      "overtime_hours": 2,
+      "total_hours": 80.5,
+      "hourly_rate": 20,
+      "overtime_rate": 30,
+      "gross_pay": 1630,
+      "deductions": {
+        "federal_tax": 195.6,
+        "state_tax": 81.5,
+        "social_security": 101.06,
+        "medicare": 23.64,
+        "total": 401.8
+      },
+      "net_pay": 1228.2,
+      "status": "calculated",
+      "evv_records": [
+        "evv_001",
+        "evv_002",
+        "evv_003",
+        "evv_004",
+        "evv_005"
+      ],
+      "manual_adjustments": [],
+      "calculated_at": "2025-08-14T23:59:59Z",
+      "approved_at": null,
+      "created_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "ts_002",
+      "caregiver_id": 12,
+      "pay_period_id": "pp_004",
+      "regular_hours": 80,
+      "overtime_hours": 0,
+      "total_hours": 80,
+      "hourly_rate": 22,
+      "overtime_rate": 33,
+      "gross_pay": 1760,
+      "deductions": {
+        "federal_tax": 211.2,
+        "state_tax": 88,
+        "social_security": 109.12,
+        "medicare": 25.52,
+        "total": 433.84
+      },
+      "net_pay": 1326.16,
+      "status": "calculated",
+      "evv_records": [
+        "evv_006",
+        "evv_007",
+        "evv_008",
+        "evv_009",
+        "evv_010"
+      ],
+      "manual_adjustments": [],
+      "calculated_at": "2025-08-14T23:59:59Z",
+      "approved_at": null,
+      "created_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "ts_003",
+      "caregiver_id": 13,
+      "pay_period_id": "pp_004",
+      "regular_hours": 76,
+      "overtime_hours": 4,
+      "total_hours": 80,
+      "hourly_rate": 21.5,
+      "overtime_rate": 32.25,
+      "gross_pay": 1763,
+      "deductions": {
+        "federal_tax": 211.56,
+        "state_tax": 88.15,
+        "social_security": 109.31,
+        "medicare": 25.56,
+        "total": 434.58
+      },
+      "net_pay": 1328.42,
+      "status": "calculated",
+      "evv_records": [
+        "evv_011",
+        "evv_012",
+        "evv_013",
+        "evv_014",
+        "evv_015"
+      ],
+      "manual_adjustments": [
+        {
+          "id": "adj_001",
+          "type": "bonus",
+          "description": "Performance bonus for excellent customer feedback",
+          "amount": 100,
+          "approved_by": 1,
+          "approved_at": "2025-08-10T14:30:00Z"
+        }
+      ],
+      "calculated_at": "2025-08-14T23:59:59Z",
+      "approved_at": null,
+      "created_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "ts_004",
+      "caregiver_id": 14,
+      "pay_period_id": "pp_004",
+      "regular_hours": 72,
+      "overtime_hours": 0,
+      "total_hours": 72,
+      "hourly_rate": 19.5,
+      "overtime_rate": 29.25,
+      "gross_pay": 1404,
+      "deductions": {
+        "federal_tax": 168.48,
+        "state_tax": 70.2,
+        "social_security": 87.05,
+        "medicare": 20.36,
+        "total": 346.09
+      },
+      "net_pay": 1057.91,
+      "status": "calculated",
+      "evv_records": [
+        "evv_016",
+        "evv_017",
+        "evv_018"
+      ],
+      "manual_adjustments": [],
+      "calculated_at": "2025-08-14T23:59:59Z",
+      "approved_at": null,
+      "created_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "ts_005",
+      "caregiver_id": 15,
+      "pay_period_id": "pp_004",
+      "regular_hours": 80,
+      "overtime_hours": 0,
+      "total_hours": 80,
+      "hourly_rate": 23,
+      "overtime_rate": 34.5,
+      "gross_pay": 1840,
+      "deductions": {
+        "federal_tax": 220.8,
+        "state_tax": 92,
+        "social_security": 114.08,
+        "medicare": 26.68,
+        "total": 453.56
+      },
+      "net_pay": 1386.44,
+      "status": "calculated",
+      "evv_records": [
+        "evv_019",
+        "evv_020",
+        "evv_021",
+        "evv_022"
+      ],
+      "manual_adjustments": [],
+      "calculated_at": "2025-08-14T23:59:59Z",
+      "approved_at": null,
+      "created_at": "2025-08-01T00:00:00Z",
+      "deleted_at": null
+    }
+  ],
+  "payroll_adjustments": [
+    {
+      "id": "adj_001",
+      "time_sheet_id": "ts_003",
+      "type": "bonus",
+      "category": "performance",
+      "description": "Performance bonus for excellent customer feedback",
+      "amount": 100,
+      "is_recurring": false,
+      "approved_by": 1,
+      "approved_at": "2025-08-10T14:30:00Z",
+      "created_at": "2025-08-10T14:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "adj_002",
+      "time_sheet_id": "ts_001",
+      "type": "deduction",
+      "category": "uniform",
+      "description": "Uniform replacement cost",
+      "amount": -25,
+      "is_recurring": false,
+      "approved_by": 1,
+      "approved_at": "2025-08-05T10:15:00Z",
+      "created_at": "2025-08-05T10:15:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "ts_005",
+      "caregiver_id": 11,
+      "pay_period_id": "pp_005",
+      "regular_hours": 40,
+      "overtime_hours": 0,
+      "total_hours": 40,
+      "hourly_rate": 20,
+      "overtime_rate": 30,
+      "gross_pay": 800,
+      "deductions": {
+        "federal_tax": 96,
+        "state_tax": 40,
+        "social_security": 49.6,
+        "medicare": 11.6,
+        "total": 197.2
+      },
+      "net_pay": 602.8,
+      "status": "calculated",
+      "evv_records": [
+        "evv_016",
+        "evv_017",
+        "evv_018"
+      ],
+      "manual_adjustments": [],
+      "calculated_at": "2025-08-18T12:00:00Z",
+      "approved_at": null,
+      "created_at": "2025-08-15T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "ts_006",
+      "caregiver_id": 12,
+      "pay_period_id": "pp_005",
+      "regular_hours": 40,
+      "overtime_hours": 2,
+      "total_hours": 42,
+      "hourly_rate": 22,
+      "overtime_rate": 33,
+      "gross_pay": 946,
+      "deductions": {
+        "federal_tax": 113.52,
+        "state_tax": 47.3,
+        "social_security": 58.65,
+        "medicare": 13.72,
+        "total": 233.19
+      },
+      "net_pay": 712.81,
+      "status": "calculated",
+      "evv_records": [
+        "evv_019",
+        "evv_020",
+        "evv_021"
+      ],
+      "manual_adjustments": [],
+      "calculated_at": "2025-08-18T12:00:00Z",
+      "approved_at": null,
+      "created_at": "2025-08-15T00:00:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "ts_007",
+      "caregiver_id": 13,
+      "pay_period_id": "pp_005",
+      "regular_hours": 38,
+      "overtime_hours": 4,
+      "total_hours": 42,
+      "hourly_rate": 21.5,
+      "overtime_rate": 32.25,
+      "gross_pay": 946,
+      "deductions": {
+        "federal_tax": 113.52,
+        "state_tax": 47.3,
+        "social_security": 58.65,
+        "medicare": 13.72,
+        "total": 233.19
+      },
+      "net_pay": 712.81,
+      "status": "approved",
+      "evv_records": [
+        "evv_022",
+        "evv_023",
+        "evv_024"
+      ],
+      "manual_adjustments": [],
+      "calculated_at": "2025-08-18T12:00:00Z",
+      "approved_at": "2025-08-18T14:30:00Z",
+      "created_at": "2025-08-15T00:00:00Z",
+      "deleted_at": null
+    }
+  ],
+  "time_disputes": [
+    {
+      "id": "dispute_001",
+      "time_sheet_id": "ts_002",
+      "caregiver_id": 12,
+      "dispute_type": "missed_punch",
+      "description": "System failed to record check-out time on 2025-08-03",
+      "requested_adjustment": "Add 2 hours to timesheet for August 3rd appointment",
+      "original_hours": 78,
+      "requested_hours": 80,
+      "status": "pending",
+      "submitted_at": "2025-08-05T09:30:00Z",
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "resolution": null,
+      "resolved_at": null,
+      "supporting_documents": [
+        {
+          "type": "customer_confirmation",
+          "description": "Customer confirmed full 2-hour service was provided",
+          "attachment_url": "/documents/dispute_001_customer_confirmation.pdf"
+        }
+      ],
+      "created_at": "2025-08-05T09:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "dispute_002",
+      "time_sheet_id": "ts_004",
+      "caregiver_id": 14,
+      "dispute_type": "overtime_calculation",
+      "description": "Overtime not calculated correctly for weekend work",
+      "requested_adjustment": "Apply weekend overtime rate for Saturday shifts",
+      "original_hours": 72,
+      "requested_hours": 72,
+      "status": "resolved",
+      "submitted_at": "2025-08-07T11:45:00Z",
+      "reviewed_by": 1,
+      "reviewed_at": "2025-08-08T14:20:00Z",
+      "resolution": "Weekend overtime rate approved and applied retroactively",
+      "resolved_at": "2025-08-08T14:20:00Z",
+      "supporting_documents": [
+        {
+          "type": "schedule_confirmation",
+          "description": "Schedule showing Saturday assignments",
+          "attachment_url": "/documents/dispute_002_schedule.pdf"
+        }
+      ],
+      "created_at": "2025-08-07T11:45:00Z",
+      "deleted_at": null
+    }
+  ],
+  "payroll_reports": [
+    {
+      "id": "report_001",
+      "pay_period_id": "pp_004",
+      "report_type": "summary",
+      "generated_by": 1,
+      "total_caregivers": 5,
+      "total_hours": 392.5,
+      "total_gross_pay": 8397,
+      "total_deductions": 2069.27,
+      "total_net_pay": 6327.73,
+      "average_hourly_rate": 21.3,
+      "overtime_hours": 6,
+      "adjustments_total": 75,
+      "disputes_count": 2,
+      "generated_at": "2025-08-15T08:00:00Z",
+      "created_at": "2025-08-15T08:00:00Z",
+      "deleted_at": null
+    }
+  ],
+  "insurance_providers": [
+    {
+      "id": "ip_001",
+      "name": "Blue Cross Blue Shield",
+      "provider_type": "Medicare",
+      "contact_phone": "1-800-555-0123",
+      "contact_email": "provider@bcbs.com",
+      "address": "123 Insurance Ave, Healthcare City, HC 12345",
+      "claim_submission_url": "https://api.bcbs.com/claims",
+      "authorization_required": true,
+      "coverage_types": [
+        "Home Health",
+        "Personal Care",
+        "Skilled Nursing"
+      ],
+      "max_session_length": 8,
+      "max_daily_hours": 16,
+      "prior_auth_days": 30,
+      "reimbursement_rate": 45.5,
+      "is_active": true,
+      "created_at": "2025-08-01T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
+    },
+    {
+      "id": "ip_002",
+      "name": "United Healthcare",
+      "provider_type": "Medicare Advantage",
+      "contact_phone": "1-800-555-0456",
+      "contact_email": "claims@uhc.com",
+      "address": "456 Coverage Blvd, Benefits Town, BT 67890",
+      "claim_submission_url": "https://api.uhc.com/submissions",
+      "authorization_required": true,
+      "coverage_types": [
+        "Personal Care",
+        "Companion Care",
+        "Respite Care"
+      ],
+      "max_session_length": 6,
+      "max_daily_hours": 12,
+      "prior_auth_days": 14,
+      "reimbursement_rate": 42.75,
+      "is_active": true,
+      "created_at": "2025-08-01T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
+    },
+    {
+      "id": "ip_003",
+      "name": "Medicaid State Program",
+      "provider_type": "Medicaid",
+      "contact_phone": "1-800-555-0789",
+      "contact_email": "claims@statemedicaid.gov",
+      "address": "789 State Benefits Dr, Capitol City, CC 13579",
+      "claim_submission_url": "https://api.medicaid.state.gov/claims",
+      "authorization_required": false,
+      "coverage_types": [
+        "Home Health",
+        "Personal Care",
+        "Medical Transportation"
+      ],
+      "max_session_length": 12,
+      "max_daily_hours": 24,
+      "prior_auth_days": 0,
+      "reimbursement_rate": 38.25,
+      "is_active": true,
+      "created_at": "2025-08-01T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
+    }
+  ],
+  "service_codes": [
+    {
+      "id": "sc_001",
+      "code": "T1019",
+      "description": "Personal Care Services",
+      "category": "Personal Care",
+      "billable_unit": "15-minute",
+      "standard_rate": 12.5,
+      "medicare_rate": 45.5,
+      "medicaid_rate": 38.25,
+      "private_rate": 55,
+      "modifiers": [
+        "U1",
+        "U2",
+        "U3"
+      ],
+      "requires_authorization": false,
+      "max_units_per_day": 96,
+      "is_active": true,
+      "created_at": "2025-08-01T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
+    },
+    {
+      "id": "sc_002",
+      "code": "S5125",
+      "description": "Attendant Care Services",
+      "category": "Companion Care",
+      "billable_unit": "hour",
+      "standard_rate": 45,
+      "medicare_rate": 42.75,
+      "medicaid_rate": 35.5,
+      "private_rate": 52,
+      "modifiers": [
+        "HQ",
+        "GT"
+      ],
+      "requires_authorization": true,
+      "max_units_per_day": 16,
+      "is_active": true,
+      "created_at": "2025-08-01T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
+    },
+    {
+      "id": "sc_003",
+      "code": "G0156",
+      "description": "Skilled Nursing Services",
+      "category": "Medical Care",
+      "billable_unit": "visit",
+      "standard_rate": 125,
+      "medicare_rate": 115.5,
+      "medicaid_rate": 98.75,
+      "private_rate": 145,
+      "modifiers": [
+        "HH",
+        "U4"
+      ],
+      "requires_authorization": true,
+      "max_units_per_day": 4,
+      "is_active": true,
+      "created_at": "2025-08-01T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
+    }
+  ],
+  "compliance_documents": [
+    {
+      "id": "cd_001",
+      "document_type": "HIPAA_COMPLIANCE",
+      "title": "HIPAA Privacy and Security Assessment",
+      "description": "Annual HIPAA compliance review and audit documentation",
+      "file_path": "/compliance/hipaa/2025_hipaa_assessment.pdf",
+      "uploaded_by": 1,
+      "expiration_date": "2026-08-15T00:00:00Z",
+      "compliance_status": "CURRENT",
+      "last_review_date": "2025-08-15T00:00:00Z",
+      "next_review_date": "2026-08-15T00:00:00Z",
+      "is_required": true,
+      "tags": [
+        "HIPAA",
+        "Privacy",
+        "Security",
+        "Annual"
+      ],
+      "created_at": "2025-08-15T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
+    },
+    {
+      "id": "cd_002",
+      "document_type": "MEDICARE_CERTIFICATION",
+      "title": "Medicare Provider Certification",
+      "description": "Official Medicare home health provider certification",
+      "file_path": "/compliance/medicare/provider_certification_2025.pdf",
+      "uploaded_by": 1,
+      "expiration_date": "2027-12-31T00:00:00Z",
+      "compliance_status": "CURRENT",
+      "last_review_date": "2025-08-01T00:00:00Z",
+      "next_review_date": "2026-08-01T00:00:00Z",
+      "is_required": true,
+      "tags": [
+        "Medicare",
+        "Certification",
+        "Provider"
+      ],
+      "created_at": "2025-08-01T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
+    },
+    {
+      "id": "cd_003",
+      "document_type": "STATE_LICENSE",
+      "title": "State Home Care Agency License",
+      "description": "State-issued home care agency operating license",
+      "file_path": "/compliance/state/agency_license_2025.pdf",
+      "uploaded_by": 1,
+      "expiration_date": "2026-06-30T00:00:00Z",
+      "compliance_status": "EXPIRING_SOON",
+      "last_review_date": "2025-06-30T00:00:00Z",
+      "next_review_date": "2026-05-01T00:00:00Z",
+      "is_required": true,
+      "tags": [
+        "State",
+        "License",
+        "Agency"
+      ],
+      "created_at": "2025-06-30T00:00:00Z",
+      "updated_at": "2025-08-15T00:00:00Z"
     }
   ]
 }

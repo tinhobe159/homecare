@@ -58,7 +58,7 @@ const CaregiverManagement = () => {
     const active = caregivers.filter(c => c.is_active).length;
     const verified = caregivers.filter(c => 
       c.background_check_status === 'verified' || 
-      c.backgroundCheckStatus === 'verified'
+      c.background_check_status === 'verified'
     ).length;
     
     const totalExperience = caregivers.reduce((sum, c) => 

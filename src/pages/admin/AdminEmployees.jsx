@@ -30,8 +30,8 @@ import Avatar from '../../components/common/Avatar';
 const AdminEmployees = () => {
   const [users, setUsers] = useState([]);
   const [departments, setDepartments] = useState([]);
-  const [userRoles, setUserRoles] = useState([]);
-  const [administratorProfiles, setAdministratorProfiles] = useState([]);
+  const [user_roles, setUserRoles] = useState([]);
+  const [administrator_profiles, setAdministratorProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDepartment, setFilterDepartment] = useState('all');
@@ -66,7 +66,7 @@ const AdminEmployees = () => {
 
   const fetchData = async () => {
     try {
-      const [usersResponse, departmentsResponse, userRolesResponse, administratorProfilesResponse] = await Promise.all([
+      const [usersResponse, departmentsResponse, user_roles_response, administrator_profiles_response] = await Promise.all([
         usersAPI.getAll(),
         departmentsAPI.getAll(),
         userRolesAPI.getAll(),
@@ -75,8 +75,8 @@ const AdminEmployees = () => {
       
       setUsers(usersResponse.data);
       setDepartments(departmentsResponse.data);
-      setUserRoles(userRolesResponse.data);
-      setAdministratorProfiles(administratorProfilesResponse.data);
+      setUserRoles(user_roles_response.data);
+      setAdministratorProfiles(administrator_profiles_response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load employees data');
@@ -125,7 +125,7 @@ const AdminEmployees = () => {
     e.preventDefault();
     
     try {
-      let userId;
+      let user_id;
       
       if (editingEmployee) {
         // Update existing user
@@ -137,19 +137,19 @@ const AdminEmployees = () => {
           avatar_url: formData.avatar_url,
           is_active: formData.is_active
         });
-        userId = editingEmployee.id;
+        user_id = editingEmployee.id;
         
         // Update or create administrator profile
-        const existingProfile = administratorProfiles.find(ap => ap.user_id === userId);
+        const existingProfile = administrator_profiles.find(ap => ap.user_id === user_id);
         if (formData.department_id) {
           if (existingProfile) {
             await administratorProfilesAPI.update(existingProfile.id, {
-              user_id: userId,
+              user_id: user_id,
               department: parseInt(formData.department_id)
             });
           } else {
             await administratorProfilesAPI.create({
-              user_id: userId,
+              user_id: user_id,
               department: parseInt(formData.department_id)
             });
           }
@@ -166,12 +166,12 @@ const AdminEmployees = () => {
           avatar_url: formData.avatar_url,
           is_active: formData.is_active
         });
-        userId = userResponse.data.id;
+        user_id = userResponse.data.id;
         
         // Create administrator profile if department is selected
         if (formData.department_id) {
           await administratorProfilesAPI.create({
-            user_id: userId,
+            user_id: user_id,
             department: parseInt(formData.department_id)
           });
         }
@@ -198,7 +198,7 @@ const AdminEmployees = () => {
   };
 
   const handleEdit = (employee) => {
-    const adminProfile = administratorProfiles.find(ap => ap.user_id === employee.id);
+    const adminProfile = administrator_profiles.find(ap => ap.user_id === employee.id);
     setEditingEmployee(employee);
     setFormData({
       first_name: employee.first_name || '',
@@ -228,16 +228,16 @@ const AdminEmployees = () => {
 
   const getAdminEmployees = () => {
     return users.filter(user => {
-      const userRole = userRoles.find(ur => ur.user_id === user.id);
+      const userRole = user_roles.find(ur => ur.user_id === user.id);
       return userRole && userRole.role_id === 1; // Assuming role_id 1 is admin
     });
   };
 
   const getEmployeesWithDepartments = () => {
     return users.map(user => {
-      const adminProfile = administratorProfiles.find(ap => ap.user_id === user.id);
+      const adminProfile = administrator_profiles.find(ap => ap.user_id === user.id);
       const department = adminProfile ? departments.find(dept => dept.id === adminProfile.department) : null;
-      const userRole = userRoles.find(ur => ur.user_id === user.id);
+      const userRole = user_roles.find(ur => ur.user_id === user.id);
       
       return {
         ...user,

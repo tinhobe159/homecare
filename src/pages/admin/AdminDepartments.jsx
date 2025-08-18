@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 const AdminDepartments = () => {
   const [departments, setDepartments] = useState([]);
   const [users, setUsers] = useState([]);
-  const [administratorProfiles, setAdministratorProfiles] = useState([]);
+  const [administrator_profiles, setAdministratorProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -37,18 +37,18 @@ const AdminDepartments = () => {
 
   useEffect(() => {
     calculateMetrics();
-  }, [departments, users, administratorProfiles]);
+  }, [departments, users, administrator_profiles]);
 
   const fetchData = async () => {
     try {
-      const [departmentsResponse, usersResponse, administratorProfilesResponse] = await Promise.all([
+      const [departmentsResponse, usersResponse, administrator_profiles_response] = await Promise.all([
         departmentsAPI.getAll(),
         usersAPI.getAll(),
         administratorProfilesAPI.getAll()
       ]);
       setDepartments(departmentsResponse.data);
       setUsers(usersResponse.data);
-      setAdministratorProfiles(administratorProfilesResponse.data);
+      setAdministratorProfiles(administrator_profiles_response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load departments data');
@@ -63,7 +63,7 @@ const AdminDepartments = () => {
     
     // Calculate employees per department using administrator_profiles
     const departmentEmployeeCounts = {};
-    administratorProfiles.forEach(profile => {
+    administrator_profiles.forEach(profile => {
       const deptId = profile.department;
       departmentEmployeeCounts[deptId] = (departmentEmployeeCounts[deptId] || 0) + 1;
     });
@@ -151,7 +151,7 @@ const AdminDepartments = () => {
   };
 
   const getEmployeeCount = (departmentId) => {
-    const count = administratorProfiles.filter(profile => profile.department === departmentId).length;
+    const count = administrator_profiles.filter(profile => profile.department === departmentId).length;
     return count;
   };
 

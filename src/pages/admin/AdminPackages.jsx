@@ -26,11 +26,9 @@ const AdminPackages = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    code: '',
-    total_cost: '',
-    duration_hours: '',
-    is_active: true,
-    serviceIds: []
+    duration: '',
+    price: '',
+    service_ids: []
   });
 
   useEffect(() => {
@@ -87,16 +85,16 @@ const AdminPackages = () => {
   const handleServiceToggle = (serviceId) => {
     setFormData(prev => ({
       ...prev,
-      serviceIds: prev.serviceIds.includes(serviceId)
-        ? prev.serviceIds.filter(id => id !== serviceId)
-        : [...prev.serviceIds, serviceId]
+      service_ids: prev.service_ids.includes(serviceId)
+        ? prev.service_ids.filter(id => id !== serviceId)
+        : [...prev.service_ids, serviceId]
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (formData.serviceIds.length === 0) {
+    if (formData.service_ids.length === 0) {
       toast.error('Please select at least one service');
       return;
     }
@@ -109,7 +107,7 @@ const AdminPackages = () => {
         total_cost: parseFloat(formData.total_cost),
         duration_hours: parseInt(formData.duration_hours),
         is_active: formData.is_active,
-        serviceIds: formData.serviceIds,
+        service_ids: formData.service_ids,
         created_at: new Date().toISOString()
       };
 

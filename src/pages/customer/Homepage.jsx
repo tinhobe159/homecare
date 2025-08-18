@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Users, Shield, Heart, ArrowRight, Star, Clock, DollarSign, MessageSquare, Home, Activity, CheckCircle, MapPin, Award, Phone, Mail } from 'lucide-react';
+import { Calendar, Users, Shield, Heart, ArrowRight, Star, Clock, DollarSign, MessageSquare, Home, Activity, CheckCircle, MapPin, Award, Phone, Mail, Camera, MessageCircle } from 'lucide-react';
 import { packagesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -371,6 +371,101 @@ const Homepage = () => {
             <p className="text-gray-600">
               Don't see your area? <Link to="/contact" className="text-[#17407b] hover:underline">Contact us</Link> to check availability.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Family Portal Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-green-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Stay Connected with Our Family Portal
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Real-time updates, photo sharing, and direct communication with your loved one's care team.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Features */}
+            <div className="space-y-8">
+              {[
+                {
+                  icon: Heart,
+                  title: 'Real-time Care Updates',
+                  description: 'Receive instant notifications about daily activities, medications, and vital signs.'
+                },
+                {
+                  icon: Camera,
+                  title: 'Photo Sharing',
+                  description: 'View approved photos of your loved one during care sessions and activities.'
+                },
+                {
+                  icon: MessageCircle,
+                  title: 'Direct Communication',
+                  description: 'Message caregivers and care coordinators through our secure platform.'
+                },
+                {
+                  icon: Star,
+                  title: 'Satisfaction Surveys',
+                  description: 'Provide feedback to help us continuously improve our care services.'
+                }
+              ].map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={index} className="flex items-start space-x-4">
+                    <div className="bg-blue-100 p-3 rounded-lg">
+                      <Icon className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                      <p className="text-gray-600">{feature.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Portal Access */}
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <div className="text-center mb-6">
+                <div className="bg-gradient-to-r from-blue-600 to-green-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Family Portal Access</h3>
+                <p className="text-gray-600">
+                  Stay connected with your loved one's care journey
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <Link
+                  to="/family-login"
+                  className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-green-700 transition-all duration-200 flex items-center justify-center space-x-2"
+                >
+                  <span>Access Family Portal</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                
+                <div className="text-center">
+                  <p className="text-sm text-gray-500 mb-2">Don't have access?</p>
+                  <Link
+                    to="/contact"
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  >
+                    Contact your care coordinator
+                  </Link>
+                </div>
+                
+                <div className="bg-gray-50 rounded-lg p-4 mt-4">
+                  <h4 className="font-medium text-gray-900 mb-2">Demo Access Available</h4>
+                  <p className="text-sm text-gray-600">
+                    Try our family portal with demo credentials to see how it works.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
