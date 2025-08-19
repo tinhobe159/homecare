@@ -60,6 +60,8 @@ import CaregiverSchedule from "./pages/caregiver/CaregiverSchedule";
 import CaregiverCarePlans from "./pages/caregiver/CaregiverCarePlans";
 import CaregiverTimesheet from "./pages/caregiver/CaregiverTimesheet";
 import CaregiverProfile from "./pages/caregiver/CaregiverProfile";
+import CaregiverAppointmentDetail from "./pages/caregiver/CaregiverAppointmentDetail";
+import CaregiverEVVPage from "./pages/caregiver/CaregiverEVVPage";
 
 // Test Pages
 import EVVTestPage from "./pages/EVVTestPage";
@@ -99,6 +101,8 @@ const AppContent = () => {
           <Route path="/caregiver/care-plans" element={<CaregiverCarePlans />} />
           <Route path="/caregiver/timesheet" element={<CaregiverTimesheet />} />
           <Route path="/caregiver/profile" element={<CaregiverProfile />} />
+          <Route path="/caregiver/appointment/:id" element={<CaregiverAppointmentDetail />} />
+          <Route path="/caregiver/evv/:id" element={<CaregiverEVVPage />} />
 
           {/* Admin Login Route (outside layout) */}
           <Route path="/admin/login" element={<AdminLogin />} />
