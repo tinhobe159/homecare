@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { appointmentsAPI, evvRecordsAPI, usersAPI } from '../../services/api';
+import { appointmentsAPI, evvRecordsAPI, usersAPI, userRolesAPI, addressesAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { 
@@ -19,7 +19,9 @@ const CaregiverDashboard = () => {
   const { currentUser } = useAuth();
   const [appointments, setAppointments] = useState([]);
   const [evvRecords, setEvvRecords] = useState([]);
-  const [customers, setCustomers] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [userRoles, setUserRoles] = useState([]);
+  const [addresses, setAddresses] = useState([]);
   const [stats, setStats] = useState({
     todayAppointments: 0,
     weeklyHours: 0,
@@ -36,27 +38,31 @@ const CaregiverDashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      // Get appointments for this caregiver
-      const appointmentsRes = await appointmentsAPI.getAll();
+      // Get all data in parallel
+      const [appointmentsRes, evvRes, usersRes, userRolesRes, addressesRes] = await Promise.all([
+        appointmentsAPI.getAll(),
+        evvRecordsAPI.getAll(),
+        usersAPI.getAll(),
+        userRolesAPI.getAll(),
+        addressesAPI.getAll()
+      ]);
+
+      // Filter appointments for this caregiver
       const caregiverAppointments = appointmentsRes.data.filter(
         apt => apt.caregiver_id === currentUser.id
       );
 
-      // Get EVV records
-      const evvRes = await evvRecordsAPI.getAll();
+      // Filter EVV records for this caregiver  
       const caregiverEvv = evvRes.data.filter(
         evv => evv.caregiver_id === currentUser.id
       );
 
-      // Get customers
-      const customersRes = await usersAPI.getAll();
-      const customersList = customersRes.data.filter(user => 
-        user.roles?.some(role => role.name === 'customer')
-      );
-
+      // Set the state
       setAppointments(caregiverAppointments);
       setEvvRecords(caregiverEvv);
-      setCustomers(customersList);
+      setUsers(usersRes.data);
+      setUserRoles(userRolesRes.data);
+      setAddresses(addressesRes.data);
 
       // Calculate stats
       const today = new Date().toISOString().split('T')[0];
@@ -96,9 +102,18 @@ const CaregiverDashboard = () => {
     }
   };
 
+  // Helper functions
   const getCustomerName = (customerId) => {
-    const customer = customers.find(c => c.id === customerId);
-    return customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown Customer';
+    const user = users.find(u => u.id === customerId);
+    return user ? `${user.first_name} ${user.last_name}` : 'Unknown Customer';
+  };
+
+  const getCustomerAddress = (customerId) => {
+    const userAddress = addresses.find(addr => addr.user_id === customerId && addr.is_primary);
+    if (userAddress) {
+      return `${userAddress.street_address}, ${userAddress.city}, ${userAddress.state_province}`;
+    }
+    return 'Address not specified';
   };
 
   const getUpcomingAppointments = () => {
@@ -253,7 +268,7 @@ const CaregiverDashboard = () => {
                         </div>
                         <div className="flex items-center text-sm text-gray-600">
                           <MapPin className="h-4 w-4 mr-1" />
-                          {appointment.location || 'Address not specified'}
+                          {appointment.location || getCustomerAddress(appointment.user_id)}
                         </div>
                         <div className="mt-3 flex space-x-2">
                           <Link
